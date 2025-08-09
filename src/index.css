@@ -1,0 +1,30 @@
+@import url("https://cdn.jsdelivr.net/gh/sun-typeface/SUIT@2/fonts/static/woff2/SUIT.css");
+
+@import "tailwindcss";
+
+@theme {
+  --breakpoint-ph: 360px;
+  --breakpoint-dt: 1440px;
+
+  --color-white: #FFFFFF;
+  --color-grey01: #f8faff;
+  --color-grey02: #F5F5F5;
+  --color-grey03: #F6F6F6;
+  --color-grey04: #EEEEEE;
+  --color-grey05: #D9D9D9;
+  --color-grey06: #CECECE;
+  --color-grey07: #C4C4C4;
+  --color-grey08: #AEB3BB;
+  --color-darkgrey01: #8D8D8D;
+  --color-darkgrey02: #727272;
+  --color-darkgrey03: #666B73;
+  --color-black: #000000;
+  --color-purple_main: #7E37F9;
+  --color-purple01: #9769E1;
+  --color-purple02: #DAC2FF;
+  --color-lightpurple01: #EFE5FF;
+  --color-lightpink01: #FFEAE5;
+
+}
+
+body { font-family: "SUIT", sans-serif; }
