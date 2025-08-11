@@ -25,6 +25,9 @@
   --color-lightpurple01: #EFE5FF;
   --color-lightpink01: #FFEAE5;
 
+  --color-grad2-1: #E68BFF;
+  --color-grad2-2: #C58EFF;
+  --color-grad2-3: #3DD8FF;
 }
 
 body { font-family: "SUIT", sans-serif; }
