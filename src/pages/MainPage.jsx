@@ -98,7 +98,7 @@ export const MainPage = () => {
           따끈 따끈 새로 등록된 전시들
         </p>
 
-        <div className="grid grid-cols-2 gap-x-4 gap-y-8 justify-items-start">
+        <div className="grid grid-cols-2 gap-x-3 gap-y-3 justify-items-start">
           <div className="w-[168px] h-[308px]">
             <div className="w-[168px] h-[242px] overflow-hidden">
               <img
@@ -216,7 +216,7 @@ export const MainPage = () => {
       </div>
 
       {/* 구분선 */}
-      <div className="w-screen h-[8px] bg-grey04 mt-[44px] mb-[20px]" />
+      <div className="w-screen h-[8px] bg-grey04 mt-[0px] mb-[20px]" />
 
       <div className="mx-auto w-full max-w-[420px] px-5 py-4">
         <h2 className="font-semibold text-[20px] leading-[125%]">
@@ -225,7 +225,7 @@ export const MainPage = () => {
         </h2>
       </div>
 
-      <div className="px-5 grid grid-cols-2 gap-x-4 justify-items-start">
+      <div className="px-5 grid grid-cols-2 gap-x-3 justify-items-start">
         <div className="w-[168px] space-y-1.5">
           {' '}
           <img src={Poster1} alt="poster1" className="w-full rounded mb-2.5" />
@@ -272,7 +272,8 @@ export const MainPage = () => {
       </div>
 
       {/* 구분선 */}
-      <div className="w-screen h-[8px] bg-grey04 mt-[44px] mb-[20px]" />
+      <div className="w-screen h-[8px] bg-grey04 mt-[34px] mb-[20px]" />
+
       <div className="mx-auto w-full max-w-[420px] px-5 py-4">
         <h2 className="font-semibold text-[20px] leading-[125%]">
           선호하시는 <span className="text-purple01">#따뜻함</span> 태그의
@@ -280,7 +281,7 @@ export const MainPage = () => {
         </h2>
       </div>
 
-      <div className="px-5 grid grid-cols-2 gap-x-4 justify-items-start">
+      <div className="px-5 grid grid-cols-2 gap-x-3 justify-items-start">
         <div className="w-[168px] space-y-1.5">
           {' '}
           <img src={Poster1} alt="poster1" className="w-full rounded mb-2.5" />
