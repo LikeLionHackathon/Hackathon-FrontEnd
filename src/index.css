@@ -23,11 +23,20 @@
   --color-purple01: #9769E1;
   --color-purple02: #DAC2FF;
   --color-lightpurple01: #EFE5FF;
-  --color-lightpink01: #FFEAE5;
+  --color-lightpurple02: #F0F0FF;
+  --color-pink01: #FFEAE5;
+  --color-pink02: #FF9393;
+
+  --color-grad1-1: #0029F7;
+  --color-grad1-2: #EFE5FF;
 
   --color-grad2-1: #E68BFF;
   --color-grad2-2: #C58EFF;
   --color-grad2-3: #3DD8FF;
+
+  --color-grad3-1: #7E37F9;
+  --color-grad3-2: #DECBFF;
+  --color-grad3-3: #4BB4FE;
 }
 
 body { font-family: "SUIT", sans-serif; }
