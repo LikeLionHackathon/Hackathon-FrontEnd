@@ -1,12 +1,15 @@
 import profileCard from '../assets/Profile_card.svg';
 import Poster_01 from '../assets/poster_01.svg';
 import button_addexhibition from '../assets/button_addexhibition.svg';
+import AddExhibitionModal from '../components/exhibition/AddExhibitionModal';
+import { useState } from 'react';
 
 export const MyPage = () => {
-  
+  const [openAdd, setOpenAdd] = useState(false);
+
   const handleAddExhibition = () => {
-    
-  }
+    setOpenAdd(true);
+  };
 
   return (
     <div>
@@ -21,12 +24,18 @@ export const MyPage = () => {
         <div className="flex flex-col items-center gap-1.5 h-[340px]">
           <p className="text-darkgrey01 font-14px leading-[150%]">나의 전시</p>
           <div className="w-[168px] h-[300px] shrink-0 border-lightpurple01 border-[1px] rounded-[15px] flex flex-col items-center">
-            <p className='text-[12px] font-light text-darkgrey01 mt-[108px]'>아직 등록된 전시가 없어요</p>
-            <button 
-            className='w-[104px] h-[104px] mt-[18px] flex justify-center shrink-0 items-center cursor-pointer'
-            onClick={handleAddExhibition}
+            <p className="text-[12px] font-light text-darkgrey01 mt-[108px]">
+              아직 등록된 전시가 없어요
+            </p>
+            <button
+              className="w-[104px] h-[104px] mt-[18px] flex justify-center shrink-0 items-center cursor-pointer"
+              onClick={handleAddExhibition}
             >
-              <img src={button_addexhibition} alt="" className='cursor-pointer'/>
+              <img
+                src={button_addexhibition}
+                alt=""
+                className="cursor-pointer"
+              />
             </button>
           </div>
         </div>
@@ -71,7 +80,7 @@ export const MyPage = () => {
           </div>
         </div>
 
-                <div
+        <div
           className="w-[200px] h-[356px] bg-white flex flex-col items-start mt-3
         [clip-path:polygon(0_0,100%_0,100%_76%,calc(100%_-_20px)_79%,100%_82%,100%_100%,0_100%,0_82%,20px_79%,0_76%)]"
         >
@@ -94,7 +103,7 @@ export const MyPage = () => {
           </div>
         </div>
 
-                <div
+        <div
           className="w-[200px] h-[356px] bg-white flex flex-col items-start mt-3
         [clip-path:polygon(0_0,100%_0,100%_76%,calc(100%_-_20px)_79%,100%_82%,100%_100%,0_100%,0_82%,20px_79%,0_76%)]"
         >
@@ -120,6 +129,15 @@ export const MyPage = () => {
 
       {/* 구분선 */}
       <div className="w-screen h-[8px] bg-grey04 mt-4 mb-[12px]" />
+
+      <AddExhibitionModal
+        open={openAdd}
+        onClose={() => setOpenAdd(false)}
+        onSubmit={(data) => {
+          console.log('전시 등록 데이터:', data);
+          // TODO: API 연결해서 저장
+        }}
+      />
     </div>
   );
 };
