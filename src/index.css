@@ -40,4 +40,20 @@
   --color-grad3-3: #4BB4FE;
 }
 
+@layer utilities {
+  /* 기본: 그라데이션 보더 (두께는 변수로) */
+  .border-gradient {
+    --gb-w: 5px; /* 기본 두께: 10px (필요 시 클래스나 임의 프로퍼티로 덮어쓰기) */
+    border-style: solid;
+    border-color: transparent;                 /* border-image 쓰려면 transparent 권장 */
+    border-width: var(--gb-w);
+    border-image: linear-gradient(
+      135deg,
+      var(--color-grad3-1),
+      var(--color-grad3-2),
+      var(--color-grad3-3)
+    ) 1;
+  }
+}
+
 body { font-family: "SUIT", sans-serif; }
