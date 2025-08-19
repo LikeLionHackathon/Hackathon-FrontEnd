@@ -2,6 +2,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import Modal from './Modal';
 import button_photo from '../../assets/button_photo.svg';
+import { useNavigate } from 'react-router-dom';
 
 /* 공통 버튼 */
 const BtnPrimary = ({ className = '', ...p }) => (
@@ -165,7 +166,7 @@ function StepUpload({ data, update, scanning, setScanning }) {
       url: URL.createObjectURL(f),
     }));
 
-    // 스캔 박스 전용 미리보기 URL (파일 하나 더 URL 생성)
+    // 스캔 박스 전용 미리보기 URL
     if (previewUrlRef.current) {
       try {
         URL.revokeObjectURL(previewUrlRef.current);
@@ -241,11 +242,14 @@ function StepUpload({ data, update, scanning, setScanning }) {
         전시 또는 작품 사진을 업로드해주세요.
       </p>
 
-      {scanning && (
-        <p className="absolute text-center mt-4 left-1/2 -translate-x-1/2 text-[15px] leading-1.5 font-[600] text-purple01">
-          스캔중이에요
-        </p>
-      )}
+      {/* 레이아웃 안 밀리도록 절대배치 (표시는 scanning에 따라) */}
+      <p
+        className={`absolute left-1/2 -translate-x-1/2 mt-4 text-[15px] leading-1.5 font-[600] text-purple01 ${
+          scanning ? 'opacity-100' : 'opacity-0'
+        } pointer-events-none transition-opacity`}
+      >
+        스캔중이에요
+      </p>
 
       {/* 숨김 파일 입력 */}
       <input
@@ -257,7 +261,7 @@ function StepUpload({ data, update, scanning, setScanning }) {
         onChange={(e) => onFiles(e.target.files)}
       />
 
-      {/* 268×268 업로드 박스 — 스캔중: 보더/프리뷰, 평소: 업로드 UI */}
+      {/* 268×268 업로드 박스 — 스캔중: 둥근 그라데이션 보더 + 프리뷰, 평소: 업로드 UI */}
       <div
         onClick={openPicker}
         className={`relative mx-auto mt-12 shrink-0
@@ -267,15 +271,15 @@ function StepUpload({ data, update, scanning, setScanning }) {
         style={
           scanning && previewUrlRef.current
             ? {
-                /* ✨ 2중 배경: 1) 콘텐츠(프리뷰) padding-box, 2) 보더용 그라데이션 border-box */
+                // 2중 배경: 1) 콘텐츠(프리뷰) padding-box, 2) 보더용 그라데이션 border-box
                 background: `
-            url(${previewUrlRef.current}) center / cover no-repeat padding-box,
-            linear-gradient(135deg,
-              var(--color-grad3-1, #7E37F9),
-              var(--color-grad3-2, #DECBFF),
-              var(--color-grad3-3, #4BB4FE)
-            ) border-box
-          `,
+                  url(${previewUrlRef.current}) center / cover no-repeat padding-box,
+                  linear-gradient(135deg,
+                    var(--color-grad3-1, #7E37F9),
+                    var(--color-grad3-2, #DECBFF),
+                    var(--color-grad3-3, #4BB4FE)
+                  ) border-box
+                `,
               }
             : undefined
         }
@@ -287,7 +291,7 @@ function StepUpload({ data, update, scanning, setScanning }) {
         )}
       </div>
 
-      {/* 썸네일 4칸 (268px 폭에 맞춤) */}
+      {/* 썸네일 4칸 (폭 268 기준) */}
       <div className="mt-[28px] grid grid-cols-4 gap-2 w-[268px] mx-auto">
         {Array.from({ length: 4 }).map((_, i) => {
           const img = thumbs[i];
@@ -331,7 +335,7 @@ function StepUpload({ data, update, scanning, setScanning }) {
       </div>
 
       <p className="mt-2 text-[12px] text-center text-gray-400">
-        사진은 최대 10장까지 업로드 가능합니다.
+        전시 작품 사진을 업로드해주세요(최대 10장)
       </p>
     </div>
   );
@@ -341,16 +345,18 @@ function StepUpload({ data, update, scanning, setScanning }) {
 function StepPending() {
   return (
     <div className="h-full flex flex-col items-center justify-center gap-6 pb-[90px]">
-      <div className="w-20 h-20 rounded-lg bg-gray-200 grid place-items-center text-gray-700">
+      <div className="mt-10 w-[144px] h-[144px] rounded-[10px] bg-[#D9D9D9] grid place-items-center text-black">
         그래픽
       </div>
-      <p className="text-gray-600">상세 페이지 제작중...</p>
+      <p className="text-black text-[24px]">상세 페이지 제작중...</p>
     </div>
   );
 }
 
 /* ── 컨트롤러 ───────────────────────────────────────────────── */
 export default function AddExhibitionModal({ open, onClose, onSubmit }) {
+  const navigate = useNavigate();
+
   const [step, setStep] = useState(0);
   const [data, setData] = useState({ images: [] });
   const [errors, setErrors] = useState({});
@@ -389,19 +395,48 @@ export default function AddExhibitionModal({ open, onClose, onSubmit }) {
     return Object.keys(e).length === 0;
   };
 
-  const next = () => {
-    if (validate(step)) setStep((s) => Math.min(s + 1, total - 1));
-  };
-  const prev = () => setStep((s) => Math.max(s - 1, 0));
+  // 실제 AI 호출 자리 (데모로 setTimeout)
+  async function generateDraft(form) {
+    // TODO: 실제 API 호출/응답 매핑
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve({
+          title: form.title,
+          date: form.date,
+          place: form.place,
+          concept: form.concept,
+          // 컨펌 페이지에서 URL을 새로 만들기 위해 파일 배열만 전달
+          files: (form.images || []).map((it) => it.file).filter(Boolean),
+        });
+      }, 1800);
+    });
+  }
 
-  const submit = () => {
-    if (!validate(total - 2)) return; // 마지막 전 스텝까지 검증
-    onSubmit?.(data);
-    onClose?.();
-    setStep(0);
-    setData({ images: [] });
-    setErrors({});
+  // ✅ 단일 next 핸들러 (중복 제거 + 스텝3→생성→컨펌 이동 처리)
+  const handleNext = async () => {
+    if (!validate(step)) return;
+
+    // 스텝3(이미지 업로드) → 스텝4(제작중)로 넘어갈 때: 생성 시작
+    if (step === 2) {
+      setStep(3); // "상세 페이지 제작중..." 보여주기
+      const draft = await generateDraft(data);
+
+      // 모달 닫고 컨펌 페이지로 이동 (state로 draft 전달)
+      onClose?.();
+      navigate('/exhibitionDetailConfirm', { state: { draft } });
+
+      // 모달 상태 초기화
+      setStep(0);
+      setData({ images: [] });
+      setErrors({});
+      return;
+    }
+
+    // 그 외 스텝은 일반 이동
+    setStep((s) => Math.min(s + 1, total - 1));
   };
+
+  const prev = () => setStep((s) => Math.max(s - 1, 0));
 
   return (
     <Modal open={open} onClose={onClose}>
@@ -414,17 +449,21 @@ export default function AddExhibitionModal({ open, onClose, onSubmit }) {
         setScanning={setScanning}
       />
 
-      {/* 풋터 버튼: 하단 22px 고정 */}
       <div className="absolute left-4 right-4 bottom-[22px] flex justify-between">
+        {/* 왼쪽 버튼 */}
         {step === 0 ? (
           <BtnGhost onClick={onClose}>등록 취소</BtnGhost>
+        ) : step === total - 1 ? (
+          <div className="w-[152px] h-[44px]" />
         ) : (
           <BtnGhost onClick={prev}>이전 단계</BtnGhost>
         )}
+
+        {/* 오른쪽 버튼 */}
         {step < total - 1 ? (
-          <BtnPrimary onClick={next}>다음</BtnPrimary>
+          <BtnPrimary onClick={handleNext}>다음</BtnPrimary>
         ) : (
-          <BtnPrimary onClick={submit}>제출</BtnPrimary>
+          <div className="w-[152px] h-[44px]" />
         )}
       </div>
     </Modal>
