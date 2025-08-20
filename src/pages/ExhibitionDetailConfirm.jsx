@@ -9,8 +9,7 @@ import Tag from '../components/ai/Tag';
 import { useNavigate } from 'react-router-dom';
 
 const ExhibitionDetailConfirm = () => {
-
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
   /* 공통 버튼 */
   const BtnPrimary = ({ className = '', ...p }) => (
@@ -32,7 +31,7 @@ const ExhibitionDetailConfirm = () => {
   /* 저장 및 이동 */
   const saveButton = () => {
     navigate('/mypage');
-  }
+  };
 
   return (
     <div className="mx-auto w-full max-w-[450px]">
@@ -125,10 +124,14 @@ const ExhibitionDetailConfirm = () => {
         </div>
       </div>
 
-      <div className='flex justify-center mt-4 my-3.5 gap-3.5'>
-          <BtnGhost className='w-[168px] h-[48px] text-[15px]'>수정하기</BtnGhost>
-          <BtnPrimary className='w-[168px] h-[48px] text-[15px]' 
-          onClick = {saveButton}>이대로 등록하기</BtnPrimary>
+      <div className="flex justify-center mt-4 my-3.5 gap-3.5">
+        <BtnGhost className="w-[168px] h-[48px] text-[15px]">수정하기</BtnGhost>
+        <BtnPrimary
+          className="w-[168px] h-[48px] text-[15px]"
+          onClick={saveButton}
+        >
+          이대로 등록하기
+        </BtnPrimary>
       </div>
     </div>
   );
