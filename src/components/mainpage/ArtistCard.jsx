@@ -1,4 +1,4 @@
-import profileImg from "../../assets/profile.svg";
+import profileImg from "../../assets/mainProfile.svg";
 import { AiOutlineMessage } from "react-icons/ai";
 
 const ArtistCard = ({img, name, num, place}) => {

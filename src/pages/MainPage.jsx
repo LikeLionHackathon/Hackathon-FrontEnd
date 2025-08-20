@@ -43,11 +43,17 @@ export const MainPage = () => {
   return (
     <div>
       <div className="mx-auto w-full max-w-[420px] pl-[22px] pr-[16px] mt-[8px] mb-[10px]">
-        <div className='flex flex-row place-content-between'>
+        {/* <div className='flex flex-row place-content-between'>
           <img src={AiBall} alt="icon" className='w-[34px]'/>
           <div className='w-[36px] h-[36px] rounded-[50px] flex justify-center'>
             <img src={ArtistImg} alt="artist" />
           </div>
+        </div> */}
+        <div className='flex justify-between h-[45px] mb-[18px]'>
+          <img src={AiBall} alt="" className='w-[34px]' />
+          <img src={profile} alt="" className='cursor-pointer' onClick={() => {
+            navigate('/mypage');
+          }}/>
         </div>
 
         <div className='mt-[18px] flex flex-row h-[25px] items-center'>
@@ -75,12 +81,12 @@ export const MainPage = () => {
       {version === "home" && (
       <>
       <div className="mx-auto w-full max-w-[420px] px-5 py-4">
-        <div className='flex justify-between h-[45px] mb-[18px]'>
+        {/* <div className='flex justify-between h-[45px] mb-[18px]'>
           <img src={AiBall} alt="" className='w-[34px]' />
           <img src={profile} alt="" className='cursor-pointer' onClick={() => {
             navigate('/mypage');
           }}/>
-        </div>
+        </div> */}
         <h2 className="text-[20px] leading-[125%] font-semibold">
           GLOW의 일일 추천
         </h2>
