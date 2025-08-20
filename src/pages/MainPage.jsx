@@ -6,7 +6,9 @@ import Poster4 from '../assets/Poster4.svg';
 import Poster5 from '../assets/Poster5.svg';
 import Poster6 from '../assets/Poster6.svg';
 import AiChatButton from '../assets/Ai_chat_button.svg';
+import ArtistImg from "../assets/artist.svg";
 import { useNavigate } from 'react-router-dom';
+import MainArtist from '../components/mainpage/MainArtist';
 
 const CARD_W = 284; // 카드 가로
 const GAP = 16; // gap-4
@@ -15,6 +17,7 @@ export const MainPage = () => {
   const navigate = useNavigate();
   const scrollerRef = useRef(null);
   const [idx, setIdx] = useState(0); // 0,1,2
+  const [version, setVersion] = useState("home");
 
   const handleAiButton = () => navigate('/aiChat');
 
@@ -38,6 +41,38 @@ export const MainPage = () => {
 
   return (
     <div>
+      <div className="mx-auto w-full max-w-[420px] pl-[22px] pr-[16px] mt-[8px] mb-[10px]">
+        <div className='flex flex-row place-content-between'>
+          <img src={AiBall} alt="icon" className='w-[34px]'/>
+          <div className='w-[36px] h-[36px] rounded-[50px] flex justify-center'>
+            <img src={ArtistImg} alt="artist" />
+          </div>
+        </div>
+
+        <div className='mt-[18px] flex flex-row h-[25px] items-center'>
+          <div className='w-[32px] h-[14px] border-r-1 border-r-grey08 flex items-center justify-start'>
+            <button 
+              className={`text-[20px] font-bold ${version === "home" ? 'text-black' : 'text-darkgrey01'}`}
+              onClick={() => setVersion("home")}
+            >
+              홈
+            </button>
+          </div>
+          <div className='w-[50px] h-[14px] border-l-1 border-l-grey08 flex items-center justify-end'>
+            <button 
+              className={`text-[20px] font-bold ${version === "artist" ? 'text-black' : 'text-darkgrey01'}`}
+              onClick={() => setVersion("artist")}
+            >
+              작가
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {version === "artist" && <MainArtist />}
+      
+      {version === "home" && (
+      <>
       <div className="mx-auto w-full max-w-[420px] px-5 py-4">
         <h2 className="text-[20px] leading-[125%] font-semibold">
           GLOW의 일일 추천
@@ -326,6 +361,7 @@ export const MainPage = () => {
           </div>
         </div>
       </div>
+      </>)}
     </div>
   );
 };
