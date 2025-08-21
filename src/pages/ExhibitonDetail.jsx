@@ -9,9 +9,16 @@ import ex2Img from "../assets/ex02.svg";
 import ex3Img from "../assets/ex03.svg";
 import tagImg from "../assets/hashtag.svg";
 import Tag from "../components/ai/Tag";
+import Artist from "../components/exhibition/Artist";
+import ExhibitionModal from "../components/exhibition/ExhibitionModal"
+import { useState } from "react";
 
 
 const ExhibitionDetail = () => {
+
+    const [isOpen, setIsOpen] = useState(false);
+    const [isVisited, setIsVisited] = useState(false);
+
     return (
         <div className="mx-auto w-full max-w-[450px]">
             <div className="flex flex-col mt-[31px] ml-[21px]">
@@ -29,29 +36,25 @@ const ExhibitionDetail = () => {
 
             <div className="flex flex-col mx-[20px] mt-[12px]">
                 <div className="flex place-content-between h-[48px]">
-                    <button className="flex flex-row justify-center items-center w-[168px] bg-grey01 gap-[12px]">
+                    <button className="flex flex-row justify-center items-center w-[168px] bg-grey01 gap-[12px] rounded-[5px] cursor-pointer">
                         <img src={markImg} alt="가보고 싶어요" />
-                        <p>가보고 싶어요</p>
+                        <p className="font-bold text-[14px]">가보고 싶어요</p>
                     </button>
 
-                    <button className="flex flex-row justify-center items-center w-[168px] bg-grey01 gap-[12px]">
+                    <button 
+                        className={`flex flex-row justify-center items-center w-[168px] gap-[12px] rounded-[5px] cursor-pointer ${isVisited ? 'bg-lightpurple02 text-purple_main' : 'bg-grey01 text-black'}`}
+                        onClick={() => setIsOpen(true)}    
+                    >
                         <img src={visitImg} alt="방문했어요" />
-                        <p>방문했어요</p>
+                        <p className="font-bold text-[14px]">방문했어요</p>
                     </button>
                 </div>
 
                 <div className="flex flex-col mt-[16px]">
                     <h1 className="font-bold text-[24px]">변화의 이상</h1>
                     <div className="flex mt-[16px] gap-[16px]">
-                        <div className="flex flex-col items-center gap-[2px]">
-                            <div className="w-[48px] h-[48px] rounded-[50px] bg-grey05"></div>
-                            <p className="font-semibold text-[14px]">박서영</p>
-                        </div>
-
-                        <div className="flex flex-col items-center gap-[2px]">
-                            <div className="w-[48px] h-[48px] rounded-[50px] bg-grey05"></div>
-                            <p className="font-semibold text-[14px]">박서영</p>
-                        </div>
+                        <Artist name={"박서영"}/>
+                        <Artist name={"황영준"} />
                     </div>
                 </div>
             </div>
@@ -126,7 +129,13 @@ const ExhibitionDetail = () => {
                     <p>망원 시장 주변 호시갤러리에서 전시중이에요.</p>
                 </div>
             </div>
+
+            {isOpen && 
+            <ExhibitionModal 
+                onClose={() => {setIsOpen(false); setIsVisited(true)}}
+            />}
         </div>
+        
     )
 }
 
