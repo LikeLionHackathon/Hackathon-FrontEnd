@@ -22,8 +22,8 @@ function Tile({ selected, onClick, title, sub, icon }) {
     <button
       type="button"
       onClick={onClick}
-      className={`w-full h-[96px] rounded-[12px] border text-left px-4 py-3 flex items-center gap-3
-        ${selected ? 'border-transparent ring-2 ring-[#7B3EFF] bg-[#F6F0FF]' : 'border-gray-200 bg-white'}`}
+      className={`w-full h-[96px] rounded-[12px] border text-left px-4 py-3 flex items-center gap-3 
+        ${selected ? 'border-transparent bg-lightpurple02' : 'border-none bg-grey01 '}`}
     >
       {icon && (
         <div className="w-10 h-10 grid place-items-center rounded-lg bg-[#7B3EFF]/10">
@@ -32,7 +32,7 @@ function Tile({ selected, onClick, title, sub, icon }) {
       )}
       <div className="flex-1">
         <p
-          className={`text-[15px] font-semibold ${selected ? 'text-[#7B3EFF]' : 'text-black'}`}
+          className={`text-[15px] font-semibold ${selected ? 'text-purple_main' : 'text-darkgrey01'}`}
         >
           {title}
         </p>
@@ -73,6 +73,7 @@ export default function Onboarding() {
           { id: 'nature', title: '자연' },
           { id: 'city', title: '도시' },
           { id: 'emotion', title: '감정' },
+          { id: 'human', title: '인간' },
           { id: 'history', title: '역사' },
           { id: 'tech', title: '기술' },
           { id: 'photo', title: '사진' },
@@ -178,7 +179,7 @@ export default function Onboarding() {
 
     if (cur.layout === 'col') {
       return (
-        <div className="mt-[158px] space-y-10">
+        <div className="mt-[158px] space-y-10 justify-center">
           {cur.options.map((op) => (
             <Tile
               key={op.id}
@@ -194,7 +195,7 @@ export default function Onboarding() {
 
     // grid 2열
     return (
-      <div className="mt-4 grid grid-cols-2 gap-3">
+      <div className="w-[348px] mt-4 grid grid-cols-2 gap-3">
         {cur.options.map((op) => (
           <Tile
             key={op.id}
@@ -208,7 +209,7 @@ export default function Onboarding() {
   };
 
   return (
-    <div className="mx-auto w-full max-w-[450px] min-h-dvh bg-white flex flex-col">
+    <div className="mx-auto w-full max-w-[450px] min-h-dvh bg-white flex flex-col ">
       {/* 헤더 + 프로그레스 */}
       {isFirst ? (
         // ✅ 1번 스텝: 프로그레스 바 X, '< 시작 화면' 버튼만
@@ -216,7 +217,7 @@ export default function Onboarding() {
           <button
             type="button"
             onClick={() => navigate('/')} // 시작 화면 경로에 맞게 수정
-            className="text-[14px] text-darkgrey01"
+            className="text-[14px] text-darkgrey01 "
           >
             &lt; 시작 화면
           </button>
@@ -225,7 +226,7 @@ export default function Onboarding() {
         <div className="px-5 pt-4">
           <div className="h-2 w-full bg-gray-200 rounded-full overflow-hidden">
             <div
-              className="h-[30px] bg-[#9769E1] transition-all"
+              className="h-[30px] bg-[#9769E1] transition-all "
               style={{ width: `${progress}%` }}
             />
           </div>
