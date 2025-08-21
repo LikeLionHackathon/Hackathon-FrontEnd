@@ -1,6 +1,7 @@
 import posterImg from "../../assets/poster.svg";
 import { FaStar } from "react-icons/fa";
 import { useEffect, useState } from "react";
+import { sendRating } from "../../apis/exhibition";
 
 
 const ExhibitionModal = ({onClose}) => {
@@ -20,8 +21,21 @@ const ExhibitionModal = ({onClose}) => {
 
     const displayValue = hover || rating;
 
-    const handleClick = () => {
+    const handleClick = async () => {
         setRating(hover);
+        console.log(hover);
+
+        try{
+            const result = await sendRating({
+                userId: 1,
+                exhib_id: 10,
+                rate: hover,
+            });
+            console.log("응답 성공: ", result);
+        } catch (err) {
+            console.log("실패: ", err);
+            alert("별점 전송 실패");
+        }
 
         setTimeout(() => {
             onClose()

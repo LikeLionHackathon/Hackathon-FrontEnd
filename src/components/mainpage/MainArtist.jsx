@@ -1,4 +1,5 @@
 import ArtistCard from "./ArtistCard";
+import PlaceCard from "./PlaceCard";
 
 const MainArtist = () => {
     return (
@@ -22,8 +23,15 @@ const MainArtist = () => {
                 </div>
             </div>
 
-            <div className="mt-[20px]">
+            <div className="mt-[47px] pr-[18px]">
                 <h1 className="font-bold text-[20px]">비어있는 전시 공간</h1>
+                <div className="flex flex-col mt-[12px]">
+                    <PlaceCard />
+                    <PlaceCard />
+                    <PlaceCard />
+                    <PlaceCard />
+                    <PlaceCard />
+                </div>
             </div>
         </div>
     )

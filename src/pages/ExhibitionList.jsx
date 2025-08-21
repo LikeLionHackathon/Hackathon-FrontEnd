@@ -25,8 +25,6 @@ const ExhibitionList = ({number}) => {
                     <ExhibitionCard />
                 </div>
             </div>
-
-            
         </div>
     )
 }

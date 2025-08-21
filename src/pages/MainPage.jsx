@@ -41,21 +41,42 @@ export const MainPage = () => {
 
   return (
     <div>
-      <div className="mx-auto w-full max-w-[420px] px-5 py-4">
-        <div className="flex justify-between h-[45px] mb-[18px]">
+      <div className="mx-auto w-full max-w-[420px] pl-[22px] pr-[16px] mt-[8px] mb-[10px]">
+        <div className='flex justify-between h-[45px] mb-[18px]'>
           <div className='flex items-center gap-1'>
             <img src={glow_icon1} alt="" className='w-[50px] shrink-0' />
             <img src={GLOW} alt="GLOW logo" className="" />
           </div>
-          <img
-            src={profile}
-            alt=""
-            className="cursor-pointer"
-            onClick={() => {
-              navigate('/mypage');
-            }}
-          />
+          <img src={profile} alt="" className='cursor-pointer' onClick={() => {
+            navigate('/mypage');
+          }}/>
         </div>
+
+        <div className='mt-[18px] flex flex-row h-[25px] items-center'>
+          <div className='w-[32px] h-[14px] border-r-1 border-r-grey08 flex items-center justify-start'>
+            <button 
+              className={`text-[20px] font-bold ${version === "home" ? 'text-black' : 'text-darkgrey01'}`}
+              onClick={() => setVersion("home")}
+            >
+              홈
+            </button>
+          </div>
+          <div className='w-[50px] h-[14px] border-l-1 border-l-grey08 flex items-center justify-end'>
+            <button 
+              className={`text-[20px] font-bold ${version === "artist" ? 'text-black' : 'text-darkgrey01'}`}
+              onClick={() => setVersion("artist")}
+            >
+              작가
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {version === "artist" && <MainArtist />}
+      
+      {version === "home" && (
+      <>
+      <div className="mx-auto w-full max-w-[420px] px-5 py-4">
         <h2 className="text-[20px] leading-[125%] font-semibold">
           GLOW의 일일 추천
         </h2>

@@ -11,7 +11,7 @@ const ArtistCard = ({img, name, num, place}) => {
                 <p className="text-[12px] text-darkgrey01">{num}명 모집 중</p>
                 <p className="text-[12px]">{place}</p>
             </div>
-            <button className="w-[98px] h-[25px] bg-purple_main text-white rounded-[5px] flex flex-row justify-center items-center gap-[8px]">
+            <button className="w-[98px] h-[25px] bg-purple_main text-white rounded-[5px] flex flex-row justify-center items-center gap-[8px] cursor-pointer">
                 <AiOutlineMessage className="w-[16px]"/>
                 <p className="text-[12px] leading-none">문의하기</p>
             </button>

@@ -1,6 +1,22 @@
+import axiosInstance from './axios';
+
+export const sendRating = async ({exhib_id, rate, userId}) => {
+    try{
+        const res = await axiosInstance.post(`/api/v1/exhibitions/${exhib_id}/reviews`, {
+            userId,
+            rate,
+            exhib_id,
+        });
+        console.log("백엔드 전송 성공:", res.data);
+        return res.data;
+    } catch (err) {
+        console.log("별점 전송 실패: ", err);
+        throw err;
+    }
+}
+
 // src/api/exhibitionApi.js (혹은 src/services/exhibitionService.js)
 
-import axiosInstance from './axios';
 
 // 1. READ: 전시 등록정보 전체 조회 (최신순)
 export const getExhibitions = async () => {
@@ -70,3 +86,4 @@ export const updateExhibitionImages = async (exhibitionId, imageData) => {
     throw error;
   }
 };
+

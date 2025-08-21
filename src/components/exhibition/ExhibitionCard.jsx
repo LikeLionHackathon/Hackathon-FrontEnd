@@ -1,9 +1,12 @@
 import posterImg from "../../assets/poster.svg";
 import {useNavigate} from 'react-router-dom';
 
-const ExhibitionCard = () => {
+const ExhibitionCard = ({name, position, date, content, recommend}) => {
     const nav = useNavigate();
-    
+    name="전시명";
+    position="위치";
+    date="2025.07.20-2025.08.30";
+    content="자연과 인간들의 소통방식에 대한 관객 상호작용적 전시"
     return (
         <div className="mb-[13px] flex flex-col items-center">
             <div className="cursor-pointer" onClick={() => nav("/exhibitionDetail")}>
@@ -13,11 +16,11 @@ const ExhibitionCard = () => {
                         <img src={posterImg} alt="poster" className="rounded-[17px]"/>
                     </div>
                     <div className="flex flex-col my-auto">
-                        <h1 className="font-bold text-[20px]">전시명</h1>
-                        <p className="text-[13px] text-darkgrey02">위치</p>
-                        <p className="text-[13px] text-darkgrey02">2025.07.20-2025.08.30</p>
+                        <h1 className="font-bold text-[20px]">{name}</h1>
+                        <p className="text-[13px] text-darkgrey02">{position}</p>
+                        <p className="text-[13px] text-darkgrey02">{date}</p>
                         <hr className="my-[13px] w-[185px]"/>
-                        <p className="w-[180px] text-[12px]">자연과 인간들의 소통방식에 대한 관객 상호작용적 전시</p>
+                        <p className="w-[180px] text-[12px]">{content}</p>
                     </div>
                 </div>
             </div>
@@ -35,8 +38,6 @@ const ExhibitionCard = () => {
         </div>
 
     )
-   
-
 }
 
 export default ExhibitionCard;
