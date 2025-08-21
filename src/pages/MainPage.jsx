@@ -10,6 +10,7 @@ import AiChatButton from '../assets/Ai_chat_button.svg';
 import GLOW from '../assets/GLOW.svg';
 import glow_icon1 from '../assets/glow_icon1.svg';
 import { useNavigate } from 'react-router-dom';
+import MainArtist from '../components/mainpage/MainArtist';
 
 const CARD_W = 284; // 카드 가로
 const GAP = 16; // gap-4
@@ -18,6 +19,7 @@ export const MainPage = () => {
   const navigate = useNavigate();
   const scrollerRef = useRef(null);
   const [idx, setIdx] = useState(0); // 0,1,2
+  const [version, setVersion] = useState("home");
 
   const handleAiButton = () => navigate('/aiChat');
 
@@ -364,6 +366,7 @@ export const MainPage = () => {
           </div>
         </div>
       </div>
+      </>)}
     </div>
   );
 };
