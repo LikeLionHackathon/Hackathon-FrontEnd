@@ -15,26 +15,24 @@ const Connecting = ({que}) => {
 
     if (que) {
         return(
-        <>
-        <div className="flex flex-col w-full">
+        <div className="w-full">
+        <div className="flex flex-col">
             <div className="mt-[10px] flex text-[14px] w-[320px]">
                 {que}
             </div>
         </div>
 
-        <div className="flex flex-col items-center justify-center mx-auto mt-[43px]">
-            <div className="flex flex-col gap-[54px]">
-                <div className="text-purple01">{messages[index]}</div>
-                <div className="flex items-center justify-center">
-                    <img 
-                        src={tagImg} 
-                        alt="connecting ai" 
-                        className="max-w-[270px] ml-[10px]"  
-                    />
-                </div>
+        <div className="flex flex-col justify-center mt-[43px] gap-[54px]">  
+            <div className="text-purple01">{messages[index]}</div>
+            <div className="flex items-center justify-center">
+                <img 
+                    src={tagImg} 
+                    alt="connecting ai" 
+                    className="max-w-[270px] ml-[10px]"  
+                />
             </div>
         </div>
-        </>
+        </div>
         )
     }
 

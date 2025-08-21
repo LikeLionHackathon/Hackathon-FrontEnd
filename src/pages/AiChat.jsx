@@ -3,22 +3,44 @@ import send_message from "../assets/send_message.svg"
 import { useState, useRef } from "react"
 import UploadBox from "../components/ai/UploadBox"
 import Connecting from "../components/ai/Connecting"
+import { sendAiChat } from "../apis/aiChat"
 
 const AiChat = () => {
     const [que, setQue] = useState("");
     const [inputValue, setInputValue] = useState("");
     const textAreaRef = useRef(null);
+    const [images, setImages] = useState([null, null, null]);
+    
 
     const onChange = (e) => {
       setInputValue(e.target.value);
       //console.log(que);
     }
 
-    const submitQue = (e) => {
+    const handleImageChange = (index, file) => {
+      const newImages = [...images];
+      newImages[index] = file;
+      setImages(newImages);
+    }
+
+    const submitQue = async (e) => {
       e.preventDefault();
       setQue(inputValue);
+
+      try {
+        const result = await sendAiChat({
+          text: inputValue,
+          images,
+        });
+        console.log("백엔드 응답: ", result);
+      } catch (err) {
+        console.log("전송 실패: ", err);
+      }
+
       setInputValue("");
+      
     }
+    
 
     return(
         <div className="mx-auto w-full max-w-[450px]">
@@ -28,10 +50,10 @@ const AiChat = () => {
                 <span className="text-[16px] leading-[125%] ">AI의 전시 추천받기</span>
             </div>
 
-            <div className="mt-[20px] flex flex-col self-start items-start">
+            <div className="mt-[20px] flex flex-col self-start items-start w-full pr-[20px]">
                 <div className="flex flex-row gap-[12px] items-center justify-center">
                     {Array.from({length: 3}).map((_, index) => (
-                      <UploadBox key={index} index={index}/>
+                      <UploadBox key={index} index={index} onImageChange={handleImageChange}/>
                     ))}
                 </div>
 
@@ -39,7 +61,7 @@ const AiChat = () => {
             </div>
           </div>
           
-          {que ? (<></>) : (
+          {que ? null : (
           <div className="fixed bottom-[50px] left-0 right-0 px-[15px]">
             <form  className="w-full">
                 <div className="bg-gradient-to-r from-grad2-1 via-grad2-2 to-grad2-3 p-[2px] rounded-[37px]">
