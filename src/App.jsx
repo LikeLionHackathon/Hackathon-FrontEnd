@@ -8,6 +8,7 @@ import ExhibitionList from "./pages/ExhibitionList";
 import ExhibitionDetail from './pages/ExhibitonDetail';
 import ExhibitionDetailConfirm from './pages/ExhibitionDetailConfirm';
 import Onboarding from './pages/OnBoarding';
+import { Login } from './pages/Login';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path='/exhibitionDetail' element={<ExhibitionDetail />} />
           <Route path='/exhibitionDetailConfirm' element={<ExhibitionDetailConfirm/>} />
           <Route path="/onboarding" element={<Onboarding />} />
+          <Route path='/login' element={<Login />}></Route>
         </Route>
       </Routes>
     </BrowserRouter>

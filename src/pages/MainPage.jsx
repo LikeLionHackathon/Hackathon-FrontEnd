@@ -7,8 +7,9 @@ import Poster4 from '../assets/Poster4.svg';
 import Poster5 from '../assets/Poster5.svg';
 import Poster6 from '../assets/Poster6.svg';
 import AiChatButton from '../assets/Ai_chat_button.svg';
+import GLOW from '../assets/GLOW.svg';
+import glow_icon1 from '../assets/glow_icon1.svg';
 import { useNavigate } from 'react-router-dom';
-import MainArtist from '../components/mainpage/MainArtist';
 
 const CARD_W = 284; // 카드 가로
 const GAP = 16; // gap-4
@@ -17,7 +18,6 @@ export const MainPage = () => {
   const navigate = useNavigate();
   const scrollerRef = useRef(null);
   const [idx, setIdx] = useState(0); // 0,1,2
-  const [version, setVersion] = useState("home");
 
   const handleAiButton = () => navigate('/aiChat');
 
@@ -43,7 +43,10 @@ export const MainPage = () => {
     <div>
       <div className="mx-auto w-full max-w-[420px] pl-[22px] pr-[16px] mt-[8px] mb-[10px]">
         <div className='flex justify-between h-[45px] mb-[18px]'>
-          <img src={AiBall} alt="" className='w-[34px]' />
+          <div className='flex items-center gap-1'>
+            <img src={glow_icon1} alt="" className='w-[50px] shrink-0' />
+            <img src={GLOW} alt="GLOW logo" className="" />
+          </div>
           <img src={profile} alt="" className='cursor-pointer' onClick={() => {
             navigate('/mypage');
           }}/>
@@ -361,7 +364,6 @@ export const MainPage = () => {
           </div>
         </div>
       </div>
-      </>)}
     </div>
   );
 };
