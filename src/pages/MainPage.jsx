@@ -54,7 +54,7 @@ export const MainPage = () => {
           }}/>
         </div>
 
-        <div className='mt-[18px] flex flex-row h-[25px] items-center'>
+        <div className='mt-[18px] flex flex-row h-[30px] items-center border-b-1 border-[#DBDBDB]'>
           <div className='w-[32px] h-[14px] border-r-1 border-r-grey08 flex items-center justify-start'>
             <button 
               className={`text-[20px] font-bold ${version === "home" ? 'text-black' : 'text-darkgrey01'}`}
