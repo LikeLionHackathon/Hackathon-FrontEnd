@@ -18,6 +18,7 @@ const ExhibitionDetail = () => {
 
     console.log(location.state.exhibition);
     const {
+        id,
         title,
         place,
         description,
@@ -149,6 +150,8 @@ const ExhibitionDetail = () => {
 
             {isOpen && 
             <ExhibitionModal 
+                exhib_id={id}
+                posterImg = {posterImageUrl}
                 onClose={() => {setIsOpen(false); setIsVisited(true)}}
             />}
         </div>

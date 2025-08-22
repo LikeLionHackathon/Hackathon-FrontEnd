@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-const ArtistModal = ({open, onClose, name}) => {
+const ArtistModal = ({open, onClose, name, text, type}) => {
 
     useEffect (() => {
         if (open) {
@@ -22,13 +22,13 @@ const ArtistModal = ({open, onClose, name}) => {
 
                 <div className="flex flex-col justify-center items-center absolute top-[356px] text-[16px]">
                     <p><span className="font-bold">{name}</span>님에게</p>
-                    <p>전시 협업 문의 메세지를</p>
+                    <p>{text}</p>
                     <p>보내시겠어요?</p>
                 </div>
 
                 <div className="flex flex-col absolute bottom-[21px] gap-[12px]">
                     <button className="w-[300px] h-[48px] bg-purple_main rounded-[10px] text-white cursor-pointer">
-                        네, 메세지를 보낼래요!
+                        네, {type} 보낼래요!
                     </button>
                     <button 
                         className="w-[300px] h-[48px] text-purple_main rounded-[10px] bg-grey05 cursor-pointer"
