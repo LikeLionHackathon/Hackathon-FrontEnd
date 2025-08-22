@@ -1,6 +1,6 @@
 import ArtistCard from "./ArtistCard";
 import PlaceCard from "./PlaceCard";
-import artImg from "../../assets/art.svg";
+import artImg from "../../assets/art.png";
 import { useState } from "react";
 import AddExhibitionModal from "../exhibition/AddExhibitionModal";
 import ArtistModal from "./ArtistModal";
