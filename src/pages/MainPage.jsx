@@ -13,6 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import MainArtist from '../components/mainpage/MainArtist';
 import { getDailyRecommend } from '../apis/dailyRecommend';
 import { useEffect } from 'react';
+import { getExhibitions } from '../apis/exhibition';
 
 const CARD_W = 284; // 카드 가로
 const GAP = 16; // gap-4
@@ -24,22 +25,38 @@ export const MainPage = () => {
   const [recommendations, setRecommendations] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [newExhibitions, setNewExhibitions] = useState([]);
+
+  // useEffect(() => {
+  //   const fetchRecommendations = async () => {
+  //     try {
+  //       const user_id = 1;
+  //       const data = await getDailyRecommend(user_id);
+  //       setRecommendations(data.recommendedExhibitions || []);
+  //     } catch (err) {
+  //       setError('추천 데이터를 불러오는 데 실패했습니다.');
+  //       console.error(err);
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //   };
+  //   fetchRecommendations();
+  // }, []);
 
   useEffect(() => {
-    const fetchRecommendations = async () => {
+    const fetchAllExhibitions = async () => {
       try {
-        const user_id = 1;
-        const data = await getDailyRecommend(user_id);
-        setRecommendations(data.recommendedExhibitions || []);
+        const result = await getExhibitions();
+        console.log("백엔드 응답: ", result);
+        setNewExhibitions(result);
+
       } catch (err) {
-        setError('추천 데이터를 불러오는 데 실패했습니다.');
-        console.error(err);
-      } finally {
-        setIsLoading(false);
+        console.log("실패: ", err);
       }
-    };
-    fetchRecommendations();
-  }, []);
+
+    }
+    fetchAllExhibitions();
+  }, [])
 
   const navigate = useNavigate();
   const scrollerRef = useRef(null);
@@ -170,17 +187,15 @@ export const MainPage = () => {
             </p>
 
             <div className="grid grid-cols-2 gap-x-3 gap-y-3 justify-items-start">
-              {isLoading ? (
-                <p>추천 전시를 불러오는 중...</p>
-              ) : error ? (
-                <p>{error}</p>
+              {newExhibitions.length === 0 ? (
+                <p>새로 등록된 전시가 없습니다.</p>
               ) : (
                 // <<< 🚨 이 부분이 명세서에 맞게 크게 변경됩니다.
-                recommendations.map((exhibition) => (
+                newExhibitions.map((exhibition) => (
                   <div key={exhibition.id} className="w-[168px] h-[308px]">
                     <div className="w-[168px] h-[242px] overflow-hidden">
                       <img
-                        src={exhibition.posterImage} // 썸네일 -> posterImage
+                        src={exhibition.artworkUrl[0]} // 썸네일 -> posterImage
                         alt={exhibition.title}
                         className="w-full h-full object-cover [clip-path:polygon(0_0,100%_0,100%_calc(100%-14px),calc(100%-14px)_100%,14px_100%,0_calc(100%-12px))]"
                       />
@@ -191,13 +206,13 @@ export const MainPage = () => {
                           {exhibition.title}
                         </p>
                         {/* location 필드가 있으나 UI 공간이 좁아 일단 주석 처리. 필요시 주석 해제하여 사용 */}
-                        {/* <p className="text-grey08 text-[8px] truncate">{exhibition.location}</p> */}
+                        <p className="text-grey08 text-[8px] truncate">{exhibition.location}</p>
                         <p className="text-grey08 text-[8px]">
                           {exhibition.artist}
                         </p>{' '}
                         {/* 작가 정보 추가 */}
                         <p className="text-grey08 text-[8px]">
-                          {exhibition.startDate}
+                          {exhibition.startDate} ~ {exhibition.endDate}
                         </p>{' '}
                         {/* 날짜 정보 */}
                       </div>
