@@ -18,7 +18,7 @@ export const sendRating = async ({exhib_id, rate, userId}) => {
 // src/api/exhibitionApi.js (혹은 src/services/exhibitionService.js)
 
 
-// 1. READ: 전시 등록정보 전체 조회 (최신순)
+// 전시 등록정보 전체 조회 (최신순)
 export const getExhibitions = async () => {
   try {
     const response = await axiosInstance.get('/api/v1/exhibitions', {
@@ -32,7 +32,7 @@ export const getExhibitions = async () => {
   }
 };
 
-// 2. READ: 전시 등록정보 개별 조회
+// 전시 등록정보 개별 조회
 export const getExhibitionById = async (exhibitionId) => {
   try {
     const response = await axiosInstance.get(`/api/v1/exhibitions/${exhibitionId}`);
@@ -43,7 +43,7 @@ export const getExhibitionById = async (exhibitionId) => {
   }
 };
 
-// 3. CREATE: 전시 등록
+// CREATE
 export const createExhibition = async (exhibitionData) => {
   try {
     const response = await axiosInstance.post('/api/v1/exhibitions', exhibitionData);

@@ -16,7 +16,7 @@ const BtnGhost = ({ className = '', ...p }) => (
   <button
     {...p}
     className={`px-12 py-2.5 rounded-[10px] bg-grey05 text-white
-  disabled:bg-gray-100 disabled:text-gray-400 ${className}`}
+  disabled:bg-gray-100  ${className}`}
   />
 );
 
@@ -60,27 +60,32 @@ function StepBasic({ data, update, errors }) {
         </div>
       </div>
 
+      {/* <<< 날짜 입력 UI 수정 */}
       <div>
         <p className="text-[15px] font-semibold mt-10">
           언제 전시를 진행하나요?
         </p>
-        <div className="flex">
+        <div className="flex items-center mt-5 border-b border-grey05">
           <input
             type="text"
             inputMode="numeric"
-            placeholder="YY/MM/DD - YY/MM/DD"
-            className="mt-5 pb-1.5 w-full text-[16px] bg-transparent
-             placeholder:text-darkgrey01
-             rounded-none border-0 border-b border-grey05
-             focus:outline-none focus:ring-0"
-            value={data.date || ''}
-            onChange={(e) => update({ date: e.target.value })}
+            placeholder="YY/MM/DD"
+            className="pb-1.5 w-full text-[16px] bg-transparent text-center placeholder:text-darkgrey01 border-0 focus:outline-none focus:ring-0"
+            value={data.startDate || ''}
+            onChange={(e) => update({ startDate: e.target.value })}
+          />
+          <span className="px-2 text-darkgrey01">-</span>
+          <input
+            type="text"
+            inputMode="numeric"
+            placeholder="YY/MM/DD"
+            className="pb-1.5 w-full text-[16px] bg-transparent text-center placeholder:text-darkgrey01 border-0 focus:outline-none focus:ring-0"
+            value={data.endDate || ''}
+            onChange={(e) => update({ endDate: e.target.value })}
           />
         </div>
         {errors.date && (
-          <p className="mt-1 text-xs text-red-600">
-            날짜를 모두 입력해 주세요.
-          </p>
+          <p className="mt-1 text-xs text-red-600">{errors.date}</p>
         )}
       </div>
 
@@ -103,6 +108,7 @@ function StepBasic({ data, update, errors }) {
   );
 }
 
+// ... StepConcept, StepUpload, StepPending 컴포넌트는 변경 사항 없음 ...
 /* ── Step 2: 전시 기조/내용 ──────────────────────────────────── */
 function StepConcept({ data, update, errors }) {
   const max = 300;
@@ -353,6 +359,7 @@ function StepPending() {
   );
 }
 
+
 /* ── 컨트롤러 ───────────────────────────────────────────────── */
 export default function AddExhibitionModal({ open, onClose, onSubmit }) {
   const navigate = useNavigate();
@@ -381,7 +388,10 @@ export default function AddExhibitionModal({ open, onClose, onSubmit }) {
     const e = {};
     if (idx === 0) {
       if (!data.title?.trim()) e.title = '전시명을 입력해 주세요.';
-      if (!data.date?.trim()) e.date = true;
+      // <<< 유효성 검사 로직 수정
+      if (!data.startDate?.trim() || !data.endDate?.trim()) {
+        e.date = '시작일과 종료일을 모두 입력해 주세요.';
+      }
       if (!data.place?.trim()) e.place = '전시장 정보를 입력해 주세요.';
     }
     if (idx === 1) {
@@ -402,7 +412,8 @@ export default function AddExhibitionModal({ open, onClose, onSubmit }) {
       setTimeout(() => {
         resolve({
           title: form.title,
-          date: form.date,
+          // <<< 제출 데이터 형식 수정
+          date: `${form.startDate || ''} - ${form.endDate || ''}`,
           place: form.place,
           concept: form.concept,
           // 컨펌 페이지에서 URL을 새로 만들기 위해 파일 배열만 전달
