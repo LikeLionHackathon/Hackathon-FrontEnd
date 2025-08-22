@@ -82,6 +82,8 @@ const MainArtist = () => {
                 open={openMessage}
                 onClose={() => setOpenMessage(false)}
                 name={ArtistName}
+                text={"전시 협업 문의 메세지를 "}
+                type={"메세지를"}
             />
         </div>
     )
