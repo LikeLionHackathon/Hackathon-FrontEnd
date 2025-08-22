@@ -15,15 +15,11 @@ export const sendRating = async ({exhib_id, rate, userId}) => {
     }
 }
 
-
 // 전시 등록정보 전체 조회 (최신순)
 export const getExhibitions = async () => {
   try {
-    const response = await axiosInstance.get('/api/v1/exhibitions', {
-      params: { sort: 'registeredDate' }
-    });
-    // 서버 응답에서 실제 전시 데이터만 반환
-    return response.data.data.exhibitions;
+    const res = await axiosInstance.get('/api/v1/exhibitions?sort=registeredDate');
+    return res.data.data.exhibitions;
   } catch (error) {
     console.error('전시 목록을 불러오는 데 실패했습니다:', error);
     throw error; // 에러를 호출한 곳에서 처리하도록 다시 던짐
