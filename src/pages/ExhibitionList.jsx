@@ -13,6 +13,10 @@ const ExhibitionList = () => {
       nav(-1);
     }
 
+    const handleDetail = (exhibition) => {
+        nav(`/exhibitionDetail/${exhibition.id}`, {state: {exhibition}});
+    }
+
     useEffect(() => {
         if (location.state?.exhibitions) {
             setExhibitions(location.state.exhibitions);
@@ -46,6 +50,7 @@ const ExhibitionList = () => {
                         <ExhibitionCard 
                             key={idx}
                             exhibition={ex}
+                            onClick={() => handleDetail(ex)}
                         />
                     ))}
                 </div>
