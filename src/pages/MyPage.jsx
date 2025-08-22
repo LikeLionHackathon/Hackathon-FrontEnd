@@ -3,6 +3,8 @@ import Poster_01 from '../assets/poster_01.svg';
 import button_addexhibition from '../assets/button_addexhibition.svg';
 import AddExhibitionModal from '../components/exhibition/AddExhibitionModal';
 import { useState } from 'react';
+import ellipsis from '../assets/Ellipse.svg';
+import Tag from '../components/ai/Tag';
 
 export const MyPage = () => {
   const [openAdd, setOpenAdd] = useState(false);
@@ -128,8 +130,60 @@ export const MyPage = () => {
       </div>
 
       {/* 구분선 */}
-      <div className="w-screen h-[8px] bg-grey04 mt-4 mb-[12px]" />
+      <div className="w-screen h-[8px] bg-grey04 mt-7 mb-[12px]" />
 
+      <div className="flex flex-col px-5">
+        <div className='flex text-[20px] font-semibold'>좋아요한 GLOW 작가</div>
+        <div className="flex flex-row gap-4 mx- w-full mt-4">
+          <div className="flex flex-col items-center w-[48px] h-[48px]">
+            <img src={ellipsis} alt="" />
+            <p className="text-[14px] font-[600] leading-1.5 mt-1.5">박서영</p>
+          </div>
+          <div className="flex flex-col items-center w-[48px] h-[48px]">
+            <img src={ellipsis} alt="" />
+            <p className="text-[14px] font-[600] leading-1.5 mt-1.5">박서영</p>
+          </div>
+          <div className="flex flex-col items-center w-[48px] h-[48px]">
+            <img src={ellipsis} alt="" />
+            <p className="text-[14px] font-[600] leading-1.5 mt-1.5">박서영</p>
+          </div>
+          <div className="flex flex-col items-center w-[48px] h-[48px]">
+            <img src={ellipsis} alt="" />
+            <p className="text-[14px] font-[600] leading-1.5 mt-1.5">박서영</p>
+          </div>
+          <div className="flex flex-col items-center w-[48px] h-[48px]">
+            <img src={ellipsis} alt="" />
+            <p className="text-[14px] font-[600] leading-1.5 mt-1.5">박서영</p>
+          </div>
+        </div>
+      </div>
+
+      {/* 구분선 */}
+      <div className="w-screen h-[8px] bg-grey04 mt-8 mb-[12px]" />
+
+      <div className='flex flex-col px-5'>
+        <div className='flex justify-between '>
+          <p className='text-[20px] font-semibold leading-1.25 mt-6'>가보고 싶어요 한 전시</p>
+          <p className='text-[16px] font-semibold font:pretendard leading-1.25 mt-6'>전체보기</p>
+          </div>
+      </div>
+
+      {/* 구분선 */}
+      <div className="w-screen h-[8px] bg-grey04 mt-8" />
+
+      <div className="flex flex-col mt-[10px] mx-[20px] py-[20px]">
+        <div className="flex flex-row gap-[5px] items-center">
+          <h1 className="font-semibold text-[20px]">선호하는 키워드</h1>
+        </div>
+        <div className="flex flex-wrap gap-[12px] w-[350px] mt-[20px]">
+          <Tag text={'실험적'} id={1} />
+          <Tag text={'몽환적인'} id={2} />
+          <Tag text={'관객 참여형'} id={3} />
+          <Tag text={'웅장한'} id={4} />
+          <Tag text={'인터렉티브'} id={5} />
+          <Tag text={'친구들과 함께'} id={6} />
+        </div>
+      </div>
       <AddExhibitionModal
         open={openAdd}
         onClose={() => setOpenAdd(false)}

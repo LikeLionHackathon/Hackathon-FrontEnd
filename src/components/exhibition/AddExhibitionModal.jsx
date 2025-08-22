@@ -108,6 +108,20 @@ function StepBasic({ data, update, errors }) {
   );
 }
 
+function SearchArtist({ onSelect }) {
+  // 검색어 상태 관리
+
+  return(
+    <div className='w-[300px] h-[48px] shrink-0 justify-center items-center flex self-center'>
+      <input
+        type="text"
+        className="w-full h-full mt-[40px] px-4 text-[16px] text-black bg-transparent border-[1px] border-solid rounded-[10px]"
+        placeholder='작가 이름/아이디를 검색하세요'
+        onChange={(e) => onSelect(e.target.value)}
+        />
+    </div>
+  )
+}
 // ... StepConcept, StepUpload, StepPending 컴포넌트는 변경 사항 없음 ...
 /* ── Step 2: 전시 기조/내용 ──────────────────────────────────── */
 function StepConcept({ data, update, errors }) {
@@ -372,6 +386,7 @@ export default function AddExhibitionModal({ open, onClose, onSubmit }) {
   const steps = useMemo(
     () => [
       { label: '기본 정보', component: StepBasic },
+      { label: '작품/작가 검색', component: SearchArtist },
       { label: '전시 기조/내용', component: StepConcept },
       { label: '이미지 업로드', component: StepUpload },
       { label: '안내', component: StepPending },

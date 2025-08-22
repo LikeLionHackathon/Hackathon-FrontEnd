@@ -11,7 +11,6 @@ const UploadBox = ({index, onImageChange}) => {
 
         setImages(URL.createObjectURL(file));
         onImageChange(index, file);
-        
     };
 
     return (
