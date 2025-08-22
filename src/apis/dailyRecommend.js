@@ -1,6 +1,6 @@
 import axiosInstance from './axios';
 
-export const createDailyRecommendation = async (user_id, date, recommendedExhibitions) => {
+export const createDailyRecommendation = async ({user_id, date, recommendedExhibitions}) => {
   try {
     const response = await axiosInstance.post(`/api/v1/users/${user_id}/daily-recommendations`, {
       user_id,
@@ -17,7 +17,7 @@ export const createDailyRecommendation = async (user_id, date, recommendedExhibi
 };
 
 
-export const getDailyRecommend = async (user_id) => {
+export const getDailyRecommend = async ({user_id}) => {
   try {
     const res = await axiosInstance.get(`/api/v1/users/${user_id}/daily-recommendations`);
     return res.data;
