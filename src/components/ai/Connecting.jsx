@@ -1,4 +1,4 @@
-import tagImg from "../../assets/tags.svg";
+import tagImg from "../../assets/ai_loading_animate.gif";
 import speech_bubble from "../../assets/speech_bubble.svg"
 import { useEffect, useState } from "react";
 

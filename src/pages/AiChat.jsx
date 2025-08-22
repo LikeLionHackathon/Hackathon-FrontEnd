@@ -4,12 +4,15 @@ import { useState, useRef } from "react"
 import UploadBox from "../components/ai/UploadBox"
 import Connecting from "../components/ai/Connecting"
 import { sendAiChat } from "../apis/aiChat"
+import { useNavigate } from "react-router-dom"
+import Header from "../components/layout/Header"
 
 const AiChat = () => {
     const [que, setQue] = useState("");
     const [inputValue, setInputValue] = useState("");
     const textAreaRef = useRef(null);
     const [images, setImages] = useState([null, null, null]);
+    const nav = useNavigate();
     
 
     const onChange = (e) => {
@@ -23,6 +26,10 @@ const AiChat = () => {
       setImages(newImages);
     }
 
+    const handleBack = () => {
+      nav(-1);
+    }
+
     const submitQue = async (e) => {
       e.preventDefault();
       setQue(inputValue);
@@ -33,6 +40,8 @@ const AiChat = () => {
           images,
         });
         console.log("백엔드 응답: ", result);
+        const exhibitions = result?.recommendations ?? [];
+        nav("/exhibitionList", {state: {exhibitions}});
       } catch (err) {
         console.log("전송 실패: ", err);
       }
@@ -44,7 +53,8 @@ const AiChat = () => {
 
     return(
         <div className="mx-auto w-full max-w-[450px]">
-          <div className="flex flex-col mt-[31px] ml-[21px]">
+          <div className="flex flex-col ml-[21px]">
+            <Header text={""} onClick={handleBack} />
             <div className="flex gap-[5px]">
                 <img src={icon_ai} alt="ai icon" />
                 <span className="text-[16px] leading-[125%] ">AI의 전시 추천받기</span>
