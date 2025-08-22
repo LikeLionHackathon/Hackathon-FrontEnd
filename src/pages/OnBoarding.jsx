@@ -1,7 +1,5 @@
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import GeneralUserIcon from '../assets/general_user.svg';
-import ArtistUserIcon from '../assets/artist_user.svg';
 
 const BtnPrimary = ({ className = '', ...p }) => (
   <button {...p} className={`w-[168px] h-[44px] rounded-[10px] text-white text-[15px] bg-purple_main disabled:bg-gray-300 disabled:text-white/70 ${className}`} />

@@ -15,8 +15,6 @@ export const sendRating = async ({exhib_id, rate, userId}) => {
     }
 }
 
-// src/api/exhibitionApi.js (혹은 src/services/exhibitionService.js)
-
 
 // 전시 등록정보 전체 조회 (최신순)
 export const getExhibitions = async () => {
@@ -54,7 +52,7 @@ export const createExhibition = async (exhibitionData) => {
   }
 };
 
-// 4. UPDATE: 전시 정보 수정 (전체 업데이트)
+// UPDATE: 전시 정보 수정 (전체 업데이트)
 export const updateExhibition = async (exhibitionId, updatedData) => {
   try {
     const response = await axiosInstance.put(`/api/v1/exhibitions/${exhibitionId}`, updatedData);
@@ -65,7 +63,7 @@ export const updateExhibition = async (exhibitionId, updatedData) => {
   }
 };
 
-// 5. DELETE: 전시 삭제
+// DELETE: 전시 삭제
 export const deleteExhibition = async (exhibitionId) => {
   try {
     const response = await axiosInstance.delete(`/api/v1/exhibitions/${exhibitionId}`);
@@ -76,7 +74,7 @@ export const deleteExhibition = async (exhibitionId) => {
   }
 };
 
-// 6. UPDATE: 전시 작품/포스터 이미지 수정
+// UPDATE: 전시 작품/포스터 이미지 수정
 export const updateExhibitionImages = async (exhibitionId, imageData) => {
   try {
     const response = await axiosInstance.put(`/exhibitions/${exhibitionId}/images`, imageData);
