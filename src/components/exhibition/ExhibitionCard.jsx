@@ -1,11 +1,6 @@
-//import posterImg from "../../assets/poster.svg";
-import {useNavigate} from 'react-router-dom';
-
-const ExhibitionCard = ({exhibition}) => {
-    const nav = useNavigate();
+const ExhibitionCard = ({exhibition, onClick}) => {
     
     const {
-        id,
         title,
         location,
         description,
@@ -22,7 +17,7 @@ const ExhibitionCard = ({exhibition}) => {
 
     return (
         <div className="mb-[13px] flex flex-col items-center">
-            <div className="cursor-pointer" onClick={() => nav(`/exhibitionDetail/${id}`)}>
+            <div className="cursor-pointer" onClick={onClick}>
             <div className="h-[194px] w-[348px] rounded-[20px] bg-gradient-to-r from-grad3-1 via-grad3-2 to-grad3-3 p-[1px] pb-[0px]">
                 <div className="flex bg-white rounded-[20px] h-full gap-[12px]">
                     <div className="w-[125px] my-auto ml-[9px]">
@@ -33,7 +28,7 @@ const ExhibitionCard = ({exhibition}) => {
                         <p className="text-[13px] text-darkgrey02">{location ?? "위치 미정"}</p>
                         <p className="text-[13px] text-darkgrey02">{startDate} ~ {endDate}</p>
                         <hr className="my-[13px] w-[185px]"/>
-                        <p className="w-[180px] h-[50px] text-[12px] line-clamp-3">{description}</p>
+                        <p className="w-[180px] text-[12px] line-clamp-2">{description}</p>
                     </div>
                 </div>
             </div>

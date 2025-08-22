@@ -1,4 +1,4 @@
-import cameraImg from "../../assets/camera.svg"
+import cameraImg from "../../assets/camera.png"
 import { useState } from "react";
 
 const UploadBox = ({index, onImageChange}) => {

@@ -1,4 +1,4 @@
-import placeImg from "../../assets/ex01.svg";
+import placeImg from "../../assets/cafe01.svg";
 
 const PlaceCard = () => {
     return (

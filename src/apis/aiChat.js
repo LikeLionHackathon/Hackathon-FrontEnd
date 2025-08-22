@@ -20,6 +20,7 @@ export async function sendAiChat({text, images}) {
             headers: {
                 "Content-Type": "multipart/form-data",
             },
+            withCredentials:true,
         });
         console.log("응답 성공: ", res.data);
         return res.data;

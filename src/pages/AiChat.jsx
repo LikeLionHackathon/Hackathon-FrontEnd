@@ -44,6 +44,8 @@ const AiChat = () => {
         nav("/exhibitionList", {state: {exhibitions}});
       } catch (err) {
         console.log("전송 실패: ", err);
+        alert("ai 전시 추천해 실패했습니다. 다시 시도해주세요.");
+        setQue("");
       }
 
       setInputValue("");
