@@ -250,7 +250,7 @@ export const MainPage = () => {
           <img
             src={AiChatButton}
             alt="Ai 전시 추천"
-            className="fixed left-[240px] top-[750px] z-50"
+            className="fixed bottom-[33px] right-[15px] z-50"
           />
         </button>
       </div>

@@ -18,10 +18,11 @@ const ExhibitionCard = ({exhibition}) => {
     const reasonSentences = recommendationReason 
         ? recommendationReason.split("\n").map(s => s.trim()).filter(s => s.length > 0)
         : [];
+    console.log(exhibition);
 
     return (
         <div className="mb-[13px] flex flex-col items-center">
-            <div className="cursor-pointer" onClick={() => nav(`/exhibitionDetail/${exhibition.id}`)}>
+            <div className="cursor-pointer" onClick={() => nav(`/exhibitionDetail/${id}`)}>
             <div className="h-[194px] w-[348px] rounded-[20px] bg-gradient-to-r from-grad3-1 via-grad3-2 to-grad3-3 p-[1px] pb-[0px]">
                 <div className="flex bg-white rounded-[20px] h-full gap-[12px]">
                     <div className="w-[125px] my-auto ml-[9px]">
