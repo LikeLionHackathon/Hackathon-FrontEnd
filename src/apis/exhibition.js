@@ -15,17 +15,29 @@ export const sendRating = async ({exhibitionId, rate, userId}) => {
     }
 }
 
-// 전시 등록정보 전체 조회 (최신순)
+// // 전시 등록정보 전체 조회 (최신순)
+// export const getExhibitions = async () => {
+//   try {
+//     const res = await axiosInstance.get('/api/v1/exhibitions?sort=registeredDate&direction=ASC');
+//     return res.data;
+//   } catch (error) {
+//     console.error('전시 목록을 불러오는 데 실패했습니다:', error);
+//     throw error; // 에러를 호출한 곳에서 처리하도록 다시 던짐
+//   }
+// };
+
 export const getExhibitions = async () => {
-  try {
-    const res = await axiosInstance.get('/api/v1/exhibitions?sort=registeredDate&direction=ASC', {
-      withCredentials: true
-    });
-    return res.data;
-  } catch (error) {
-    console.error('전시 목록을 불러오는 데 실패했습니다:', error);
-    throw error; // 에러를 호출한 곳에서 처리하도록 다시 던짐
-  }
+
+  const res = await axiosInstance.get('/api/v1/exhibitions');
+  const data = res.data;
+
+  // ✅ 정상일 때만 배열 반환
+  if (Array.isArray(data)) return data;
+  if (Array.isArray(data?.exhibitions)) return data.exhibitions;
+  if (Array.isArray(data?.exhibitionList)) return data.exhibitionList;
+
+  // 응답 형태가 다르면 빈 배열로
+  return [];
 };
 
 // 전시 등록정보 개별 조회
@@ -75,7 +87,7 @@ export const deleteExhibition = async (exhibitionId) => {
 // UPDATE: 전시 작품/포스터 이미지 수정
 export const updateExhibitionImages = async (exhibitionId, imageData) => {
   try {
-    const response = await axiosInstance.put(`/exhibitions/${exhibitionId}/images`, imageData);
+    const response = await axiosInstance.put(`/api/v1/exhibitions/${exhibitionId}/images`, imageData);
     return response.data;
   } catch (error) {
     console.error(`전시 작품/포스터 이미지 수정에 실패했습니다:`, error);
