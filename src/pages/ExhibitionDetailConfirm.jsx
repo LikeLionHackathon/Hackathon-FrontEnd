@@ -49,7 +49,8 @@ const ExhibitionDetailConfirm = () => {
         </div>
       </div>
 
-      <div className="flex flex-col mx-[20px]">
+      <div className="flex flex-col mx-[20px]"
+      onClick={() => navigate('/exhibition/poster')}>
         <div className="flex flex-col mt-[16px]">
           <h1 className="font-bold text-[24px]">변화의 이상</h1>
           <div className="flex mt-[16px] gap-[16px]">
