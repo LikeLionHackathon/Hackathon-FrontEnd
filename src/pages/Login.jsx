@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import glow_icon_mix from '../assets/glow_icon_mix.svg';
+import glow_icon_mix from '../assets/glow_icon_mix.png';
 import { useState } from 'react';
 import { doLogin } from '../apis/login';
 

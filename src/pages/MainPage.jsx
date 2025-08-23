@@ -1,14 +1,15 @@
 import { useRef, useState } from 'react';
 import AiBall from '../assets/ai_ball.svg';
 import profile from '../assets/profile.svg';
-import Poster1 from '../assets/Poster1.svg';
-import Poster3 from '../assets/Poster3.svg';
-import Poster4 from '../assets/Poster4.svg';
-import Poster5 from '../assets/Poster5.svg';
-import Poster6 from '../assets/Poster6.svg';
+import Poster1 from '../assets/posters/Poster01.png';
+import Poster2 from '../assets/posters/Poster02.png';
+import Poster3 from '../assets/posters/Poster03.png';
+import Poster4 from '../assets/posters/Poster04.png';
+import Poster5 from '../assets/posters/Poster05.png';
+import Poster6 from '../assets/posters/Poster06.png';
 import AiChatButton from '../assets/Ai_chat_button.svg';
 import GLOW from '../assets/GLOW.svg';
-import glow_icon1 from '../assets/glow_icon1.svg';
+import glow_icon1 from '../assets/glow_icon 1.png';
 import { useNavigate } from 'react-router-dom';
 import MainArtist from '../components/mainpage/MainArtist';
 import { getDailyRecommend } from '../apis/dailyRecommend';
@@ -27,27 +28,26 @@ export const MainPage = () => {
   const [error, setError] = useState(null);
   const [newExhibitions, setNewExhibitions] = useState([]);
 
-  useEffect(() => {
-    const fetchRecommendations = async () => {
-      try {
-        const user_id = 1;
-        const data = await getDailyRecommend(user_id);
-        setRecommendations(data.recommendedExhibitions || []);
-      } catch (err) {
-        setError('추천 데이터를 불러오는 데 실패했습니다.');
-        console.error(err);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchRecommendations();
-  }, []);
+  // useEffect(() => {
+  //   const fetchRecommendations = async () => {
+  //     try {
+  //       const user_id = 1;
+  //       const data = await getDailyRecommend(user_id);
+  //       setRecommendations(data.recommendedExhibitions || []);
+  //     } catch (err) {
+  //       setError('추천 데이터를 불러오는 데 실패했습니다.');
+  //       console.error(err);
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //   };
+  //   fetchRecommendations();
+  // }, []);
 
   useEffect(() => {
     const fetchAllExhibitions = async () => {
       try {
         const result = await getExhibitions();
-        
         console.log("백엔드 응답: ", result);
         setNewExhibitions(result);
 
