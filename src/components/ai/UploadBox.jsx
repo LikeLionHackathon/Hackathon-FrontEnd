@@ -1,16 +1,16 @@
-import cameraImg from "../../assets/camera.svg"
+import cameraImg from "../../assets/camera.png"
 import { useState } from "react";
 
-const UploadBox = ({index}) => {
-    const [images, setImages] = useState(Array(3).fill(null));
+const UploadBox = ({index, onImageChange}) => {
+    //const [images, setImages] = useState(Array(3).fill(null));
+    const [images, setImages] = useState(null);
     
-    const handleFileChange = (e, index) => {
+    const handleFileChange = (e) => {
         const file = e.target.files[0];
         if (!file) return;
 
-        const newImages = [...images];
-        newImages[index] = URL.createObjectURL(file);
-        setImages(newImages);
+        setImages(URL.createObjectURL(file));
+        onImageChange(index, file);
     };
 
     return (
@@ -19,11 +19,11 @@ const UploadBox = ({index}) => {
                 type="file" 
                 accept="image/*"
                 className="w-[100px] h-[100px] opacity-0"
-                onChange={(e) => handleFileChange(e, index)}
+                onChange={handleFileChange}
             />
-            {images[index] ? (
+            {images ? (
                 <img 
-                    src={images[index]}
+                    src={images}
                     alt="preview"
                     className="w-full h-full object-cover absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-[10px]"
                 />

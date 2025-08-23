@@ -6,6 +6,10 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { MyPage } from './pages/MyPage';
 import ExhibitionList from "./pages/ExhibitionList";
 import ExhibitionDetail from './pages/ExhibitonDetail';
+import ExhibitionDetailConfirm from './pages/ExhibitionDetailConfirm';
+import Onboarding from './pages/OnBoarding';
+import { Login } from './pages/Login';
+import RentPage from './pages/RentPage';
 
 function App() {
   return (
@@ -16,7 +20,11 @@ function App() {
           <Route path='aiChat' element={<AiChat/> }/>
           <Route path='myPage' element={<MyPage/>}></Route>
           <Route path='/exhibitionList' element={<ExhibitionList />} />
-          <Route path='/exhibitionDetail' element={<ExhibitionDetail />} />
+          <Route path='/exhibitionDetail/:id' element={<ExhibitionDetail />} />
+          <Route path='/exhibitionDetailConfirm' element={<ExhibitionDetailConfirm/>} />
+          <Route path="/onboarding" element={<Onboarding />} />
+          <Route path='/login' element={<Login />}></Route>
+          <Route path='/rent' element={<RentPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
