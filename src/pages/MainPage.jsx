@@ -20,6 +20,7 @@ const CARD_W = 284; // 카드 가로
 const GAP = 16; // gap-4
 
 export const MainPage = () => {
+  const usertype = 'VIEWER'; // 임시 유저 타입 (VIEWER 또는 ARTIST)
   {
     /* Daily Recommendations */
   }
@@ -48,16 +49,14 @@ export const MainPage = () => {
     const fetchAllExhibitions = async () => {
       try {
         const result = await getExhibitions();
-        console.log("백엔드 응답: ", result);
+        console.log('백엔드 응답: ', result);
         setNewExhibitions(result);
-
       } catch (err) {
-        console.log("실패: ", err);
+        console.log('실패: ', err);
       }
-
-    }
+    };
     fetchAllExhibitions();
-  }, [])
+  }, []);
 
   const navigate = useNavigate();
   const scrollerRef = useRef(null);
@@ -103,7 +102,7 @@ export const MainPage = () => {
         </div>
 
         <div className="mt-[18px] flex flex-row h-[30px] items-center border-b-1 border-[#DBDBDB]">
-          <div className="w-[32px] h-[14px] border-r-1 border-r-grey08 flex items-center justify-start">
+          <div className="w-[32px] h-[14px] flex items-center justify-start">
             <button
               className={`text-[20px] font-bold ${version === 'home' ? 'text-black' : 'text-darkgrey01'}`}
               onClick={() => setVersion('home')}
@@ -111,14 +110,18 @@ export const MainPage = () => {
               홈
             </button>
           </div>
-          <div className="w-[50px] h-[14px] border-l-1 border-l-grey08 flex items-center justify-end">
-            <button
-              className={`text-[20px] font-bold ${version === 'artist' ? 'text-black' : 'text-darkgrey01'}`}
-              onClick={() => setVersion('artist')}
-            >
-              작가
-            </button>
-          </div>
+          {usertype === 'VIEWER' && (
+            <div className="w-[50px] h-[14px] border-l-2 border-l-grey08 flex items-center justify-end">
+              <div>
+                <button
+                  className={`text-[20px] font-bold ${version === 'artist' ? 'text-black' : 'text-darkgrey01'}`}
+                  onClick={() => setVersion('artist')}
+                >
+                  작가
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
@@ -207,7 +210,9 @@ export const MainPage = () => {
                           {exhibition.title}
                         </p>
                         {/* location 필드가 있으나 UI 공간이 좁아 일단 주석 처리. 필요시 주석 해제하여 사용 */}
-                        <p className="text-grey08 text-[8px] truncate">{exhibition.location}</p>
+                        <p className="text-grey08 text-[8px] truncate">
+                          {exhibition.location}
+                        </p>
                         <p className="text-grey08 text-[8px]">
                           {exhibition.artist}
                         </p>{' '}

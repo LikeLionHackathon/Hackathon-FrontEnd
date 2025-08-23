@@ -10,12 +10,18 @@ import glow_glow from '../assets/glow_glow.svg';
 import glow_shine from '../assets/glow_shine.svg';
 import glow_spark from '../assets/glow_spark.svg';
 import glow_bloom from '../assets/glow_bloom.svg';
+import { useNavigate } from 'react-router-dom';
 
 export const MyPage = ({ exhibitionCount = 4, likeCount = 13 }) => {
+  const navigate = useNavigate();
   const [openAdd, setOpenAdd] = useState(false);
 
   const handleAddExhibition = () => {
     setOpenAdd(true);
+  };
+
+  const handleGoToProfile = () => {
+    navigate(`/profile`);
   };
 
   const levels = [null, glow_glow, glow_shine, glow_spark];
@@ -179,7 +185,7 @@ export const MyPage = ({ exhibitionCount = 4, likeCount = 13 }) => {
         <div className="flex text-[20px] font-semibold">좋아요한 GLOW 작가</div>
         <div className="flex flex-row gap-4 mx- w-full mt-4">
           <div className="flex flex-col items-center w-[48px] h-[48px]">
-            <img src={ellipsis} alt="" />
+            <img src={ellipsis} alt="" onClick={handleGoToProfile}/>
             <p className="text-[14px] font-[600] leading-1.5 mt-1.5">박서영</p>
           </div>
           <div className="flex flex-col items-center w-[48px] h-[48px]">

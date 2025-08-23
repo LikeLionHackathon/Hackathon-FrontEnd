@@ -660,7 +660,7 @@ function SearchArtist({ pendingPick, setPendingPick }) {
         });
         setResults(data?.users ?? []);
       } catch (e) {
-        setErr('검색에 실패했어요.');
+        setErr('검색에 실패했어요.', e);
       } finally {
         setLoading(false);
       }
