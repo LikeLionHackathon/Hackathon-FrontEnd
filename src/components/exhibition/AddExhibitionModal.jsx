@@ -509,6 +509,7 @@ import Modal from './Modal';
 import button_photo from '../../assets/button_photo.png';
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../../apis/axios';
+import writing from '../../assets/writing.gif';
 
 /* 공통 버튼 */
 const BtnPrimary = ({ className = '', ...p }) => (
@@ -833,7 +834,7 @@ function StepUpload({ data, update, scanning, setScanning }) {
   return (
     <div className="relative pb-[90px]">
       <p className="text-[15px] font-[600] leading-1.5 font-[#000] mt-15 mb-3">
-        전시 또는 작품 사진을 업로드해주세요.
+        전시 또는 작품 사진을 업로드해주세요. (최대 10장)
       </p>
 
       <p
@@ -922,10 +923,6 @@ function StepUpload({ data, update, scanning, setScanning }) {
           );
         })}
       </div>
-
-      <p className="mt-2 text-[12px] text-center text-gray-400">
-        전시 작품 사진을 업로드해주세요(최대 10장)
-      </p>
     </div>
   );
 }
@@ -933,11 +930,12 @@ function StepUpload({ data, update, scanning, setScanning }) {
 /* 스텝 4: 임시 안내 */
 function StepPending() {
   return (
-    <div className="h-full flex flex-col items-center justify-center gap-6 pb-[90px]">
-      <div className="mt-10 w-[144px] h-[144px] rounded-[10px] bg-[#D9D9D9] grid place-items-center text-black">
-        그래픽
+    <div className="flex flex-col items-center justify-center bg-white gap-1">
+      <div className="w-full h-full rounded-[10px] bg-white place-items-center">
+        <p className='font-semibold text-purple01 text-[15px]'>상세 페이지 제작 중...</p>
+        <img src={writing} alt="제작 중..." />
       </div>
-      <p className="text-black text-[24px]">상세 페이지 제작중...</p>
+      
     </div>
   );
 }

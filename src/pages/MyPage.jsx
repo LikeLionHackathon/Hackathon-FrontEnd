@@ -1,6 +1,5 @@
 // import profileCard from '../assets/Profile_card.svg';
 import Poster_01 from '../assets/poster_01.svg';
-import button_addexhibition from '../assets/button_addexhibition.svg';
 import AddExhibitionModal from '../components/exhibition/AddExhibitionModal';
 import { useState } from 'react';
 import ellipsis from '../assets/Ellipse.svg';
@@ -11,14 +10,16 @@ import glow_shine from '../assets/glow_shine.svg';
 import glow_spark from '../assets/glow_spark.svg';
 import glow_bloom from '../assets/glow_bloom.svg';
 import { useNavigate } from 'react-router-dom';
+import { GoBackButton } from '../components/GoBackButton';
 
 export const MyPage = ({ exhibitionCount = 4, likeCount = 13 }) => {
   const navigate = useNavigate();
   const [openAdd, setOpenAdd] = useState(false);
 
-  const handleAddExhibition = () => {
-    setOpenAdd(true);
-  };
+const handleAddExhibition = () => {
+  // 작가 탭으로 이동 + (선택) 도착 시 전시등록 모달 자동 오픈 신호 전달
+   navigate('/', { state: { tab: 'artist', autoOpenAdd: true } });
+};
 
   const handleGoToProfile = () => {
     navigate(`/profile`);
@@ -29,8 +30,11 @@ export const MyPage = ({ exhibitionCount = 4, likeCount = 13 }) => {
     exhibitionCount >= 4 ? glow_bloom : (levels[exhibitionCount] ?? glow_glow);
   return (
     <div>
-      <div className="flex mt-[12px] justify-center text-[16px] font-semibold text-center leading-[150%]">
-        마이페이지
+      <div className="flex flex-row w-full justify-center">
+        <GoBackButton />
+        <div className="flex mt-[12px] justify-center text-[16px] font-semibold text-center leading-[150%]">
+          마이페이지
+        </div>
       </div>
 
       {/* 상단 마이페이지, 프로필카드, 나의 전시 */}
@@ -79,14 +83,12 @@ export const MyPage = ({ exhibitionCount = 4, likeCount = 13 }) => {
               아직 등록된 전시가 없어요
             </p>
             <button
-              className="w-[104px] h-[104px] mt-[18px] flex justify-center shrink-0 items-center cursor-pointer"
+              className="w-[104px] h-[70px] flex justify-center shrink-0 items-center cursor-pointer"
               onClick={handleAddExhibition}
             >
-              <img
-                src={button_addexhibition}
-                alt=""
-                className="cursor-pointer"
-              />
+              <p className='text-purple_main text-[12px]'><span className="underline decoration-purple_main underline-offset-2 decoration-0.5">
+    작가페이지
+  </span>에서 <br />전시 시작하기</p>
             </button>
           </div>
         </div>
@@ -185,7 +187,7 @@ export const MyPage = ({ exhibitionCount = 4, likeCount = 13 }) => {
         <div className="flex text-[20px] font-semibold">좋아요한 GLOW 작가</div>
         <div className="flex flex-row gap-4 mx- w-full mt-4">
           <div className="flex flex-col items-center w-[48px] h-[48px]">
-            <img src={ellipsis} alt="" onClick={handleGoToProfile}/>
+            <img src={ellipsis} alt="" onClick={handleGoToProfile} />
             <p className="text-[14px] font-[600] leading-1.5 mt-1.5">박서영</p>
           </div>
           <div className="flex flex-col items-center w-[48px] h-[48px]">
