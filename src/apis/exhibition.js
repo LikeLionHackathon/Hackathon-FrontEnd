@@ -6,6 +6,8 @@ export const sendRating = async ({exhibitionId, rate, userId}) => {
             userId,
             rate,
             exhibitionId,
+        }, {
+          withCredentials: true,
         });
         console.log("백엔드 전송 성공:", res.data);
         return res.data;
