@@ -1,14 +1,15 @@
 import { useRef, useState } from 'react';
 import AiBall from '../assets/ai_ball.svg';
 import profile from '../assets/profile.svg';
-import Poster1 from '../assets/Poster1.svg';
-import Poster3 from '../assets/Poster3.svg';
-import Poster4 from '../assets/Poster4.svg';
-import Poster5 from '../assets/Poster5.svg';
-import Poster6 from '../assets/Poster6.svg';
-import AiChatButton from '../assets/Ai_chat_button.svg';
+import Poster1 from '../assets/posters/Poster01.png';
+import Poster2 from '../assets/posters/Poster02.png';
+import Poster3 from '../assets/posters/Poster03.png';
+import Poster4 from '../assets/posters/Poster04.png';
+import Poster5 from '../assets/posters/Poster05.png';
+import Poster6 from '../assets/posters/Poster06.png';
+import AiChatButton from '../assets/button_aichat.svg';
 import GLOW from '../assets/GLOW.svg';
-import glow_icon1 from '../assets/glow_icon1.svg';
+import glow_icon1 from '../assets/glow_icon 1.png';
 import { useNavigate } from 'react-router-dom';
 import MainArtist from '../components/mainpage/MainArtist';
 import { getDailyRecommend } from '../apis/dailyRecommend';
@@ -19,6 +20,7 @@ const CARD_W = 284; // 카드 가로
 const GAP = 16; // gap-4
 
 export const MainPage = () => {
+  const usertype = 'VIEWER'; // 임시 유저 타입 (VIEWER 또는 ARTIST)
   {
     /* Daily Recommendations */
   }
@@ -27,37 +29,34 @@ export const MainPage = () => {
   const [error, setError] = useState(null);
   const [newExhibitions, setNewExhibitions] = useState([]);
 
-  useEffect(() => {
-    const fetchRecommendations = async () => {
-      try {
-        const user_id = 1;
-        const data = await getDailyRecommend(user_id);
-        setRecommendations(data.recommendedExhibitions || []);
-      } catch (err) {
-        setError('추천 데이터를 불러오는 데 실패했습니다.');
-        console.error(err);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchRecommendations();
-  }, []);
+  // useEffect(() => {
+  //   const fetchRecommendations = async () => {
+  //     try {
+  //       const user_id = 1;
+  //       const data = await getDailyRecommend(user_id);
+  //       setRecommendations(data.recommendedExhibitions || []);
+  //     } catch (err) {
+  //       setError('추천 데이터를 불러오는 데 실패했습니다.');
+  //       console.error(err);
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //   };
+  //   fetchRecommendations();
+  // }, []);
 
   useEffect(() => {
     const fetchAllExhibitions = async () => {
       try {
         const result = await getExhibitions();
-        
-        console.log("백엔드 응답: ", result);
+        console.log('백엔드 응답: ', result);
         setNewExhibitions(result);
-
       } catch (err) {
-        console.log("실패: ", err);
+        console.log('실패: ', err);
       }
-
-    }
+    };
     fetchAllExhibitions();
-  }, [])
+  }, []);
 
   const navigate = useNavigate();
   const scrollerRef = useRef(null);
@@ -103,7 +102,7 @@ export const MainPage = () => {
         </div>
 
         <div className="mt-[18px] flex flex-row h-[30px] items-center border-b-1 border-[#DBDBDB]">
-          <div className="w-[32px] h-[14px] border-r-1 border-r-grey08 flex items-center justify-start">
+          <div className="w-[32px] h-[14px] flex items-center justify-start">
             <button
               className={`text-[20px] font-bold ${version === 'home' ? 'text-black' : 'text-darkgrey01'}`}
               onClick={() => setVersion('home')}
@@ -111,14 +110,18 @@ export const MainPage = () => {
               홈
             </button>
           </div>
-          <div className="w-[50px] h-[14px] border-l-1 border-l-grey08 flex items-center justify-end">
-            <button
-              className={`text-[20px] font-bold ${version === 'artist' ? 'text-black' : 'text-darkgrey01'}`}
-              onClick={() => setVersion('artist')}
-            >
-              작가
-            </button>
-          </div>
+          {usertype === 'VIEWER' && (
+            <div className="w-[50px] h-[14px] border-l-2 border-l-grey08 flex items-center justify-end">
+              <div>
+                <button
+                  className={`text-[20px] font-bold ${version === 'artist' ? 'text-black' : 'text-darkgrey01'}`}
+                  onClick={() => setVersion('artist')}
+                >
+                  작가
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
@@ -192,7 +195,7 @@ export const MainPage = () => {
                 <p>새로 등록된 전시가 없습니다.</p>
               ) : (
                 // <<< 🚨 이 부분이 명세서에 맞게 크게 변경됩니다.
-                newExhibitions.map((exhibition) => (
+                newExhibitions.filter((_, i) => i < 4).map((exhibition) => (
                   <div key={exhibition.id} className="w-[168px] h-[308px]">
                     <div className="w-[168px] h-[242px] overflow-hidden">
                       <img
@@ -207,13 +210,15 @@ export const MainPage = () => {
                           {exhibition.title}
                         </p>
                         {/* location 필드가 있으나 UI 공간이 좁아 일단 주석 처리. 필요시 주석 해제하여 사용 */}
-                        <p className="text-grey08 text-[8px] truncate">{exhibition.location}</p>
+                        <p className="text-grey08 text-[8px] truncate">
+                          {exhibition.location}
+                        </p>
                         <p className="text-grey08 text-[8px]">
                           {exhibition.artist}
                         </p>{' '}
                         {/* 작가 정보 추가 */}
                         <p className="text-grey08 text-[8px]">
-                          {exhibition.startDate} ~ {exhibition.endDate}
+                          {exhibition.startDate} - {exhibition.endDate}
                         </p>{' '}
                         {/* 날짜 정보 */}
                       </div>
@@ -227,7 +232,7 @@ export const MainPage = () => {
               <img
                 src={AiChatButton}
                 alt="Ai 전시 추천"
-                className="fixed bottom-[33px] right-[15px] z-50"
+                className="fixed bottom-[33px] right-[15px] z-50 shadow-[0_0px_0px_0_rgba(0,0,0,0.25)] rounded-[45px]"
               />
             </button>
           </div>

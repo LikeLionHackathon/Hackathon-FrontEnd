@@ -27,15 +27,15 @@ export const sendRating = async ({exhibitionId, rate, userId}) => {
 // };
 
 export const getExhibitions = async () => {
+  const res = await axiosInstance.get('/api/v1/exhibitions?sort=registeredDate&direction=DESC', {
+      withCredentials:true,
+  });
 
-  const res = await axiosInstance.get('/api/v1/exhibitions');
   const data = res.data;
+  console.log(res.data);
 
   // ✅ 정상일 때만 배열 반환
   if (Array.isArray(data)) return data;
-  if (Array.isArray(data?.exhibitions)) return data.exhibitions;
-  if (Array.isArray(data?.exhibitionList)) return data.exhibitionList;
-
   // 응답 형태가 다르면 빈 배열로
   return [];
 };

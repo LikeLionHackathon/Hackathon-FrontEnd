@@ -506,15 +506,15 @@
 // components/AddExhibitionModal.jsx
 import { useEffect, useMemo, useRef, useState } from 'react';
 import Modal from './Modal';
-import button_photo from '../../assets/button_photo.svg';
+import button_photo from '../../assets/button_photo.png';
 import { useNavigate } from 'react-router-dom';
-import axiosInstance from '../../apis/axios'; // 🔹검색 API 호출용
+import axiosInstance from '../../apis/axios';
 
 /* 공통 버튼 */
 const BtnPrimary = ({ className = '', ...p }) => (
   <button
     {...p}
-    className={`px-15 py-2.5 rounded-[10px] text-white shrink-0  inline-flex whitespace-nowrap justify-center
+    className={`px-15 py-2.5 rounded-[10px] text-white shrink-0 inline-flex whitespace-nowrap justify-center
   bg-purple_main disabled:bg-gray-300 disabled:text-white/70 text-center w-[152px] h-[44px] items-center ${className}`}
   />
 );
@@ -553,7 +553,7 @@ function StepBasic({ data, update, errors, invited, onInviteSlot }) {
           함께 참여하는 작가가 있나요?
         </p>
 
-        {/* 🔹초대 슬롯 4개: 비어있으면 '초대하기', 채워지면 프로필 이미지 */}
+        {/* 🔹초대 슬롯 4개 (오버레이로 검색) */}
         <div className="mt-3 flex gap-3">
           {invited.map((user, i) => (
             <button
@@ -590,7 +590,7 @@ function StepBasic({ data, update, errors, invited, onInviteSlot }) {
           <input
             type="text"
             inputMode="numeric"
-            placeholder="YY/MM/DD"
+            placeholder="YYYY/MM/DD"
             className="pb-1.5 w-full text-[16px] bg-transparent text-center placeholder:text-darkgrey01 border-0 focus:outline-none focus:ring-0"
             value={data.startDate || ''}
             onChange={(e) => update({ startDate: e.target.value })}
@@ -599,7 +599,7 @@ function StepBasic({ data, update, errors, invited, onInviteSlot }) {
           <input
             type="text"
             inputMode="numeric"
-            placeholder="YY/MM/DD"
+            placeholder="YYYY/MM/DD"
             className="pb-1.5 w-full text-[16px] bg-transparent text-center placeholder:text-darkgrey01 border-0 focus:outline-none focus:ring-0"
             value={data.endDate || ''}
             onChange={(e) => update({ endDate: e.target.value })}
@@ -629,7 +629,7 @@ function StepBasic({ data, update, errors, invited, onInviteSlot }) {
   );
 }
 
-/* ── 초대창(검색) ───────────────────────────────────────────── */
+/* ── (오버레이용) 작가 검색 ─────────────────────────────────── */
 function SearchArtist({ pendingPick, setPendingPick }) {
   const [q, setQ] = useState('');
   const [debounced, setDebounced] = useState('');
@@ -637,13 +637,11 @@ function SearchArtist({ pendingPick, setPendingPick }) {
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState(null);
 
-  // 300ms 디바운스
   useEffect(() => {
     const t = setTimeout(() => setDebounced(q.trim()), 300);
     return () => clearTimeout(t);
   }, [q]);
 
-  // 유저 검색 (실제 엔드포인트에 맞게 경로만 수정)
   useEffect(() => {
     const run = async () => {
       if (!debounced) {
@@ -654,12 +652,12 @@ function SearchArtist({ pendingPick, setPendingPick }) {
       setLoading(true);
       setErr(null);
       try {
-        // 예시: GET /api/v1/users/search?q=키워드  →  { users: [{id,name,avatarUrl}] }
+        // 실제 API 스펙에 맞춰 경로/파라미터 수정
         const { data } = await axiosInstance.get('/api/v1/users/search', {
           params: { q: debounced },
         });
         setResults(data?.users ?? []);
-      } catch (e) {
+      } catch {
         setErr('검색에 실패했어요.');
       } finally {
         setLoading(false);
@@ -680,7 +678,6 @@ function SearchArtist({ pendingPick, setPendingPick }) {
         />
       </div>
 
-      {/* 심플 결과 리스트 (하나만 선택) */}
       <div className="mt-4 w-[300px] mx-auto grid gap-2">
         {loading && <p className="text-center text-sm text-darkgrey01">검색 중…</p>}
         {err && <p className="text-center text-sm text-red-600">{err}</p>}
@@ -954,15 +951,15 @@ export default function AddExhibitionModal({ open, onClose, onSubmit }) {
   const [errors, setErrors] = useState({});
   const [scanning, setScanning] = useState(false);
 
-  /* 🔹초대 관련 상태 */
+  /* 🔹초대 관련 상태 (오버레이) */
   const [invited, setInvited] = useState([null, null, null, null]); // 슬롯 4개
   const [inviteSlot, setInviteSlot] = useState(null);               // 현재 채우는 슬롯 idx
   const [pendingPick, setPendingPick] = useState(null);             // 검색에서 선택된 유저 1명
+  const [inviteOpen, setInviteOpen] = useState(false);              // 오버레이 on/off
 
   const steps = useMemo(
     () => [
       { label: '기본 정보', component: StepBasic },
-      { label: '작품/작가 검색', component: SearchArtist },
       { label: '전시 기조/내용', component: StepConcept },
       { label: '이미지 업로드', component: StepUpload },
       { label: '안내', component: StepPending },
@@ -979,17 +976,14 @@ export default function AddExhibitionModal({ open, onClose, onSubmit }) {
     const e = {};
     if (idx === 0) {
       if (!data.title?.trim()) e.title = '전시명을 입력해 주세요.';
-      if (!data.startDate?.trim() || !data.endDate?.trim()) {
-        e.date = '시작일과 종료일을 모두 입력해 주세요.';
-      }
+      if (!data.startDate?.trim() || !data.endDate?.trim()) e.date = '시작일과 종료일을 모두 입력해 주세요.';
       if (!data.place?.trim()) e.place = '전시장 정보를 입력해 주세요.';
     }
-    if (idx === 2) {
+    if (idx === 1) { // Concept
       if (!data.concept?.trim()) e.concept = '내용을 입력해 주세요.';
     }
-    if (idx === 3) {
-      if (!data.images || data.images.length < 1)
-        e.images = '이미지를 1장 이상 업로드하세요.';
+    if (idx === 2) { // Upload
+      if (!data.images || data.images.length < 1) e.images = '이미지를 1장 이상 업로드하세요.';
     }
     setErrors(e);
     return Object.keys(e).length === 0;
@@ -1010,95 +1004,102 @@ export default function AddExhibitionModal({ open, onClose, onSubmit }) {
     });
   }
 
-  /* 🔹슬롯 클릭 → 초대창으로 이동 */
+  /* 🔹슬롯 클릭 → 오버레이 열기 (스텝은 그대로 유지) */
   const onInviteSlot = (idx) => {
     setInviteSlot(idx);
     setPendingPick(null);
-    setStep(1); // SearchArtist
+    setInviteOpen(true);
   };
 
-  /* 🔹검색 스텝에서 추가하기 */
+  /* 🔹오버레이: 추가 확정 */
   const confirmInvite = () => {
-    if (pendingPick == null || inviteSlot == null) return;
-    setInvited((prev) => {
-      const next = [...prev];
-      next[inviteSlot] = pendingPick;
-      // 제출용 artists 동기화
-      update({ artists: next.filter(Boolean) });
-      return next;
-    });
+    if (pendingPick != null && inviteSlot != null) {
+      setInvited((prev) => {
+        const next = [...prev];
+        next[inviteSlot] = pendingPick;
+        update({ artists: next.filter(Boolean) }); // 제출 데이터에 반영
+        return next;
+      });
+    }
     setPendingPick(null);
     setInviteSlot(null);
-    setStep(0); // 기본 정보로 복귀
+    setInviteOpen(false); // 닫기
   };
 
-  // next 핸들러
-  const handleNext = async () => {
-    // 🔸검색 스텝: 추가하기
-    if (step === 1) {
-      confirmInvite();
-      return;
-    }
+  const cancelInvite = () => {
+    setPendingPick(null);
+    setInviteSlot(null);
+    setInviteOpen(false); // 닫기
+  };
 
+  /* next */
+  const handleNext = async () => {
     if (!validate(step)) return;
 
-    // 🔸이미지 업로드 스텝 → 제작중/컨펌
-    if (step === 3) {
-      setStep(4);
+    if (step === 2) { // 업로드 스텝 → 안내 → 컨펌 라우팅
+      setStep(3);
       const draft = await generateDraft(data);
       onClose?.();
       navigate('/exhibitionDetailConfirm', { state: { draft } });
       // 초기화
       setStep(0);
-      setData({ images: [], artists: ["육오삼", ] });
+      setData({ images: [], artists: [] });
       setErrors({});
       setInvited([null, null, null, null]);
+      setInviteSlot(null);
+      setPendingPick(null);
+      setInviteOpen(false);
       return;
     }
 
-    // 그 외 스텝은 일반 이동
     setStep((s) => Math.min(s + 1, total - 1));
   };
 
   const prev = () => setStep((s) => Math.max(s - 1, 0));
 
   return (
-    <Modal open={open} onClose={onClose}>
-      {/* 콘텐츠 */}
-      <Current
-        data={data}
-        update={update}
-        errors={errors}
-        scanning={scanning}
-        setScanning={setScanning}
-        invited={invited}                  // 🔹StepBasic
-        onInviteSlot={onInviteSlot}        // 🔹StepBasic
-        pendingPick={pendingPick}          // 🔹SearchArtist
-        setPendingPick={setPendingPick}    // 🔹SearchArtist
-      />
+    <>
+      <Modal open={open} onClose={onClose}>
+        {/* 메인 스텝 콘텐츠 */}
+        <Current
+          data={data}
+          update={update}
+          errors={errors}
+          scanning={scanning}
+          setScanning={setScanning}
+          invited={invited}
+          onInviteSlot={onInviteSlot}
+        />
 
-      <div className="absolute left-4 right-4 bottom-[22px] flex justify-between">
-        {/* 왼쪽 버튼 */}
-        {step === 0 ? (
-          <BtnGhost onClick={onClose}>등록 취소</BtnGhost>
-        ) : step === total - 1 ? (
-          <div className="w-[152px] h-[44px]" />
-        ) : (
-          <BtnGhost onClick={prev}>이전 단계</BtnGhost>
-        )}
+        {/* 하단 진행 버튼 */}
+        <div className="absolute left-4 right-4 bottom-[22px] flex justify-between">
+          {step === 0 ? (
+            <BtnGhost onClick={onClose}>등록 취소</BtnGhost>
+          ) : step === total - 1 ? (
+            <div className="w-[152px] h-[44px]" />
+          ) : (
+            <BtnGhost onClick={prev}>이전 단계</BtnGhost>
+          )}
 
-        {/* 오른쪽 버튼 */}
-        {step < total - 1 ? (
-          <BtnPrimary
-            onClick={handleNext}
-            disabled={step === 1 && !pendingPick} // 검색 스텝은 선택 시에만 활성화
-          >
-            {step === 1 ? '추가하기' : '다음'}
+          {step < total - 1 ? (
+            <BtnPrimary onClick={handleNext}>다음</BtnPrimary>
+          ) : (
+            <div className="w-[152px] h-[44px]" />
+          )}
+        </div>
+      </Modal>
+
+      {/* 🔹초대 오버레이 모달 (스텝 흐름과 독립) */}
+      <Modal open={inviteOpen} onClose={cancelInvite}>
+        <SearchArtist pendingPick={pendingPick} setPendingPick={setPendingPick} />
+
+        <div className="absolute left-4 right-4 bottom-[22px] flex justify-between">
+          <BtnGhost onClick={cancelInvite}>취소</BtnGhost>
+          <BtnPrimary onClick={confirmInvite} disabled={!pendingPick}>
+            추가하기
           </BtnPrimary>
-        ) : (
-          <div className="w-[152px] h-[44px]" />
-        )}
-      </div>
-    </Modal>
+        </div>
+      </Modal>
+    </>
   );
 }

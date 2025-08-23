@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import glow_icon_mix from '../assets/glow_icon_mix.svg';
+import glow_icon_mix from '../assets/glow_icon_mix.png';
 import { useState } from 'react';
 import { doLogin } from '../apis/login';
 
@@ -56,7 +56,7 @@ export const Login = () => {
 
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-gray-100 gap-4">
-      <img src={glow_icon_mix} alt="glow_icon_login" />
+      <img src={glow_icon_mix} alt="glow_icon_login" className='w-[164px]' />
 
       <input
         name="loginId"
