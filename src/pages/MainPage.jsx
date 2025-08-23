@@ -47,6 +47,7 @@ export const MainPage = () => {
     const fetchAllExhibitions = async () => {
       try {
         const result = await getExhibitions();
+        
         console.log("백엔드 응답: ", result);
         setNewExhibitions(result);
 

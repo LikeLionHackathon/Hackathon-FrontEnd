@@ -3,14 +3,21 @@ import profile from "../assets/mainProfile.svg";
 import floorImg from "../assets/floorPlan.png";
 import { useState } from "react";
 import ArtistModal from "../components/mainpage/ArtistModal";
+import FormModal from "../components/mainpage/FormModal";
 
 const RentPage = () => {
     const [openModal, setOpenModal] = useState(false);
+    const [openFormModal, setOpenFormModal] = useState(false);
     const [ArtistName, setArtistName] = useState("");
 
     const handleSendMessage = (name) => {
         setArtistName(name);
         setOpenModal(true);
+    }
+
+    const handleForm = () => {
+        setOpenModal(false);
+        setOpenFormModal(true);
     }
     
     return (
@@ -61,9 +68,16 @@ const RentPage = () => {
             <ArtistModal 
                 open={openModal}
                 onClose={() => setOpenModal(false)}
+                onClick={() => handleForm()}
                 name={ArtistName}
-                text={"전시 공간 임대 문의 폼을 "}
+                text={"전시관 임대 신청폼을 "}
                 type={"폼을"}
+            />
+
+            <FormModal
+                open={openFormModal}
+                onClose={() => setOpenFormModal(false)}
+                
             />
         </div>
     )

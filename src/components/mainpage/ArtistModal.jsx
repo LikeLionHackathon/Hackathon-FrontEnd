@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-const ArtistModal = ({open, onClose, name, text, type}) => {
+const ArtistModal = ({open, onClose, onClick, name, text, type}) => {
 
     useEffect (() => {
         if (open) {
@@ -27,7 +27,10 @@ const ArtistModal = ({open, onClose, name, text, type}) => {
                 </div>
 
                 <div className="flex flex-col absolute bottom-[21px] gap-[12px]">
-                    <button className="w-[300px] h-[48px] bg-purple_main rounded-[10px] text-white cursor-pointer">
+                    <button 
+                        className="w-[300px] h-[48px] bg-purple_main rounded-[10px] text-white cursor-pointer"
+                        onClick={onClick}  
+                    >
                         네, {type} 보낼래요!
                     </button>
                     <button 
