@@ -38,7 +38,7 @@ const FormModal = ({open, onClose}) => {
                     </h1>
                     <input 
                         type="text" 
-                        placeholder="YY/MM/DD - YY/MM/DD"
+                        placeholder="YYYY/MM/DD - YYYY/MM/DD"
                         className="w-full h-[24px] px-[6px] font-semibold text-[16px] text-black placeholder:text-darkgrey01 outline-none"    
                     />
                     <hr className="w-full mt-[8px] border border-grey04"/>
