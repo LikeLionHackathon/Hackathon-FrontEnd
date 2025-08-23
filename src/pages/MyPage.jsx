@@ -167,9 +167,33 @@ export const MyPage = () => {
           <p className='text-[16px] font-semibold font:pretendard leading-1.25 mt-6'>전체보기</p>
           </div>
       </div>
+      <div
+
+                    className="
+              flex gap-4 overflow-x-auto snap-x snap-mandatory mt-4 items-center
+              px-5 [-webkit-overflow-scrolling:touch]
+              [scrollbar-width:none] [&::-webkit-scrollbar]:hidden
+            "
+                  >
+                    <img
+                      src={Poster_01}
+                      alt="poster1"
+                      className="w-[124px] h-[180px] shrink-0 snap-center rounded object-contain"
+                    />
+                    <img
+                      src={Poster_01}
+                      alt="poster1"
+                      className="w-[124px] h-[180px] shrink-0 snap-center rounded object-contain"
+                    />
+                    <img
+                      src={Poster_01}
+                      alt="poster1"
+                      className="w-[124px] h-[180px] shrink-0 snap-center rounded object-contain"
+                    />
+                  </div>
 
       {/* 구분선 */}
-      <div className="w-screen h-[8px] bg-grey04 mt-8" />
+      <div className="w-screen h-[8px] bg-grey04 mt-6" />
 
       <div className="flex flex-col mt-[10px] mx-[20px] py-[20px]">
         <div className="flex flex-row gap-[5px] items-center">
