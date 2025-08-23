@@ -20,4 +20,3 @@ export const getUserInfo = async (user_id) => {
     throw err;
   }
 };
-
