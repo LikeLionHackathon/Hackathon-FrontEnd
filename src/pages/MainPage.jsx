@@ -7,10 +7,11 @@ import Poster3 from '../assets/posters/Poster03.png';
 import Poster4 from '../assets/posters/Poster04.png';
 import Poster5 from '../assets/posters/Poster05.png';
 import Poster6 from '../assets/posters/Poster06.png';
+
 import AiChatButton from '../assets/button_aichat.svg';
 import GLOW from '../assets/GLOW.svg';
 import glow_icon1 from '../assets/glow_icon 1.png';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import MainArtist from '../components/mainpage/MainArtist';
 import { getDailyRecommend } from '../apis/dailyRecommend';
 import { useEffect } from 'react';
@@ -21,9 +22,8 @@ const GAP = 16; // gap-4
 
 export const MainPage = () => {
   const usertype = 'VIEWER'; // 임시 유저 타입 (VIEWER 또는 ARTIST)
-  {
-    /* Daily Recommendations */
-  }
+  const location = useLocation();
+
   const [recommendations, setRecommendations] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -61,7 +61,20 @@ export const MainPage = () => {
   const navigate = useNavigate();
   const scrollerRef = useRef(null);
   const [idx, setIdx] = useState(0); // 0,1,2
-  const [version, setVersion] = useState('home');
+  const initialTab =
+    location.state?.tab === 'artist' && usertype === 'VIEWER'
+      ? 'artist'
+      : 'home';
+  const [version, setVersion] = useState(initialTab);
+
+  useEffect(() => {
+   if (location.state?.tab || location.state?.autoOpenAdd) {
+     if (location.state?.tab === 'artist' && usertype === 'VIEWER') {
+       setVersion('artist');
+     }
+     navigate('.', { replace: true, state: {} });
+   }
+ }, [location.state]);
 
   const handleAiButton = () => navigate('/aiChat');
 
@@ -194,37 +207,39 @@ export const MainPage = () => {
               {newExhibitions.length === 0 ? (
                 <p>새로 등록된 전시가 없습니다.</p>
               ) : (
-                // <<< 🚨 이 부분이 명세서에 맞게 크게 변경됩니다.
-                newExhibitions.filter((_, i) => i < 4).map((exhibition) => (
-                  <div key={exhibition.id} className="w-[168px] h-[308px]">
-                    <div className="w-[168px] h-[242px] overflow-hidden">
-                      <img
-                        src={exhibition.artworkUrl[0]} // 썸네일 -> posterImage
-                        alt={exhibition.title}
-                        className="w-full h-full object-cover [clip-path:polygon(0_0,100%_0,100%_calc(100%-14px),calc(100%-14px)_100%,14px_100%,0_calc(100%-12px))]"
-                      />
-                    </div>
-                    <div className="relative bg-[#C8C8C8] p-[1px] [clip-path:polygon(20px_0,calc(100%-20px)_0,100%_12px,100%_100%,0_100%,0_12px)]">
-                      <div className="bg-white px-2 py-1 [clip-path:polygon(20px_0,calc(100%-20px)_0,100%_12px,100%_100%,0_100%,0_12px)]">
-                        <p className="text-[14px] mt-2 font-semibold truncate">
-                          {exhibition.title}
-                        </p>
-                        {/* location 필드가 있으나 UI 공간이 좁아 일단 주석 처리. 필요시 주석 해제하여 사용 */}
-                        <p className="text-grey08 text-[8px] truncate">
-                          {exhibition.location}
-                        </p>
-                        <p className="text-grey08 text-[8px]">
-                          {exhibition.artist}
-                        </p>{' '}
-                        {/* 작가 정보 추가 */}
-                        <p className="text-grey08 text-[8px]">
-                          {exhibition.startDate} - {exhibition.endDate}
-                        </p>{' '}
-                        {/* 날짜 정보 */}
+                newExhibitions
+                  .filter((_, i) => i < 4)
+                  .map((exhibition) => (
+                    <div key={exhibition.id} className="w-[168px] h-[308px]">
+                      <div className="w-[168px] h-[242px] overflow-hidden">
+                        <img
+                          src={exhibition.artworkUrl[0]}
+                          alt={exhibition.title}
+                          className="w-full h-full object-cover [clip-path:polygon(0_0,100%_0,100%_calc(100%-14px),calc(100%-14px)_100%,14px_100%,0_calc(100%-12px))]"
+                          onClick={() => navigate(`/exhibitionDetail/${exhibition.id}`)}
+                        />
+                      </div>
+                      <div className="relative bg-[#C8C8C8] p-[1px] [clip-path:polygon(20px_0,calc(100%-20px)_0,100%_12px,100%_100%,0_100%,0_12px)]">
+                        <div className="bg-white px-2 py-1 [clip-path:polygon(20px_0,calc(100%-20px)_0,100%_12px,100%_100%,0_100%,0_12px)]">
+                          <p className="text-[14px] mt-2 font-semibold truncate">
+                            {exhibition.title}
+                          </p>
+                          {/* location 필드가 있으나 UI 공간이 좁아 일단 주석 처리. 필요시 주석 해제하여 사용 */}
+                          <p className="text-grey08 text-[8px] truncate">
+                            {exhibition.location}
+                          </p>
+                          <p className="text-grey08 text-[8px]">
+                            {exhibition.artist}
+                          </p>{' '}
+                          {/* 작가 정보 추가 */}
+                          <p className="text-grey08 text-[8px]">
+                            {exhibition.startDate} - {exhibition.endDate}
+                          </p>{' '}
+                          {/* 날짜 정보 */}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))
+                  ))
               )}
             </div>
 
@@ -232,7 +247,7 @@ export const MainPage = () => {
               <img
                 src={AiChatButton}
                 alt="Ai 전시 추천"
-                className="fixed bottom-[33px] right-[15px] z-50 shadow-[0_0px_0px_0_rgba(0,0,0,0.25)] rounded-[45px]"
+                className="fixed bottom-[33px] right-[15px] shadow-[0_0px_0px_0_rgba(0,0,0,0.25)] rounded-[45px]"
               />
             </button>
           </div>
