@@ -7,7 +7,7 @@ import Poster3 from '../assets/posters/Poster03.png';
 import Poster4 from '../assets/posters/Poster04.png';
 import Poster5 from '../assets/posters/Poster05.png';
 import Poster6 from '../assets/posters/Poster06.png';
-import AiChatButton from '../assets/Ai_chat_button.svg';
+import AiChatButton from '../assets/button_aichat.svg';
 import GLOW from '../assets/GLOW.svg';
 import glow_icon1 from '../assets/glow_icon 1.png';
 import { useNavigate } from 'react-router-dom';
@@ -227,7 +227,7 @@ export const MainPage = () => {
               <img
                 src={AiChatButton}
                 alt="Ai 전시 추천"
-                className="fixed bottom-[33px] right-[15px] z-50"
+                className="fixed bottom-[33px] right-[15px] z-50 shadow-[0_0px_0px_0_rgba(0,0,0,0.25)] rounded-[45px]"
               />
             </button>
           </div>
