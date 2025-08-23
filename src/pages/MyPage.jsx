@@ -1,4 +1,4 @@
-import profileCard from '../assets/Profile_card.svg';
+// import profileCard from '../assets/Profile_card.svg';
 import Poster_01 from '../assets/poster_01.svg';
 import button_addexhibition from '../assets/button_addexhibition.svg';
 
@@ -16,7 +16,7 @@ export const MyPage = () => {
 
       {/* 상단 마이페이지, 프로필카드, 나의 전시 */}
       <div className="flex flex-row items-center gap-2.5 justify-center">
-        <img src={profileCard} alt="프로필카드" />
+        {/* <img src={profileCard} alt="프로필카드" /> */}
         <div className="flex  w-[1px] h-[320px] bg-grey05 justify-center" />
         <div className="flex flex-col items-center gap-1.5 h-[340px]">
           <p className="text-darkgrey01 font-14px leading-[150%]">나의 전시</p>
