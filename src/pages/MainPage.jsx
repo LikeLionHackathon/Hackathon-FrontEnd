@@ -7,6 +7,7 @@ import Poster3 from '../assets/posters/Poster03.png';
 import Poster4 from '../assets/posters/Poster04.png';
 import Poster5 from '../assets/posters/Poster05.png';
 import Poster6 from '../assets/posters/Poster06.png';
+
 import AiChatButton from '../assets/button_aichat.svg';
 import GLOW from '../assets/GLOW.svg';
 import glow_icon1 from '../assets/glow_icon 1.png';
@@ -206,16 +207,16 @@ export const MainPage = () => {
               {newExhibitions.length === 0 ? (
                 <p>새로 등록된 전시가 없습니다.</p>
               ) : (
-                // <<< 🚨 이 부분이 명세서에 맞게 크게 변경됩니다.
                 newExhibitions
                   .filter((_, i) => i < 4)
                   .map((exhibition) => (
                     <div key={exhibition.id} className="w-[168px] h-[308px]">
                       <div className="w-[168px] h-[242px] overflow-hidden">
                         <img
-                          src={exhibition.artworkUrl[0]} // 썸네일 -> posterImage
+                          src={exhibition.artworkUrl[0]}
                           alt={exhibition.title}
                           className="w-full h-full object-cover [clip-path:polygon(0_0,100%_0,100%_calc(100%-14px),calc(100%-14px)_100%,14px_100%,0_calc(100%-12px))]"
+                          onClick={() => navigate(`/exhibitionDetail/${exhibition.id}`)}
                         />
                       </div>
                       <div className="relative bg-[#C8C8C8] p-[1px] [clip-path:polygon(20px_0,calc(100%-20px)_0,100%_12px,100%_100%,0_100%,0_12px)]">
