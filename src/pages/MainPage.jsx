@@ -195,7 +195,7 @@ export const MainPage = () => {
                 <p>새로 등록된 전시가 없습니다.</p>
               ) : (
                 // <<< 🚨 이 부분이 명세서에 맞게 크게 변경됩니다.
-                newExhibitions.map((exhibition) => (
+                newExhibitions.filter((_, i) => i < 4).map((exhibition) => (
                   <div key={exhibition.id} className="w-[168px] h-[308px]">
                     <div className="w-[168px] h-[242px] overflow-hidden">
                       <img
@@ -218,7 +218,7 @@ export const MainPage = () => {
                         </p>{' '}
                         {/* 작가 정보 추가 */}
                         <p className="text-grey08 text-[8px]">
-                          {exhibition.startDate} ~ {exhibition.endDate}
+                          {exhibition.startDate} - {exhibition.endDate}
                         </p>{' '}
                         {/* 날짜 정보 */}
                       </div>
