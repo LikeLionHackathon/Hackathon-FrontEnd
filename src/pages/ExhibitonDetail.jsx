@@ -7,9 +7,11 @@ import tagImg from "../assets/hashtag.svg";
 import Tag from "../components/ai/Tag";
 import Artist from "../components/exhibition/Artist";
 import ExhibitionModal from "../components/exhibition/ExhibitionModal"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Header from "../components/layout/Header.jsx";
+import { getDailyRecommend } from "../apis/dailyRecommend.js";
+import { getExhibitionById } from "../apis/exhibition.js";
 
 
 const ExhibitionDetail = () => {
@@ -17,19 +19,24 @@ const ExhibitionDetail = () => {
     const nav = useNavigate();
 
     console.log(location.state.exhibition);
-    const {
-        id,
-        title,
-        place,
-        description,
-        startDate,
-        endDate,
-        posterImageUrl,
-        recommendationReason,
-        artworkImages,
-        tags
-        
-    } = location.state.exhibition
+    const { id, recommendationReason } = location.state.exhibition || {};
+
+    const [exhibitionInfo, setExhibitionInfo] = useState(null);
+
+    useEffect(() => {
+        const fetchExhibitionInfo = async () => {
+            if (id) {
+                try {
+                    const result = await getExhibitionById(id);
+                    setExhibitionInfo(result);
+                } catch (err) {
+                    console.log("개별 전시 조회 실패 : ", err);
+                }
+            }
+        };
+        fetchExhibitionInfo();
+    }, [id]);
+
 
     const [isOpen, setIsOpen] = useState(false);
     const [isVisited, setIsVisited] = useState(false);
@@ -41,6 +48,28 @@ const ExhibitionDetail = () => {
     const handleBack = () => {
       nav(-1);
     }
+
+    if (!exhibitionInfo) {
+        return (
+            <div className="mx-auto w-full max-w-[450px] text-center mt-20">
+                <p>전시 정보를 불러오는 중...</p>
+            </div>
+        );
+    }
+    console.log(exhibitionInfo);
+    
+    const {
+        title,
+        location: place, 
+        description,
+        startDate,
+        endDate,
+        posterImage: posterImageUrl,
+        artworkUrl,
+        tags,
+        artists,
+        ongoing
+    } = exhibitionInfo;
 
     return (
         <div className="mx-auto w-full max-w-[450px]">
@@ -78,6 +107,9 @@ const ExhibitionDetail = () => {
                 <div className="flex flex-col mt-[16px]">
                     <h1 className="font-bold text-[24px]">{title}</h1>
                     <div className="flex mt-[16px] gap-[16px]">
+                        {artists.map((artist, idx) => {
+                            <Artist key={idx} name={artist.nickname} id={artist.userId} />
+                        })}
                         <Artist name={"박서영"}/>
                         <Artist name={"황영준"} />
                     </div>
@@ -91,10 +123,6 @@ const ExhibitionDetail = () => {
                         <img src={posImg} alt="position" className="mr-[4px]"/>
                         <p className="font-semibold text-[14px]">{place || "미정"}</p>
                     </div>
-                    <div className="flex flex-row justify-center items-center">
-                        <div className="w-[6px] h-[6px] rounded-[50px] bg-pink02 mr-[12px]"></div>
-                        <p className="text-pink02 font-semibold text-[13px]">망원시장에서 100m</p>
-                    </div>
                 </div>
 
                 <div className="flex flex-row gap-[12px]">
@@ -103,9 +131,13 @@ const ExhibitionDetail = () => {
                         <p className="font-semibold text-[14px]">{startDate} ~ {endDate}</p>
                     </div>
                     <div className="flex flex-row justify-center items-center">
-                        <div className="w-[6px] h-[6px] rounded-[50px] bg-[#007CFF] mr-[12px]"></div>
-                        <p className="text-[#007CFF] font-semibold text-[13px]">전시중</p>
-                    </div>
+                        {ongoing && (
+                        <>
+                            <div className="w-[6px] h-[6px] rounded-[50px] bg-[#007CFF] mr-[12px]"></div>
+                            <p className="text-[#007CFF] font-semibold text-[13px]">전시중</p>
+                        </>  
+                        )}
+                        </div>
                 </div>
             </div>
 
@@ -116,7 +148,7 @@ const ExhibitionDetail = () => {
             </div>
 
             <div className="flex flex-row mt-[20px] mx-[20px] gap-[16px]">
-                {artworkImages.map((imgUrl, idx) => (
+                {artworkUrl.map((imgUrl, idx) => (
                     <div key={idx} className="w-[88px] h-[88px] rounded-[5px] overflow-hidden">
                         <img src={imgUrl} alt="pic" className="w-full h-full object-cover"/>
                     </div>
@@ -152,6 +184,7 @@ const ExhibitionDetail = () => {
             <ExhibitionModal 
                 exhib_id={id}
                 posterImg = {posterImageUrl}
+                title={title}
                 onClose={() => {setIsOpen(false); setIsVisited(true)}}
             />}
         </div>
