@@ -506,7 +506,7 @@
 // components/AddExhibitionModal.jsx
 import { useEffect, useMemo, useRef, useState } from 'react';
 import Modal from './Modal';
-import button_photo from '../../assets/button_photo.svg';
+import button_photo from '../../assets/button_photo.png';
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../../apis/axios'; // 🔹검색 API 호출용
 

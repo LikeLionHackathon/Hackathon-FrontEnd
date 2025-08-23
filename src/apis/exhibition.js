@@ -27,8 +27,8 @@ export const sendRating = async ({exhibitionId, rate, userId}) => {
 // };
 
 export const getExhibitions = async () => {
+  const res = await axiosInstance.get('/api/v1/exhibitions?sort=registeredDate&direction=ASC');
 
-  const res = await axiosInstance.get('/api/v1/exhibitions');
   const data = res.data;
 
   // ✅ 정상일 때만 배열 반환
