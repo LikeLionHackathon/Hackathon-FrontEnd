@@ -11,7 +11,7 @@ import glow_shine from '../assets/glow_shine.svg';
 import glow_spark from '../assets/glow_spark.svg';
 import glow_bloom from '../assets/glow_bloom.svg';
 
-export const MyPage = ({ exhibitionCount = 4, artworkCount = 13 }) => {
+export const MyPage = ({ exhibitionCount = 4, likeCount = 13 }) => {
   const [openAdd, setOpenAdd] = useState(false);
 
   const handleAddExhibition = () => {
@@ -57,9 +57,9 @@ export const MyPage = ({ exhibitionCount = 4, artworkCount = 13 }) => {
               </div>
               <div className="flex flex-col items-center">
                 <p className="text-[12px] text-[#7C7C7C] font-[400] leading-normal">
-                  내 작품
+                  좋아요
                 </p>
-                <p>{artworkCount}</p>
+                <p>{likeCount}</p>
               </div>
             </div>
           </div>

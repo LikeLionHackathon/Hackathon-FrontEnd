@@ -27,21 +27,21 @@ export const MainPage = () => {
   const [error, setError] = useState(null);
   const [newExhibitions, setNewExhibitions] = useState([]);
 
-  // useEffect(() => {
-  //   const fetchRecommendations = async () => {
-  //     try {
-  //       const user_id = 1;
-  //       const data = await getDailyRecommend(user_id);
-  //       setRecommendations(data.recommendedExhibitions || []);
-  //     } catch (err) {
-  //       setError('추천 데이터를 불러오는 데 실패했습니다.');
-  //       console.error(err);
-  //     } finally {
-  //       setIsLoading(false);
-  //     }
-  //   };
-  //   fetchRecommendations();
-  // }, []);
+  useEffect(() => {
+    const fetchRecommendations = async () => {
+      try {
+        const user_id = 1;
+        const data = await getDailyRecommend(user_id);
+        setRecommendations(data.recommendedExhibitions || []);
+      } catch (err) {
+        setError('추천 데이터를 불러오는 데 실패했습니다.');
+        console.error(err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchRecommendations();
+  }, []);
 
   useEffect(() => {
     const fetchAllExhibitions = async () => {
