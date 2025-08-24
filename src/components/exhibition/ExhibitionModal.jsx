@@ -28,7 +28,7 @@ const ExhibitionModal = ({exhib_id, posterImg, onClose, title}) => {
 
         try{
             const result = await sendRating({
-                userId: 1,
+                userId: localStorage.getItem('userId'),
                 exhibitionId: exhib_id,
                 rate: starValue,
             });
