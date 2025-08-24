@@ -27,7 +27,7 @@ export const ArtistProfile = ({ exhibitionCount = 1 }) => {
   };
 
   const handleGoToProfile = () => {
-    navigate(`/profile`);
+    navigate(`/userprofile`);
   };
 
   const levels = [null, glow_glow, glow_shine, glow_spark];
