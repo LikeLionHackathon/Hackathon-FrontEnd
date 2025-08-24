@@ -11,6 +11,7 @@ import Onboarding from './pages/OnBoarding';
 import { Login } from './pages/Login';
 import RentPage from './pages/RentPage';
 import { ArtistProfile } from './pages/ArtistProfile';
+import { SearchExhibitions } from './pages/SearchExhibitions';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
           <Route path='/login' element={<Login />}></Route>
           <Route path='/rent' element={<RentPage />} />
           <Route path='/userprofile' element={<ArtistProfile />}></Route>
+          <Route path='/searchExhibitions' element={<SearchExhibitions/>}></Route>
         </Route>
       </Routes>
     </BrowserRouter>
