@@ -275,93 +275,56 @@ function StepConcept({ data, update, errors }) {
 /* ── Step 3: 이미지 업로드 ───────────────────────────────────── */
 function StepUpload({ data, update, scanning, setScanning }) {
   const inputRef = useRef(null);
-
   const images = data.images || [];
-  const imagesRef = useRef(images);
-  useEffect(() => {
-    imagesRef.current = images;
-  }, [images]);
-
-  const previewUrlRef = useRef(null);
 
   const MAX = 10;
-  const openPicker = () => {
-    if (!scanning) inputRef.current?.click();
-  };
+  const openPicker = () => inputRef.current?.click();
 
-  const onFiles = (files) => {
-    const list = Array.from(files || []);
-    if (!list.length || scanning) return;
+  const onFiles = (e) => {
+    const selectedFiles = Array.from(e.target.files || []);
+    if (selectedFiles.length === 0) return;
 
-    const remaining = MAX - imagesRef.current.length;
-    const picked = list.slice(0, Math.max(0, remaining));
-    if (!picked.length) return;
+    const currentImages = data.images || [];
+    const spaceLeft = MAX - currentImages.length;
 
-    const newItems = picked.map((f) => ({
-      file: f,
-      url: URL.createObjectURL(f),
+    if (spaceLeft <= 0) {
+      alert(`최대 ${MAX}장까지만 업로드할 수 있습니다.`);
+      return;
+    }
+
+    const filesToAdd = selectedFiles.slice(0, spaceLeft);
+
+    const newItems = filesToAdd.map((file) => ({
+      file: file,
+      url: URL.createObjectURL(file),
     }));
 
-    if (previewUrlRef.current) {
-      try {
-        URL.revokeObjectURL(previewUrlRef.current);
-      } catch {}
-    }
-    previewUrlRef.current = URL.createObjectURL(picked[0]);
-
-    setScanning(true);
+    const previewUrl = URL.createObjectURL(filesToAdd[0]);
+    setScanning({ active: true, url: previewUrl });
 
     setTimeout(() => {
-      let i = 0;
-      const addNext = () => {
-        const cur = imagesRef.current;
-        if (i >= newItems.length || cur.length >= MAX) {
-          setScanning(false);
-          if (previewUrlRef.current) {
-            try {
-              URL.revokeObjectURL(previewUrlRef.current);
-            } catch {}
-            previewUrlRef.current = null;
-          }
-          return;
-        }
-        const next = [...cur, newItems[i]];
-        update({ images: next });
-        imagesRef.current = next;
-        i += 1;
-        if (i < newItems.length && next.length < MAX) {
-          setTimeout(addNext, 160);
-        } else {
-          setScanning(false);
-          if (previewUrlRef.current) {
-            try {
-              URL.revokeObjectURL(previewUrlRef.current);
-            } catch {}
-            previewUrlRef.current = null;
-          }
-        }
-      };
-      addNext();
+      update({ images: [...currentImages, ...newItems] });
+      
+      setScanning({ active: false, url: null });
+      URL.revokeObjectURL(previewUrl); // 임시 미리보기 URL 메모리 해제
     }, 1200);
+
+    // 같은 파일을 다시 선택할 수 있도록 입력 값을 초기화
+    e.target.value = null;
   };
 
+  // 컴포넌트가 사라질 때 생성된 모든 blob URL 메모리를 해제
   useEffect(() => {
     return () => {
-      (imagesRef.current || []).forEach((img) => {
+      images.forEach((img) => {
         if (img?.url) {
           try {
             URL.revokeObjectURL(img.url);
           } catch {}
         }
       });
-      if (previewUrlRef.current) {
-        try {
-          URL.revokeObjectURL(previewUrlRef.current);
-        } catch {}
-        previewUrlRef.current = null;
-      }
     };
-  }, []);
+  }, [images]); // images 배열이 변경될 때마다 이전 URL을 정리할 수 있도록 의존성 배열 수정
 
   const thumbs = images.slice(0, 4);
   const remain = Math.max(0, images.length - 4);
@@ -374,7 +337,7 @@ function StepUpload({ data, update, scanning, setScanning }) {
 
       <p
         className={`absolute left-1/2 -translate-x-1/2 mt-4 text-[15px] leading-1.5 font-[600] text-purple01 ${
-          scanning ? 'opacity-100' : 'opacity-0'
+          scanning?.active ? 'opacity-100' : 'opacity-0'
         } pointer-events-none transition-opacity`}
       >
         스캔중이에요
@@ -386,20 +349,20 @@ function StepUpload({ data, update, scanning, setScanning }) {
         multiple
         accept="image/*"
         className="hidden"
-        onChange={(e) => onFiles(e.target.files)}
+        onChange={onFiles} // ✅ 수정된 onFiles 함수 연결
       />
 
       <div
         onClick={openPicker}
         className={`relative mx-auto mt-12 shrink-0
               w-[268px] h-[268px] rounded-[10px] grid place-items-center cursor-pointer
-              ${scanning ? 'border-[5px] border-transparent' : 'border-0 bg-[#F0F0FF]'}
+              ${scanning?.active ? 'border-[5px] border-transparent' : 'border-0 bg-[#F0F0FF]'}
             `}
         style={
-          scanning && previewUrlRef.current
+          scanning?.active && scanning?.url
             ? {
                 background: `
-                  url(${previewUrlRef.current}) center / cover no-repeat padding-box,
+                  url(${scanning.url}) center / cover no-repeat padding-box,
                   linear-gradient(135deg,
                     var(--color-grad3-1, #7E37F9),
                     var(--color-grad3-2, #DECBFF),
@@ -410,52 +373,29 @@ function StepUpload({ data, update, scanning, setScanning }) {
             : undefined
         }
       >
-        {!scanning && (
+        {!scanning?.active && (
           <div className="grid place-items-center text-[#7B3EFF]">
             <img src={button_photo} alt="upload" className="w-25 h-25" />
           </div>
         )}
       </div>
 
+      {/* 썸네일 표시는 기존과 동일 */}
       <div className="mt-[28px] grid grid-cols-4 gap-2 w-[268px] mx-auto">
         {Array.from({ length: 4 }).map((_, i) => {
           const img = thumbs[i];
-
-          if (!img) {
-            return (
-              <div
-                key={i}
-                className="aspect-square rounded-[5px] w-[66px] bg-grey01"
-              />
-            );
-          }
-
+          if (!img) return <div key={i} className="aspect-square rounded-[5px] w-[66px] bg-grey01" />;
           if (i === 3 && remain > 0) {
             return (
-              <div
-                key={i}
-                className="relative aspect-square rounded-[5px] overflow-hidden"
-              >
-                <img
-                  src={img.url}
-                  alt={`thumb-${i}`}
-                  className="w-full h-full object-cover"
-                />
+              <div key={i} className="relative aspect-square rounded-[5px] overflow-hidden">
+                <img src={img.url} alt={`thumb-${i}`} className="w-full h-full object-cover" />
                 <div className="absolute inset-0 grid place-items-center bg-black/50 text-white text-sm">
                   +{remain}장
                 </div>
               </div>
             );
           }
-
-          return (
-            <img
-              key={i}
-              src={img.url}
-              alt={`thumb-${i}`}
-              className="aspect-square w-full h-full object-cover rounded-lg"
-            />
-          );
+          return <img key={i} src={img.url} alt={`thumb-${i}`} className="aspect-square w-full h-full object-cover rounded-lg" />;
         })}
       </div>
     </div>
@@ -582,7 +522,6 @@ export default function AddExhibitionModal({ open, onClose, onSubmit }) {
         setData({ images: [], artists: [] });
         setErrors({});
         setInvited([null, null, null, null]);
-        // ... (기타 상태 초기화)
       } catch (error) {
         // 에러 처리는 기존과 동일
         console.error('전시 생성에 실패했습니다:', error);

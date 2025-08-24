@@ -211,7 +211,7 @@ export const MainPage = () => {
                     <div key={exhibition.id} className="w-[168px] h-[308px]">
                       <div className="w-[168px] h-[242px] overflow-hidden">
                         <img
-                          src={exhibition.artworkUrl[0]}
+                          src={exhibition.posterImage}
                           alt={exhibition.title}
                           className="w-full h-full object-cover [clip-path:polygon(0_0,100%_0,100%_calc(100%-14px),calc(100%-14px)_100%,14px_100%,0_calc(100%-12px))]"
                           onClick={() =>
