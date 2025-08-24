@@ -5,11 +5,13 @@ import { useState } from "react";
 import AddExhibitionModal from "../exhibition/AddExhibitionModal";
 import ArtistModal from "./ArtistModal";
 import profile_minwu from "../../assets/profile_minwu.png";
+import { useNavigate } from "react-router-dom";
 
 const MainArtist = () => {
     const [openAdd, setOpenAdd] = useState(false);
     const [openMessage, setOpenMessage] = useState(false);
     const [ArtistName, setArtistName] = useState("");
+    const nav = useNavigate();
     
     const handleAddExhibition = () => {
         setOpenAdd(true);
@@ -18,6 +20,10 @@ const MainArtist = () => {
     const handleSendMessage = (name) => {
         setArtistName(name);
         setOpenMessage(true);
+    }
+
+    const handleModal = ({name}) => {
+        nav("/message", {state: {name}});
     }
 
     return (
@@ -86,6 +92,7 @@ const MainArtist = () => {
                 name={ArtistName}
                 text={"전시 협업 문의 메세지를 "}
                 type={"메세지를"}
+                onClick={() => handleModal(ArtistName)}
             />
         </div>
     )

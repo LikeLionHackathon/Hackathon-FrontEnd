@@ -11,7 +11,8 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Header from "../components/layout/Header.jsx";
 import { getDailyRecommend } from "../apis/dailyRecommend.js";
-import { getExhibitionById } from "../apis/exhibition.js";
+import { getExhibitionById, sendExhibitionLike } from "../apis/exhibition.js";
+import { FaHandHoldingMedical } from "react-icons/fa";
 
 
 const ExhibitionDetail = () => {
@@ -22,8 +23,10 @@ const ExhibitionDetail = () => {
     const { id, recommendationReason } = location.state.exhibition || {};
 
     const [exhibitionInfo, setExhibitionInfo] = useState(null);
+    const [isLike, setIsLike] = useState(false);
 
     useEffect(() => {
+        
         const fetchExhibitionInfo = async () => {
             if (id) {
                 try {
@@ -71,6 +74,19 @@ const ExhibitionDetail = () => {
         ongoing
     } = exhibitionInfo;
 
+    const handleClick = async () => {
+        try {
+            const result = await sendExhibitionLike({
+                exhibitionId: id,
+            });
+            console.log("응답 성공: ", result);
+            setIsLike(true);
+        } catch(err) {
+            console.log("실패: ", err);
+            alert("가보고 싶어요 등록을 실패했습니다. 다시 시도해주세요.");
+        }
+    }
+
     return (
         <div className="mx-auto w-full max-w-[450px]">
             
@@ -90,7 +106,10 @@ const ExhibitionDetail = () => {
 
             <div className="flex flex-col mx-[20px] mt-[12px]">
                 <div className="flex place-content-between h-[48px]">
-                    <button className="flex flex-row justify-center items-center w-[168px] bg-grey01 gap-[12px] rounded-[5px] cursor-pointer">
+                    <button 
+                        className={`flex flex-row justify-center items-center w-[168px] ${isLike ? 'bg-lightpurple02' : 'bg-grey01'} gap-[12px] rounded-[5px] cursor-pointer`}
+                        onClick={handleClick}    
+                    >
                         <img src={markImg} alt="가보고 싶어요" className="w-[40px] h-[40px]"/>
                         <p className="font-bold text-[14px]">가보고 싶어요</p>
                     </button>

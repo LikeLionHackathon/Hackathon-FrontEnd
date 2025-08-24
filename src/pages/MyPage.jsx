@@ -1,7 +1,7 @@
 // import profileCard from '../assets/Profile_card.svg';
 import Poster_01 from '../assets/poster_01.svg';
 import AddExhibitionModal from '../components/exhibition/AddExhibitionModal';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ellipsis from '../assets/Ellipse.svg';
 import Tag from '../components/ai/Tag';
 import artist_tag from '../assets/artist_tag.svg';
@@ -11,10 +11,16 @@ import glow_spark from '../assets/glow_spark.svg';
 import glow_bloom from '../assets/glow_bloom.svg';
 import { useNavigate } from 'react-router-dom';
 import { GoBackButton } from '../components/GoBackButton';
+import { getExhibitionLike, getRating } from '../apis/exhibition';
+import starImg from "../assets/star.svg";
+import { getUserPreferences } from '../apis/userPreference';
 
 export const MyPage = ({ exhibitionCount = 4, likeCount = 13 }) => {
   const navigate = useNavigate();
   const [openAdd, setOpenAdd] = useState(false);
+  const [likeList, setLikeList] = useState([]);
+  const [visitedList, setVisitedList] = useState([]);
+  const [userTags, setUserTags] = useState([]);
 
 const handleAddExhibition = () => {
   // 작가 탭으로 이동 + (선택) 도착 시 전시등록 모달 자동 오픈 신호 전달
@@ -24,6 +30,49 @@ const handleAddExhibition = () => {
   const handleGoToProfile = () => {
     navigate(`/userprofile`);
   };
+
+  useEffect(() => {
+    const fetchExhibitionLike = async () => {
+        try {
+          const res = await getExhibitionLike();
+          //console.log("성공: ", res);
+          setLikeList(res);
+          
+        } catch (err) {
+          console.log(err);
+
+        }
+    }
+    fetchExhibitionLike();
+    
+  }, []);
+
+  useEffect(() => {
+    const fetchRating = async () => {
+      try {
+        const res = await getRating();
+        //console.log("전시 성공: ", res);
+        setVisitedList(res);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    fetchRating();
+  }, []);
+
+  useEffect(() => {
+    const fetchTags = async () => {
+      try {
+        const res = await getUserPreferences();
+        console.log(res);
+        setUserTags(res);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    fetchTags();
+  }, []);
+  console.log(userTags);
 
   const levels = [null, glow_glow, glow_shine, glow_spark];
   const badgeSrc =
@@ -110,74 +159,41 @@ const handleAddExhibition = () => {
                 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden
                 px-[calc((100%-200px)/2)]"
       >
-        <div
-          className="w-[200px] h-[356px] bg-white flex flex-col items-start mt-3
-        [clip-path:polygon(0_0,100%_0,100%_76%,calc(100%_-_20px)_79%,100%_82%,100%_100%,0_100%,0_82%,20px_79%,0_76%)]"
-        >
-          <img
-            src={Poster_01}
-            alt="포스터1"
-            className="w-[184px] h-[256px] self-center mt-2"
-          />
-          <p className="text-[12px] text-darkgrey03 mt-2.5 self-center">
-            2025.07.12
-          </p>
-
-          <p className="ml-3 mt-2.5 text-[16px] font-semibold leading-[150%]">
-            전시명
-          </p>
-          <div className="flex flex-row gap-2 mt-0.5 ml-3 text-[14px] font-medium leading-[150%] text-darkgrey03">
-            {' '}
-            <p>작가명</p>
-            <p>작가명</p>
-          </div>
-        </div>
-
-        <div
-          className="w-[200px] h-[356px] bg-white flex flex-col items-start mt-3
-        [clip-path:polygon(0_0,100%_0,100%_76%,calc(100%_-_20px)_79%,100%_82%,100%_100%,0_100%,0_82%,20px_79%,0_76%)]"
-        >
-          <img
-            src={Poster_01}
-            alt="포스터1"
-            className="w-[184px] h-[256px] self-center mt-2"
-          />
-          <p className="text-[12px] text-darkgrey03 mt-2.5 self-center">
-            2025.07.12
-          </p>
-
-          <p className="ml-3 mt-2.5 text-[16px] font-semibold leading-[150%]">
-            전시명
-          </p>
-          <div className="flex flex-row gap-2 mt-0.5 ml-3 text-[14px] font-medium leading-[150%] text-darkgrey03">
-            {' '}
-            <p>작가명</p>
-            <p>작가명</p>
-          </div>
-        </div>
-
-        <div
-          className="w-[200px] h-[356px] bg-white flex flex-col items-start mt-3
-        [clip-path:polygon(0_0,100%_0,100%_76%,calc(100%_-_20px)_79%,100%_82%,100%_100%,0_100%,0_82%,20px_79%,0_76%)]"
-        >
-          <img
-            src={Poster_01}
-            alt="포스터1"
-            className="w-[184px] h-[256px] self-center mt-2"
-          />
-          <p className="text-[12px] text-darkgrey03 mt-2.5 self-center">
-            2025.07.12
-          </p>
-
-          <p className="ml-3 mt-2.5 text-[16px] font-semibold leading-[150%]">
-            전시명
-          </p>
-          <div className="flex flex-row gap-2 mt-0.5 ml-3 text-[14px] font-medium leading-[150%] text-darkgrey03">
-            {' '}
-            <p>작가명</p>
-            <p>작가명</p>
-          </div>
-        </div>
+        {visitedList.length === 0 ? (
+          <p>방문한 전시가 없습니다.</p>
+        ) : (
+          visitedList.map((exh) => (
+            <div key={exh.exhibitionId}
+              className="w-[200px] h-[356px] bg-white flex flex-col items-start mt-3
+            [clip-path:polygon(0_0,100%_0,100%_76%,calc(100%_-_20px)_79%,100%_82%,100%_100%,0_100%,0_82%,20px_79%,0_76%)]"
+            >
+              <img
+                src={exh.posterImageUrl}
+                alt="포스터 이미지"
+                className="w-[184px] h-[256px] self-center mt-2"
+              />
+              <p className="text-[12px] text-darkgrey03 mt-2.5 self-center">
+                {exh.startDate}
+              </p>
+              <div className='flex flex-row gap-[16px]'>
+                <p className="ml-3 mt-2.5 text-[16px] font-semibold leading-[150%]">
+                  {exh.title}
+                </p>
+                <div className='mt-2.5 flex flex-row justify-center items-center gap-[2px]'>
+                  <img src={starImg} alt="star" className='w-[20px]' />
+                  <p className='text-purple_main text-[12px]'>{exh.rating || 0}</p>
+                </div>
+              </div>
+              <div className="flex flex-row gap-2 mt-0.5 ml-3 text-[14px] font-medium leading-[150%] text-darkgrey03">
+                {' '}
+                {exh.artists.map((artist, idx) => (
+                  <p key={idx}>{artist.nickname}</p>
+                ))}
+              </div>
+            </div>
+          ))
+        )}
+        
       </div>
 
       {/* 구분선 */}
@@ -229,21 +245,20 @@ const handleAddExhibition = () => {
               [scrollbar-width:none] [&::-webkit-scrollbar]:hidden
             "
       >
-        <img
-          src={Poster_01}
-          alt="poster1"
-          className="w-[124px] h-[180px] shrink-0 snap-center rounded object-contain"
-        />
-        <img
-          src={Poster_01}
-          alt="poster1"
-          className="w-[124px] h-[180px] shrink-0 snap-center rounded object-contain"
-        />
-        <img
-          src={Poster_01}
-          alt="poster1"
-          className="w-[124px] h-[180px] shrink-0 snap-center rounded object-contain"
-        />
+        {likeList.length === 0 ? (
+          <p>가보고 싶다고 저장한 전시가 없습니다.</p>
+        ) : (
+          likeList.map((exh, idx) => (
+            <div key={idx}>
+              <img
+                
+                src={exh.posterImageUrl}
+                alt={exh.exhibitionId}
+                className="w-[124px] h-[180px] shrink-0 snap-center rounded object-contain"
+              />
+            </div>
+          ))
+        )}
       </div>
 
       {/* 구분선 */}
@@ -254,12 +269,13 @@ const handleAddExhibition = () => {
           <h1 className="font-semibold text-[20px]">선호하는 키워드</h1>
         </div>
         <div className="flex flex-wrap gap-[12px] w-[350px] mt-[20px]">
-          <Tag text={'실험적'} id={1} />
-          <Tag text={'몽환적인'} id={2} />
-          <Tag text={'관객 참여형'} id={3} />
-          <Tag text={'웅장한'} id={4} />
-          <Tag text={'인터렉티브'} id={5} />
-          <Tag text={'친구들과 함께'} id={6} />
+          {userTags.length === 0 ? (
+            <p>선호하는 키워드가 없습니다.</p>
+          ) : (
+            userTags.map((tag, idx) => (
+              <Tag key={idx} text={tag} id={idx + 1} />
+            ))
+          )}
         </div>
       </div>
       <AddExhibitionModal
