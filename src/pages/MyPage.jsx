@@ -11,10 +11,23 @@ import glow_spark from '../assets/glow_spark.svg';
 import glow_bloom from '../assets/glow_bloom.svg';
 import { useNavigate } from 'react-router-dom';
 import { GoBackButton } from '../components/GoBackButton';
+import { getUserInfo } from '../apis/user'
+import { useEffect } from 'react';
 
 export const MyPage = ({ exhibitionCount = 4, likeCount = 13 }) => {
   const navigate = useNavigate();
   const [openAdd, setOpenAdd] = useState(false);
+  const [userInfo, setUserInfo] = useState(null);
+
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      try {
+        const res = await getUserInfo();
+      } catch (err) {
+        
+      }
+    }
+  },[])
 
 const handleAddExhibition = () => {
   // 작가 탭으로 이동 + (선택) 도착 시 전시등록 모달 자동 오픈 신호 전달
