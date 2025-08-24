@@ -7,9 +7,28 @@ import ex3Img from '../assets/ex03.svg';
 import tagImg from '../assets/hashtag.svg';
 import Tag from '../components/ai/Tag';
 import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { getMyExhibitions } from '../apis/addExhibition';
+import { useState } from 'react';
 
 const ExhibitionDetailConfirm = () => {
   const navigate = useNavigate();
+
+  //전시 세팅 useEffect
+  const [myExhibition, setMyExhibition] = useState([]);
+
+  useEffect(() => {
+    const fetchMyExhibition = async () => {
+      try {
+        const res = await getMyExhibitions();
+        console.log('백엔드 응답: ', res.data);
+        setMyExhibition(res);
+      } catch (err) {
+        console.log('실패', err);
+      }
+    };
+    fetchMyExhibition();
+  }, []);
 
   /* 공통 버튼 */
   const BtnPrimary = ({ className = '', ...p }) => (
@@ -43,14 +62,24 @@ const ExhibitionDetailConfirm = () => {
         </div>
       </div>
 
-      <div className="mx-[20px] h-[402px] border border-b-grey05 border-t-0 border-x-0">
+      {myExhibition.map(() => {
+        <div className="mx-[20px] h-[402px] border border-b-grey05 border-t-0 border-x-0">
+          <div className="w-[276px] h-[390px] mx-auto mt-[12px]">
+            <img src={posterImg} alt="poster" className="w-full h-full" />
+          </div>
+        </div>;
+      })}
+
+      {/* <div className="mx-[20px] h-[402px] border border-b-grey05 border-t-0 border-x-0">
         <div className="w-[276px] h-[390px] mx-auto mt-[12px]">
           <img src={posterImg} alt="poster" className="w-full h-full" />
         </div>
-      </div>
+      </div> */}
 
-      <div className="flex flex-col mx-[20px]"
-      onClick={() => navigate('/exhibition/poster')}>
+      <div
+        className="flex flex-col mx-[20px]"
+        onClick={() => navigate('/exhibition/poster')}
+      >
         <div className="flex flex-col mt-[16px]">
           <h1 className="font-bold text-[24px]">변화의 이상</h1>
           <div className="flex mt-[16px] gap-[16px]">
