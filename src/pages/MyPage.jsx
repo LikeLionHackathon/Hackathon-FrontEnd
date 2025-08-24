@@ -31,7 +31,7 @@ const handleAddExhibition = () => {
   return (
     <div>
       <div className="flex flex-row w-full justify-center">
-        <GoBackButton />
+        <GoBackButton  onClick={navigate('/')}/>
         <div className="flex mt-[12px] justify-center text-[16px] font-semibold text-center leading-[150%]">
           마이페이지
         </div>
