@@ -22,7 +22,7 @@ const handleAddExhibition = () => {
 };
 
   const handleGoToProfile = () => {
-    navigate(`/profile`);
+    navigate(`/userprofile`);
   };
 
   const levels = [null, glow_glow, glow_shine, glow_spark];

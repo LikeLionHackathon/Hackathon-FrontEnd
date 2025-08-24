@@ -4,6 +4,7 @@ import artImg from "../../assets/art.png";
 import { useState } from "react";
 import AddExhibitionModal from "../exhibition/AddExhibitionModal";
 import ArtistModal from "./ArtistModal";
+import profile_minwu from "../../assets/profile_minwu.png";
 
 const MainArtist = () => {
     const [openAdd, setOpenAdd] = useState(false);
@@ -29,7 +30,7 @@ const MainArtist = () => {
                         <p className="text-[13px] font-semibold">지난 전시</p>
                         <p className="text-[13px] font-semibold">기록하기</p>
                     </div>
-                    <div 
+                    <div
                         className="w-[146px] h-[115px] bg-grey01 rounded-[5px] flex flex-col justify-center items-center cursor-pointer"
                         onClick={handleAddExhibition}
                     >
@@ -46,13 +47,14 @@ const MainArtist = () => {
                         <ArtistCard name={"예나"} num={8} place={"홍아트플레이스"} onClick={() => handleSendMessage("예나")}/>
                     </div>
                     <div className="flex-shrink-0">
-                        <ArtistCard name={"예나"} num={8} place={"홍아트플레이스"} onClick={() => handleSendMessage("예나")}/>
+                        <ArtistCard name={"민우"} num={4} place={"전시공간 미정"} onClick={() => handleSendMessage("예나")} img={profile_minwu}>
+                        </ArtistCard>
                     </div>
                     <div className="flex-shrink-0">
-                        <ArtistCard name={"예나"} num={8} place={"홍아트플레이스"} onClick={() => handleSendMessage("예나")}/>
+                        <ArtistCard name={"태원"} num={8} place={"마포구 와우산로 94"} onClick={() => handleSendMessage("예나")}/>
                     </div>
                     <div className="flex-shrink-0">
-                        <ArtistCard name={"예나"} num={8} place={"홍아트플레이스"} onClick={() => handleSendMessage("예나")}/>
+                        <ArtistCard name={"서영"} num={8} place={"홍대 홍문관"} onClick={() => handleSendMessage("예나")}/>
                     </div>
                     
                 </div>
