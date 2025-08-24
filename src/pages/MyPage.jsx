@@ -14,6 +14,8 @@ import { GoBackButton } from '../components/GoBackButton';
 import { getExhibitionLike, getRating } from '../apis/exhibition';
 import starImg from "../assets/star.svg";
 import { getUserPreferences } from '../apis/userPreference';
+import { getUserInfo } from '../apis/user'
+import { useEffect } from 'react';
 
 export const MyPage = ({ exhibitionCount = 4, likeCount = 13 }) => {
   const navigate = useNavigate();
@@ -21,6 +23,18 @@ export const MyPage = ({ exhibitionCount = 4, likeCount = 13 }) => {
   const [likeList, setLikeList] = useState([]);
   const [visitedList, setVisitedList] = useState([]);
   const [userTags, setUserTags] = useState([]);
+  const [userInfo, setUserInfo] = useState(null);
+
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      try {
+        const res = await getUserInfo();
+      } catch (err) {
+        
+      }
+    }
+  },[])
+
 
 const handleAddExhibition = () => {
   // 작가 탭으로 이동 + (선택) 도착 시 전시등록 모달 자동 오픈 신호 전달
@@ -80,7 +94,7 @@ const handleAddExhibition = () => {
   return (
     <div>
       <div className="flex flex-row w-full justify-center">
-        <GoBackButton />
+        <GoBackButton  onClick={navigate('/')}/>
         <div className="flex mt-[12px] justify-center text-[16px] font-semibold text-center leading-[150%]">
           마이페이지
         </div>

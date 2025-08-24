@@ -12,6 +12,8 @@ import { Login } from './pages/Login';
 import RentPage from './pages/RentPage';
 import { ArtistProfile } from './pages/ArtistProfile';
 import MessagePage from './pages/MessagePage';
+import { SearchExhibitions } from './pages/SearchExhibitions';
+
 
 function App() {
   return (
@@ -29,6 +31,7 @@ function App() {
           <Route path='/rent' element={<RentPage />} />
           <Route path='/userprofile' element={<ArtistProfile />}></Route>
           <Route path='/message' element={<MessagePage />} />
+          <Route path='/searchExhibitions' element={<SearchExhibitions/>}></Route>
         </Route>
       </Routes>
     </BrowserRouter>

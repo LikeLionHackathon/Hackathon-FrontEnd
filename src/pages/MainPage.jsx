@@ -7,6 +7,7 @@ import Poster3 from '../assets/posters/Poster03.png';
 import Poster4 from '../assets/posters/Poster04.png';
 import Poster5 from '../assets/posters/Poster05.png';
 import Poster6 from '../assets/posters/Poster06.png';
+import search_icon from '../assets/search_icon.svg';
 
 import AiChatButton from '../assets/button_aichat.svg';
 import GLOW from '../assets/GLOW.svg';
@@ -102,6 +103,10 @@ export const MainPage = () => {
             <img src={glow_icon1} alt="" className="w-[50px] shrink-0" />
             <img src={GLOW} alt="GLOW logo" className="" />
           </div>
+          <div className='flex flex-row gap-1'>
+            <img className='w-[30px]' src={search_icon} alt="" onClick={() => {
+            navigate('/searchExhibitions');
+          }} />
           <img
             src={profile}
             alt=""
@@ -110,6 +115,8 @@ export const MainPage = () => {
               navigate('/mypage');
             }}
           />
+          </div>
+          
         </div>
 
         <div className="mt-[18px] flex flex-row h-[30px] items-center border-b-1 border-[#DBDBDB]">
@@ -211,7 +218,7 @@ export const MainPage = () => {
                     <div key={exhibition.id} className="w-[168px] h-[308px]">
                       <div className="w-[168px] h-[242px] overflow-hidden">
                         <img
-                          src={exhibition.artworkUrl[0]}
+                          src={exhibition.posterImage}
                           alt={exhibition.title}
                           className="w-full h-full object-cover [clip-path:polygon(0_0,100%_0,100%_calc(100%-14px),calc(100%-14px)_100%,14px_100%,0_calc(100%-12px))]"
                           onClick={() =>
@@ -261,7 +268,6 @@ export const MainPage = () => {
               <h2 className="font-semibold text-[20px] leading-[125%]">
                 <p>선호하시는 </p>
                 <span className="text-purple01">#따뜻함</span> 태그의 전시들
-              
               </h2>
             </div>
 
