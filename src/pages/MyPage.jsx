@@ -15,7 +15,6 @@ import { getExhibitionLike, getRating } from '../apis/exhibition';
 import starImg from "../assets/star.svg";
 import { getUserPreferences } from '../apis/userPreference';
 import { getUserInfo } from '../apis/user'
-import { useEffect } from 'react';
 
 export const MyPage = ({ exhibitionCount = 4, likeCount = 13 }) => {
   const navigate = useNavigate();
