@@ -29,7 +29,7 @@ export const Login = () => {
       console.log('로그인 응답:', responseData);
 
       // isFirst 값에 따라 조건부 페이지 이동
-      if (responseData.isFirst) {
+      if (responseData.first) {
         navigate('/onboarding'); // true일 경우 온보딩 페이지로
       } else {
         navigate('/'); // false일 경우 메인 페이지로
