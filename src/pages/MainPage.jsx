@@ -16,6 +16,7 @@ import MainArtist from '../components/mainpage/MainArtist';
 import { getDailyRecommend } from '../apis/dailyRecommend';
 import { useEffect } from 'react';
 import { getExhibitions } from '../apis/exhibition';
+import { getTagRecommendations } from '../apis/tagRecommendation';
 
 const CARD_W = 284; // 카드 가로
 const GAP = 16; // gap-4
@@ -28,22 +29,6 @@ export const MainPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [newExhibitions, setNewExhibitions] = useState([]);
-
-  // useEffect(() => {
-  //   const fetchRecommendations = async () => {
-  //     try {
-  //       const user_id = 1;
-  //       const data = await getDailyRecommend(user_id);
-  //       setRecommendations(data.recommendedExhibitions || []);
-  //     } catch (err) {
-  //       setError('추천 데이터를 불러오는 데 실패했습니다.');
-  //       console.error(err);
-  //     } finally {
-  //       setIsLoading(false);
-  //     }
-  //   };
-  //   fetchRecommendations();
-  // }, []);
 
   useEffect(() => {
     const fetchAllExhibitions = async () => {
@@ -58,6 +43,19 @@ export const MainPage = () => {
     fetchAllExhibitions();
   }, []);
 
+  useEffect(() => {
+    const fetchRecommendations = async () => {
+      try {
+        const res = await getTagRecommendations();
+        console.log('태그별 추천 응답: ', res);
+        setRecommendations(res);
+      } catch (err) {
+        console.log('실패: ', err);
+      }
+    };
+    fetchRecommendations();
+  }, []);
+
   const navigate = useNavigate();
   const scrollerRef = useRef(null);
   const [idx, setIdx] = useState(0); // 0,1,2
@@ -68,13 +66,13 @@ export const MainPage = () => {
   const [version, setVersion] = useState(initialTab);
 
   useEffect(() => {
-   if (location.state?.tab || location.state?.autoOpenAdd) {
-     if (location.state?.tab === 'artist' && usertype === 'VIEWER') {
-       setVersion('artist');
-     }
-     navigate('.', { replace: true, state: {} });
-   }
- }, [location.state]);
+    if (location.state?.tab || location.state?.autoOpenAdd) {
+      if (location.state?.tab === 'artist' && usertype === 'VIEWER') {
+        setVersion('artist');
+      }
+      navigate('.', { replace: true, state: {} });
+    }
+  }, [location.state]);
 
   const handleAiButton = () => navigate('/aiChat');
 
@@ -216,7 +214,9 @@ export const MainPage = () => {
                           src={exhibition.artworkUrl[0]}
                           alt={exhibition.title}
                           className="w-full h-full object-cover [clip-path:polygon(0_0,100%_0,100%_calc(100%-14px),calc(100%-14px)_100%,14px_100%,0_calc(100%-12px))]"
-                          onClick={() => navigate(`/exhibitionDetail/${exhibition.id}`)}
+                          onClick={() =>
+                            navigate(`/exhibitionDetail/${exhibition.id}`)
+                          }
                         />
                       </div>
                       <div className="relative bg-[#C8C8C8] p-[1px] [clip-path:polygon(20px_0,calc(100%-20px)_0,100%_12px,100%_100%,0_100%,0_12px)]">
@@ -255,63 +255,67 @@ export const MainPage = () => {
           {/* 구분선 */}
           <div className="w-screen h-[8px] bg-grey04 mt-[0px] mb-[20px]" />
 
-          <div className="mx-auto w-full max-w-[420px] px-5 py-4">
-            <h2 className="font-semibold text-[20px] leading-[125%]">
-              선호하시는 <span className="text-purple01">#초현실</span> 태그의
-              전시들
-            </h2>
-          </div>
-
-          <div className="px-5 grid grid-cols-2 gap-x-3 justify-items-start">
-            <div className="w-[168px] space-y-1.5">
-              {' '}
-              <img
-                src={Poster1}
-                alt="poster1"
-                className="w-full rounded mb-2.5"
-              />
-              <p className="self-stretch text-[16px] font-semibold leading-6 not-italic">
-                복
-              </p>
-              <p className="self-stretch font-semibold leading-6 text-[11px]">
-                연희동
-              </p>
-              <div className="mt-1 flex flex-wrap gap-2 justify-start text-[11px]">
-                <span className="bg-lightpurple01 rounded-[5px] px-1.5 py-0.5 whitespace-nowrap">
-                  # 초현실
-                </span>
-                <span className="bg-pink01 rounded-[5px] px-1.5 py-0.5 whitespace-nowrap">
-                  # 역사 아카이브
-                </span>
-                <span className="bg-pink01 rounded-[5px] px-1.5 py-0.5 whitespace-nowrap">
-                  # 사회적
-                </span>
-              </div>
+          {/* 태그 추천 섹션 */}
+          <div>
+            <div className="mx-auto w-full max-w-[420px] px-5 py-4">
+              <h2 className="font-semibold text-[20px] leading-[125%]">
+                <p>선호하시는 </p>
+                <span className="text-purple01">#따뜻함</span> 태그의 전시들
+              
+              </h2>
             </div>
 
-            <div className="w-[168px] space-y-1.5">
-              {' '}
-              <img
-                src={Poster1}
-                alt="poster1"
-                className="w-full rounded mb-2.5"
-              />
-              <p className="self-stretch text-[16px] font-semibold leading-6 not-italic">
-                복
-              </p>
-              <p className="self-stretch font-semibold leading-6 text-[11px]">
-                연희동
-              </p>
-              <div className="mt-1 flex flex-wrap gap-2 justify-start text-[11px]">
-                <span className="bg-lightpurple01 rounded-[5px] px-1.5 py-0.5 whitespace-nowrap">
-                  # 초현실
-                </span>
-                <span className="bg-pink01 rounded-[5px] px-1.5 py-0.5 whitespace-nowrap">
-                  # 역사 아카이브
-                </span>
-                <span className="bg-pink01 rounded-[5px] px-1.5 py-0.5 whitespace-nowrap">
-                  # 사회적
-                </span>
+            <div className="px-5 grid grid-cols-2 gap-x-3 justify-items-start">
+              <div className="w-[168px] space-y-1.5">
+                {' '}
+                <img
+                  src={Poster1}
+                  alt="poster1"
+                  className="w-full rounded mb-2.5"
+                />
+                <p className="self-stretch text-[16px] font-semibold leading-6 not-italic">
+                  복
+                </p>
+                <p className="self-stretch font-semibold leading-6 text-[11px]">
+                  연희동
+                </p>
+                <div className="mt-1 flex flex-wrap gap-2 justify-start text-[11px]">
+                  <span className="bg-lightpurple01 rounded-[5px] px-1.5 py-0.5 whitespace-nowrap">
+                    # 초현실
+                  </span>
+                  <span className="bg-pink01 rounded-[5px] px-1.5 py-0.5 whitespace-nowrap">
+                    # 역사 아카이브
+                  </span>
+                  <span className="bg-pink01 rounded-[5px] px-1.5 py-0.5 whitespace-nowrap">
+                    # 사회적
+                  </span>
+                </div>
+              </div>
+
+              <div className="w-[168px] space-y-1.5">
+                {' '}
+                <img
+                  src={Poster1}
+                  alt="poster1"
+                  className="w-full rounded mb-2.5"
+                />
+                <p className="self-stretch text-[16px] font-semibold leading-6 not-italic">
+                  복
+                </p>
+                <p className="self-stretch font-semibold leading-6 text-[11px]">
+                  연희동
+                </p>
+                <div className="mt-1 flex flex-wrap gap-2 justify-start text-[11px]">
+                  <span className="bg-lightpurple01 rounded-[5px] px-1.5 py-0.5 whitespace-nowrap">
+                    # 초현실
+                  </span>
+                  <span className="bg-pink01 rounded-[5px] px-1.5 py-0.5 whitespace-nowrap">
+                    # 역사 아카이브
+                  </span>
+                  <span className="bg-pink01 rounded-[5px] px-1.5 py-0.5 whitespace-nowrap">
+                    # 사회적
+                  </span>
+                </div>
               </div>
             </div>
           </div>

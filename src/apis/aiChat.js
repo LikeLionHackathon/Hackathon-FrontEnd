@@ -29,4 +29,3 @@ export async function sendAiChat({text, images}) {
         throw err;
     }
 }
-
