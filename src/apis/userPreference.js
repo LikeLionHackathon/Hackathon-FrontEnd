@@ -10,3 +10,17 @@ export const getUserPreferences = async (userId) => {
         throw err;
     }
 }
+
+export const postUserPreferences = async ({preferenceAnswers}) => {
+    try {
+        const res = await axiosInstance.post('/api/v1/preferences', {
+            preferenceAnswers
+        }, {
+            withCredentials:true,
+        });
+        console.log("유저 취향 생성:", res);
+    } catch (err) {
+        console.log("유저 취향 생성 실패 : ", err);
+        throw err;
+    }
+}
