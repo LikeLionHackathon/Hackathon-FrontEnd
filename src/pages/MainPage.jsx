@@ -18,6 +18,7 @@ import { getDailyRecommend } from '../apis/dailyRecommend';
 import { useEffect } from 'react';
 import { getExhibitions } from '../apis/exhibition';
 import { getTagRecommendations } from '../apis/tagRecommendation';
+import { getUserCard } from '../apis/user';
 
 const CARD_W = 284; // 카드 가로
 const GAP = 16; // gap-4
@@ -30,6 +31,24 @@ export const MainPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [newExhibitions, setNewExhibitions] = useState([]);
+  const [userInfo, setUserInfo] = useState(null);
+
+  {
+    /* 유저 정보 불러오기 로직 */
+  }
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      try {
+        const res = await getUserCard();
+        setUserInfo(res);
+        console.log(res);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchUserInfo();
+  }, []);
+  console.log(userInfo);
 
   useEffect(() => {
     const fetchAllExhibitions = async () => {
@@ -47,15 +66,18 @@ export const MainPage = () => {
   useEffect(() => {
     const fetchRecommendations = async () => {
       try {
-        const res = await getTagRecommendations();
+        const res = await getTagRecommendations(userInfo.userId, userInfo.tags[0]);
         console.log('태그별 추천 응답: ', res);
         setRecommendations(res);
       } catch (err) {
-        console.log('실패: ', err);
+        console.log('태그별 추천 실패: ', err);
       }
     };
-    fetchRecommendations();
-  }, []);
+
+    if (userInfo && userInfo.userId) {
+      fetchRecommendations();
+    }
+  }, [userInfo]);
 
   const navigate = useNavigate();
   const scrollerRef = useRef(null);
@@ -103,20 +125,24 @@ export const MainPage = () => {
             <img src={glow_icon1} alt="" className="w-[50px] shrink-0" />
             <img src={GLOW} alt="GLOW logo" className="" />
           </div>
-          <div className='flex flex-row gap-1'>
-            <img className='w-[30px]' src={search_icon} alt="" onClick={() => {
-            navigate('/searchExhibitions');
-          }} />
-          <img
-            src={profile}
-            alt=""
-            className="cursor-pointer"
-            onClick={() => {
-              navigate('/mypage');
-            }}
-          />
+          <div className="flex flex-row gap-1">
+            <img
+              className="w-[30px]"
+              src={search_icon}
+              alt=""
+              onClick={() => {
+                navigate('/searchExhibitions');
+              }}
+            />
+            <img
+              src={profile}
+              alt=""
+              className="cursor-pointer"
+              onClick={() => {
+                navigate('/mypage');
+              }}
+            />
           </div>
-          
         </div>
 
         <div className="mt-[18px] flex flex-row h-[30px] items-center border-b-1 border-[#DBDBDB]">

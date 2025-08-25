@@ -51,6 +51,7 @@ export const UserProfile = ({ exhibitionCount = 1 }) => {
         try {
           // 2-2. 이제 안전하게 userInfo.userId를 사용할 수 있습니다.
           const res = await getOnGoingExhibition(userInfo.userId); 
+          console.log("받아온 유저아이디: ", userInfo.userId);
           console.log('진행중인 전시 응답: ', res);
           setOnGoingExhibition(res);
         } catch (err) {
