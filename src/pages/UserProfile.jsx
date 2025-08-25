@@ -14,32 +14,69 @@ import { GoBackButton } from '../components/GoBackButton';
 import like_outline from '../assets/like_outline.svg';
 import like_purple from '../assets/like_purple.svg';
 import Poster16 from '../assets/posters/Poster16.png';
+import { useEffect } from 'react';
+import { getOnGoingExhibition } from '../apis/exhibition';
+import { getUserCard } from '../apis/user';
 
 export const UserProfile = ({ exhibitionCount = 1 }) => {
   const navigate = useNavigate();
   const [likeCount, setLikeCount] = useState(0);
   const [openAdd, setOpenAdd] = useState(false);
   const [liked, setLiked] = useState(false);
+  const [onGoingExhibition, setOnGoingExhibition] = useState([]);
+  const [userInfo, setUserInfo] = useState(null);
+
+  {/* 유저 정보 불러오기 로직 */}
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      try {
+        const res = await getUserCard();
+        setUserInfo(res);
+        console.log(res);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchUserInfo();
+  }, []);
+  console.log(userInfo);
+
+  {
+    /* 진행중인 전시 불러오기 로직 */
+  }
+  useEffect(() => {
+    // 2-1. userInfo에 값이 들어왔는지 먼저 확인합니다.
+    if (userInfo && userInfo.userId) {
+      const fetchAllOngoingExhibitions = async () => {
+        try {
+          // 2-2. 이제 안전하게 userInfo.userId를 사용할 수 있습니다.
+          const res = await getOnGoingExhibition(userInfo.userId); 
+          console.log('진행중인 전시 응답: ', res);
+          setOnGoingExhibition(res);
+        } catch (err) {
+          console.log('진행중인 전시 로딩 실패: ', err);
+        }
+      };
+      fetchAllOngoingExhibitions();
+    }
+  }, [userInfo]);
 
   const handleLikeToggle = () => {
     setLiked(!liked);
     setLikeCount((prev) => (liked ? prev - 1 : prev + 1));
   };
 
-  const handleGoToProfile = () => {
-    navigate(`/userprofile`);
-  };
-
   const levels = [null, glow_glow, glow_shine, glow_spark];
   const badgeSrc =
     exhibitionCount >= 4 ? glow_bloom : (levels[exhibitionCount] ?? glow_glow);
+    
   return (
     <div>
       <div className="flex flex-row w-full justify-center">
         <GoBackButton />
         <div className="flex mt-[12px] justify-center text-[16px] font-semibold text-center leading-[150%]"></div>
       </div>
-
+      {(onGoingExhibition.length > 0) ? (<div> 받아오고있음</div>) : (<div> 안받아오고있음</div>  )}
       {/* 상단 마이페이지, 프로필카드, 나의 전시 */}
       <div className="flex flex-row items-center gap-2.5 justify-center mt-[26px]">
         {/* <img src={profileCard} alt="프로필카드" /> */}
