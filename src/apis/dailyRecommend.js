@@ -1,12 +1,19 @@
 import axiosInstance from './axios';
 
-export const createDailyRecommendation = async ({user_id, date, recommendedExhibitions}) => {
+export const createDailyRecommendation = async ({
+  user_id,
+  date,
+  recommendedExhibitions,
+}) => {
   try {
-    const response = await axiosInstance.post(`/api/v1/users/${user_id}/daily-recommendations`, {
-      user_id,
-      date,
-      recommendedExhibitions,
-    });
+    const response = await axiosInstance.post(
+      `/api/v1/users/${user_id}/daily-recommendations`,
+      {
+        user_id,
+        date,
+        recommendedExhibitions,
+      }
+    );
 
     console.log('추천 생성 성공:', response.data);
     return response.data;
@@ -16,13 +23,25 @@ export const createDailyRecommendation = async ({user_id, date, recommendedExhib
   }
 };
 
-
-export const getDailyRecommend = async ({user_id}) => {
+export const getDailyRecommend = async ({ user_id }) => {
   try {
-    const res = await axiosInstance.get(`/api/v1/users/${user_id}/daily-recommendations`);
+    const res = await axiosInstance.get(
+      `/api/v1/users/${user_id}/daily-recommendations`
+    );
     return res.data;
   } catch (err) {
-    console.log('일일 추천 데이터 GET 실패: ', err?.response?.status, err?.response?.data);
+    console.log(
+      '일일 추천 데이터 GET 실패: ',
+      err?.response?.status,
+      err?.response?.data
+    );
     throw err;
   }
+};
+
+export const getRandomExhibitions = async () => {
+  const res = await axiosInstance.get('/api/v1/exhibitions/random');
+  const data = res.data;
+  if (Array.isArray(data)) return data;
+  return [];
 };
