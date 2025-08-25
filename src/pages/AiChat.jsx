@@ -62,7 +62,7 @@ const AiChat = () => {
                 <span className="text-[16px] leading-[125%] ">AI의 전시 추천받기</span>
             </div>
 
-            <div className="mt-[20px] flex flex-col self-start items-start w-full pr-[20px]">
+            <div className="mt-[20px] flex flex-col self-start items-center  w-full pr-[20px]">
                 <div className="flex flex-row gap-[12px] items-center justify-center">
                     {Array.from({length: 3}).map((_, index) => (
                       <UploadBox key={index} index={index} onImageChange={handleImageChange}/>
@@ -79,7 +79,7 @@ const AiChat = () => {
                 <div className="bg-gradient-to-r from-grad2-1 via-grad2-2 to-grad2-3 p-[2px] rounded-[37px]">
                   <div className="flex items-center bg-white rounded-[37px] pl-4 pr-2 py-[8px]">
                     <textarea
-                      className="flex-1 h-[54px] bg-transparent outline-none placeholder:text-grey07 text-[15px] resize-none overflow-hidden leading-[1.4]"
+                      className="flex-1 h-[37px] pl-1 bg-transparent outline-none placeholder:text-grey07 text-[15px] py-2 resize-none overflow-hidden leading-[1.4]"
                       placeholder='"홍대 근처 사진관 추천해줘."'
                       value={inputValue}
                       onChange={onChange}

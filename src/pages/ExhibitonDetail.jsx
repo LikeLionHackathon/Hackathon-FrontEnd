@@ -167,7 +167,7 @@ const ExhibitionDetail = () => {
                 </div>
             </div>
 
-            <div className="flex flex-col mt-[20px] mb-[30px] mx-[20px]">
+            { reasonSentences && (<div className="flex flex-col mt-[20px] mb-[30px] mx-[20px]">
                 <div className="flex flex-row gap-[5px] items-center">
                     <img src={tagImg} alt="hashtag" />
                     <h1 className="font-semibold text-[16px]">내가 좋아할 이유</h1>
@@ -178,7 +178,8 @@ const ExhibitionDetail = () => {
                             <p key={idx}>{sentence}</p>
                         ))}
                 </div>
-            </div>
+            </div>)}
+            
 
             {isOpen && 
             <ExhibitionModal 
