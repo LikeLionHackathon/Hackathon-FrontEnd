@@ -13,7 +13,7 @@ import { GoBackButton } from '../components/GoBackButton';
 import { getExhibitionLike, getRating } from '../apis/exhibition';
 import starImg from "../assets/star.svg";
 import { getUserPreferences } from '../apis/userPreference';
-import { getUserCard, sendIsArtist } from '../apis/user'
+import { getArtistExhibition, getUserCard, sendIsArtist } from '../apis/user'
 import profile from "../assets/profile.svg";
 
 export const MyPage = () => {
@@ -23,14 +23,15 @@ export const MyPage = () => {
   const [visitedList, setVisitedList] = useState([]);
   const [userTags, setUserTags] = useState([]);
   const [userInfo, setUserInfo] = useState(null);
-  //const [Type, setUserType] = useState("VIEWER");
+  const [exhibitionList, setExhibitionList] = useState([]);
+  // const [myExh, setMyExh] = useState(false);
 
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
         const res = await getUserCard();
         setUserInfo(res);
-        console.log(res);
+        //console.log(res);
       } catch (err) {
         console.log(err);
       }
@@ -92,6 +93,21 @@ const handleAddExhibition = () => {
   }, []);
   //console.log(userTags);
 
+  // useEffect(() => {
+  //   const fetchArtistExhibition = async () => {
+  //     try {
+  //       const res = await getArtistExhibition();
+  //       //console.log(res);
+  //       setExhibitionList(res);
+  //       setMyExh(true);
+  //     } catch (err) {
+  //       console.log(err);
+  //     }
+  //   }
+  //   fetchArtistExhibition();
+  // }, []);
+  //console.log(exhibitionList);
+
   const handleBack = () => {
       navigate(-1);
     }
@@ -103,7 +119,7 @@ const handleAddExhibition = () => {
   const handleChange = async () => {
     try {
       const res = await sendIsArtist();
-      console.log(res);
+      //console.log(res);
       setUserInfo(res);
     } catch (err) {
       console.log(err);
@@ -172,7 +188,7 @@ const handleAddExhibition = () => {
 
             <div className="w-[130px] h-[1px] bg-grey06 mt-[10px]" />
             <div className="flex flex-row mx-[18px] gap-[38px] mt-[12px]">
-              <div className="flex flex-col items-center">
+              <div className="flex flex-col items-center" onClick={() => navigate("/myexhibition")}>
                 <p className="text-[12px] text-[#7C7C7C] font-[400] leading-normal">
                   내 전시
                 </p>
@@ -200,16 +216,18 @@ const handleAddExhibition = () => {
               onClick={handleAddExhibition}
             >
               <p className='text-purple_main text-[12px]'><span className="underline decoration-purple_main underline-offset-2 decoration-0.5">
-    작가페이지
-  </span>에서 <br />전시 시작하기</p>
+                작가페이지
+              </span>에서 <br />전시 시작하기
+              </p>
             </button>
           </div>
         </div>
         
-      </div></>)}
-    
+      </div>
+      </>)}
 
-      {/* 구분선 */}
+      
+              {/* 구분선 */}
       <div className="w-screen h-[8px] bg-grey04 mt-[24px] mb-[12px]" />
 
       <div className="px-5">
@@ -344,6 +362,7 @@ const handleAddExhibition = () => {
           )}
         </div>
       </div>
+      
       <AddExhibitionModal
         open={openAdd}
         onClose={() => setOpenAdd(false)}

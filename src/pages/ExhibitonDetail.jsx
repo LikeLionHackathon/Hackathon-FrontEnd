@@ -23,6 +23,7 @@ const ExhibitionDetail = () => {
 
     const recommendationReason = location.state?.exhibition?.recommendationReason || "";
 
+
     const [exhibitionInfo, setExhibitionInfo] = useState(null); // 초기 상태를 null로 변경
     const [isOpen, setIsOpen] = useState(false);
     const [isVisited, setIsVisited] = useState(false);
