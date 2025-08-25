@@ -1,36 +1,36 @@
-import icon_ai from "../assets/icon_ai.svg"
+
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom"; // useParams 추가
+
+import icon_ai from "../assets/icon_ai.svg";
 import markImg from "../assets/bookmark.png";
 import visitImg from "../assets/visit.png";
 import posImg from "../assets/position.svg";
 import calImg from "../assets/cal.svg";
 import tagImg from "../assets/hashtag.svg";
+
 import Tag from "../components/ai/Tag";
 import Artist from "../components/exhibition/Artist";
-import ExhibitionModal from "../components/exhibition/ExhibitionModal"
-import { useEffect, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import ExhibitionModal from "../components/exhibition/ExhibitionModal";
 import Header from "../components/layout/Header.jsx";
-import { getDailyRecommend } from "../apis/dailyRecommend.js";
-import { getExhibitionById, sendExhibitionLike } from "../apis/exhibition.js";
-import { FaHandHoldingMedical } from "react-icons/fa";
 
+import { getExhibitionById } from "../apis/exhibition.js";
 
 const ExhibitionDetail = () => {
-    const location = useLocation();
     const nav = useNavigate();
-    const {id} = useParams();
+    const location = useLocation();
+    const { id } = useParams();
 
     const recommendationReason = location.state?.exhibition?.recommendationReason || "";
 
-    // console.log(location.state.exhibition);
-    // const { id, recommendationReason } = location.state.exhibition || {};
 
-    const [exhibitionInfo, setExhibitionInfo] = useState(null);
-    const [isLike, setIsLike] = useState(false);
+    const [exhibitionInfo, setExhibitionInfo] = useState(null); // 초기 상태를 null로 변경
+    const [isOpen, setIsOpen] = useState(false);
+    const [isVisited, setIsVisited] = useState(false);
 
     useEffect(() => {
-        
         const fetchExhibitionInfo = async () => {
+            // URL에서 가져온 id가 있을 때만 API를 호출합니다.
             if (id) {
                 try {
                     const result = await getExhibitionById(id);
@@ -41,13 +41,9 @@ const ExhibitionDetail = () => {
             }
         };
         fetchExhibitionInfo();
-    }, [id]);
+    }, [id]); // id가 변경될 때마다 데이터를 다시 가져옵니다.
 
-
-    const [isOpen, setIsOpen] = useState(false);
-    const [isVisited, setIsVisited] = useState(false);
-
-    const reasonSentences = recommendationReason 
+    const reasonSentences = recommendationReason
         ? recommendationReason.split("\n").map(s => s.trim()).filter(s => s.length > 0)
         : [];
 
@@ -55,6 +51,7 @@ const ExhibitionDetail = () => {
       nav(-1);
     }
 
+    // 데이터 로딩 중이거나 정보가 없을 때의 처리
     if (!exhibitionInfo) {
         return (
             <div className="mx-auto w-full max-w-[450px] text-center mt-20">
@@ -62,8 +59,8 @@ const ExhibitionDetail = () => {
             </div>
         );
     }
-    console.log(exhibitionInfo);
     
+    // 데이터가 로드된 후에 구조 분해 할당을 실행
     const {
         title,
         location: place, 
@@ -71,52 +68,37 @@ const ExhibitionDetail = () => {
         startDate,
         endDate,
         posterImage: posterImageUrl,
-        artworkUrl,
-        tags,
-        artists,
+        artworkUrl = [], // 기본값을 빈 배열로 설정하여 에러 방지
+        tags = [],
+        artists = [],
         ongoing
     } = exhibitionInfo;
 
-    const handleClick = async () => {
-        try {
-            const result = await sendExhibitionLike({
-                exhibitionId: id,
-            });
-            console.log("응답 성공: ", result);
-            setIsLike(true);
-        } catch(err) {
-            console.log("실패: ", err);
-            alert("가보고 싶어요 등록을 실패했습니다. 다시 시도해주세요.");
-        }
-    }
-
     return (
         <div className="mx-auto w-full max-w-[450px]">
-            
             <div className="flex flex-col ml-[21px]">
                 <Header onClick={handleBack}/>
-                <div className="flex gap-[5px]">
-                    <img src={icon_ai} alt="ai icon" />
-                    <span className="text-[16px] leading-[125%] ">AI의 전시 추천받기</span>
-                </div>
+                {recommendationReason && (
+                    <div className="flex gap-[5px]">
+                        <img src={icon_ai} alt="ai icon" />
+                        <span className="text-[16px] leading-[125%] ">AI의 전시 추천받기</span>
+                    </div>
+                )}
             </div>
 
             <div className="mx-[20px] h-[414px] mt-[7px] border border-y-grey05 border-x-0">
                 <div className="w-[276px] h-[390px] mx-auto my-[12px]">
-                    <img src={posterImageUrl} alt="poster" className="w-full h-full" />
+                    <img src={posterImageUrl} alt="poster" className="w-full h-full object-cover" />
                 </div>
             </div>
-
+            
+            {/* --- 이하 JSX 코드는 데이터가 존재할 때만 렌더링되므로 안전합니다. --- */}
             <div className="flex flex-col mx-[20px] mt-[12px]">
                 <div className="flex place-content-between h-[48px]">
-                    <button 
-                        className={`flex flex-row justify-center items-center w-[168px] ${isLike ? 'bg-lightpurple02' : 'bg-grey01'} gap-[12px] rounded-[5px] cursor-pointer`}
-                        onClick={handleClick}    
-                    >
+                    <button className="flex flex-row justify-center items-center w-[168px] bg-grey01 gap-[12px] rounded-[5px] cursor-pointer">
                         <img src={markImg} alt="가보고 싶어요" className="w-[40px] h-[40px]"/>
                         <p className="font-bold text-[14px]">가보고 싶어요</p>
                     </button>
-
                     <button 
                         className={`flex flex-row justify-center items-center w-[168px] gap-[12px] rounded-[5px] cursor-pointer ${isVisited ? 'bg-lightpurple02 text-purple_main' : 'bg-grey01 text-black'}`}
                         onClick={() => setIsOpen(true)}    
@@ -125,15 +107,12 @@ const ExhibitionDetail = () => {
                         <p className="font-bold text-[14px]">방문했어요</p>
                     </button>
                 </div>
-
                 <div className="flex flex-col mt-[16px]">
                     <h1 className="font-bold text-[24px]">{title}</h1>
                     <div className="flex mt-[16px] gap-[16px]">
-                        {artists.map((artist, idx) => {
-                            <Artist key={idx} name={artist.nickname} id={artist.userId} />
-                        })}
-                        <Artist name={"박서영"}/>
-                        <Artist name={"황영준"} />
+                        {artists.map((artist) => (
+                            <Artist key={artist.userId} name={artist.nickname} id={artist.userId} />
+                        ))}
                     </div>
                 </div>
             </div>
@@ -189,7 +168,7 @@ const ExhibitionDetail = () => {
                 </div>
             </div>
 
-            <div className="flex flex-col mt-[20px] mb-[30px] mx-[20px]">
+            { reasonSentences && (<div className="flex flex-col mt-[20px] mb-[30px] mx-[20px]">
                 <div className="flex flex-row gap-[5px] items-center">
                     <img src={tagImg} alt="hashtag" />
                     <h1 className="font-semibold text-[16px]">내가 좋아할 이유</h1>
@@ -200,7 +179,8 @@ const ExhibitionDetail = () => {
                             <p key={idx}>{sentence}</p>
                         ))}
                 </div>
-            </div>
+            </div>)}
+            
 
             {isOpen && 
             <ExhibitionModal 
