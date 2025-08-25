@@ -42,14 +42,6 @@ export const Login = () => {
     }
   };
 
-  const handleFindId = () => {
-    navigate('/find-id');
-  };
-
-  const handleResetPassword = () => {
-    navigate('/reset-password');
-  };
-
   const handleSignUp = () => {
     navigate('/signup');
   };
