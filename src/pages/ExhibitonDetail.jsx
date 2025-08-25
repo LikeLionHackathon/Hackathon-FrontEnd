@@ -1,23 +1,22 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom'; // useParams 추가
-
 import icon_ai from '../assets/icon_ai.svg';
 import markImg from '../assets/bookmark.png';
 import visitImg from '../assets/visit.png';
 import posImg from '../assets/position.svg';
 import calImg from '../assets/cal.svg';
 import tagImg from '../assets/hashtag.svg';
-
-import Tag from '../components/ai/Tag';
 import Artist from '../components/exhibition/Artist';
 import ExhibitionModal from '../components/exhibition/ExhibitionModal';
 import Header from '../components/layout/Header.jsx';
-
-import { getExhibitionById } from '../apis/exhibition.js';
+import Tag from '../components/ai/Tag';
+import { getDailyRecommend } from '../apis/dailyRecommend.js';
+import { getExhibitionById, sendExhibitionLike } from '../apis/exhibition.js';
+import { FaHandHoldingMedical } from 'react-icons/fa';
 
 const ExhibitionDetail = () => {
-  const nav = useNavigate();
   const location = useLocation();
+  const nav = useNavigate();
   const { id } = useParams();
 
   const recommendationReason =
@@ -26,6 +25,7 @@ const ExhibitionDetail = () => {
   const [exhibitionInfo, setExhibitionInfo] = useState(null); // 초기 상태를 null로 변경
   const [isOpen, setIsOpen] = useState(false);
   const [isVisited, setIsVisited] = useState(false);
+  const [isLike, setIsLike] = useState(false);
 
   useEffect(() => {
     const fetchExhibitionInfo = async () => {
@@ -53,7 +53,6 @@ const ExhibitionDetail = () => {
     nav(-1);
   };
 
-  // 데이터 로딩 중이거나 정보가 없을 때의 처리
   if (!exhibitionInfo) {
     return (
       <div className="mx-auto w-full max-w-[450px] text-center mt-20">
@@ -62,7 +61,6 @@ const ExhibitionDetail = () => {
     );
   }
 
-  // 데이터가 로드된 후에 구조 분해 할당을 실행
   const {
     title,
     location: place,
@@ -75,6 +73,19 @@ const ExhibitionDetail = () => {
     artists = [],
     ongoing,
   } = exhibitionInfo;
+
+  const handleClick = async () => {
+    try {
+      const result = await sendExhibitionLike({
+        exhibitionId: id,
+      });
+      console.log('응답 성공: ', result);
+      setIsLike(true);
+    } catch (err) {
+      console.log('실패: ', err);
+      alert('가보고 싶어요 등록을 실패했습니다. 다시 시도해주세요.');
+    }
+  };
 
   return (
     <div className="mx-auto w-full max-w-[450px]">
@@ -100,10 +111,12 @@ const ExhibitionDetail = () => {
         </div>
       </div>
 
-      {/* --- 이하 JSX 코드는 데이터가 존재할 때만 렌더링되므로 안전합니다. --- */}
       <div className="flex flex-col mx-[20px] mt-[12px]">
         <div className="flex place-content-between h-[48px]">
-          <button className="flex flex-row justify-center items-center w-[168px] bg-grey01 gap-[12px] rounded-[5px] cursor-pointer">
+          <button
+            className={`flex flex-row justify-center items-center w-[168px] ${isLike ? 'bg-lightpurple02' : 'bg-grey01'} gap-[12px] rounded-[5px] cursor-pointer`}
+            onClick={handleClick}
+          >
             <img
               src={markImg}
               alt="가보고 싶어요"
@@ -111,6 +124,7 @@ const ExhibitionDetail = () => {
             />
             <p className="font-bold text-[14px]">가보고 싶어요</p>
           </button>
+
           <button
             className={`flex flex-row justify-center items-center w-[168px] gap-[12px] rounded-[5px] cursor-pointer ${isVisited ? 'bg-lightpurple02 text-purple_main' : 'bg-grey01 text-black'}`}
             onClick={() => setIsOpen(true)}
@@ -123,16 +137,18 @@ const ExhibitionDetail = () => {
             <p className="font-bold text-[14px]">방문했어요</p>
           </button>
         </div>
+
         <div className="flex flex-col mt-[16px]">
           <h1 className="font-bold text-[24px]">{title}</h1>
           <div className="flex mt-[16px] gap-[16px]">
-            {artists.map((artist) => (
+            {artists.map((artist, idx) => {
               <Artist
-                key={artist.userId}
+                key={idx}
                 name={artist.nickname}
                 id={artist.userId}
-              />
-            ))}
+                profile={artist.profileImageUrl}
+              />;
+            })}
           </div>
         </div>
       </div>
