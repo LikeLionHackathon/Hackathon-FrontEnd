@@ -14,13 +14,21 @@ import MessagePage from './pages/MessagePage';
 import { SearchExhibitions } from './pages/SearchExhibitions';
 import MyExhibitionList from './pages/MyExhibitionList';
 import { UserProfile } from './pages/UserProfile';
+import { useState } from 'react';
 
 function App() {
+
+  const IsUserInfo = localStorage.getItem("userId");
+  console.log(IsUserInfo);
+
+
+
   return (
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<Layout />}>
           <Route index element={<MainPage />}/>
+          {IsUserInfo ? (<>
           <Route path='aiChat' element={<AiChat/> }/>
           <Route path='myPage' element={<MyPage/>}></Route>
           <Route path='/exhibitionList' element={<ExhibitionList />} />
@@ -33,6 +41,9 @@ function App() {
           <Route path='/message' element={<MessagePage />} />
           <Route path='/searchExhibitions' element={<SearchExhibitions/>}></Route>
           <Route path='/myexhibition' element={<MyExhibitionList />} />
+          </>) : (
+            <Route path='/login' element={<Login />}></Route>
+          )}
         </Route>
       </Routes>
     </BrowserRouter>
