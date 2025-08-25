@@ -71,17 +71,26 @@ export const SearchExhibitions = () => {
               <div
                 key={exhibition.exhibitionId}
                 className="cursor-pointer"
-                onClick={() => navigate(`/exhibitionDetail/${exhibition.exhibitionId}`)}
+                onClick={() =>
+                  navigate(`/exhibitionDetail/${exhibition.exhibitionId}`)
+                }
               >
-                <img
-                  src={exhibition.posterImageUrl}
-                  alt={exhibition.title}
-                  className="w-full h-[220px] object-cover rounded-lg mb-2"
-                />
-                <h3 className="font-semibold truncate">{exhibition.title}</h3>
-                <p className="text-sm text-gray-600">
-                  {exhibition.startDate} ~ {exhibition.endDate}
-                </p>
+                <div className="px-5">
+                  <div className="w-full flex flex-row gap-[15px] h-[136px] mt-[8px]">
+                    <img
+                      src={exhibition.posterImageUrl}
+                      alt={exhibition.title}
+                      className="w-full h-[220px] object-cover rounded-lg mb-2"
+                    />
+                    <h3 className="font-semibold truncate">
+                      {exhibition.title}
+                    </h3>
+                    <p className="text-sm text-gray-600">
+                      {exhibition.startDate} ~ {exhibition.endDate}
+                    </p>
+                    <div className="w-full h-[1px] bg-grey06 mt-[34px]" />
+                  </div>
+                </div>
               </div>
             ))}
           </div>

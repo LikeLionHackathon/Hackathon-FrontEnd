@@ -10,10 +10,9 @@ import ExhibitionDetailConfirm from './pages/ExhibitionDetailConfirm';
 import Onboarding from './pages/OnBoarding';
 import { Login } from './pages/Login';
 import RentPage from './pages/RentPage';
-import { ArtistProfile } from './pages/ArtistProfile';
 import MessagePage from './pages/MessagePage';
 import { SearchExhibitions } from './pages/SearchExhibitions';
-
+import { UserProfile } from './pages/UserProfile';
 
 function App() {
   return (
@@ -29,7 +28,7 @@ function App() {
           <Route path="/onboarding" element={<Onboarding />} />
           <Route path='/login' element={<Login />}></Route>
           <Route path='/rent' element={<RentPage />} />
-          <Route path='/userprofile' element={<ArtistProfile />}></Route>
+          <Route path='/userprofile' element={<UserProfile />}></Route>
           <Route path='/message' element={<MessagePage />} />
           <Route path='/searchExhibitions' element={<SearchExhibitions/>}></Route>
         </Route>
