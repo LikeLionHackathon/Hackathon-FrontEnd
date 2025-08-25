@@ -361,8 +361,8 @@ export const MainPage = () => {
           <div>
             <div className="mx-auto w-full max-w-[420px] px-5 py-4">
               <h2 className="font-semibold text-[20px] leading-[125%]">
-                <p>선호하시는 </p>
-                <span className="text-purple01">{tag}</span> 태그의 전시들
+                <p>선호하시는 <span className="text-purple01">#{tag}</span> 태그의 전시들</p>
+                
               </h2>
             </div>
 
