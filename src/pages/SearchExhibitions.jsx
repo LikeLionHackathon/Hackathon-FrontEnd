@@ -1,23 +1,22 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import search_icon from '../assets/search_icon.svg';
-import { searchExhibitionsByTitle } from '../apis/exhibition'; // 1단계에서 만든 함수 import
+import { searchExhibitionsByTitle } from '../apis/exhibition';
 
 export const SearchExhibitions = () => {
   const navigate = useNavigate();
-  const [query, setQuery] = useState(''); // 검색어 상태
-  const [results, setResults] = useState([]); // 검색 결과 상태
-  const [loading, setLoading] = useState(false); // 로딩 상태
-  const [searched, setSearched] = useState(false); // 검색을 한 번이라도 했는지 여부
+  const [query, setQuery] = useState('');
+  const [results, setResults] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [searched, setSearched] = useState(false);
 
-  // 검색 실행 함수
   const handleSearch = async () => {
     if (!query.trim()) {
       alert('검색어를 입력해주세요.');
       return;
     }
     setLoading(true);
-    setSearched(true); // 검색 버튼을 눌렀음을 표시
+    setSearched(true);
     try {
       const data = await searchExhibitionsByTitle(query);
       setResults(data);
@@ -29,7 +28,6 @@ export const SearchExhibitions = () => {
     }
   };
 
-  // Enter 키를 눌렀을 때 검색 실행
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
       handleSearch();
@@ -66,30 +64,27 @@ export const SearchExhibitions = () => {
         ) : searched && results.length === 0 ? (
           <p className="text-center text-gray-500">검색 결과가 없습니다.</p>
         ) : (
-          <div className="grid grid-cols-2 gap-4">
+          <div className="flex flex-col">
             {results.map((exhibition) => (
               <div
                 key={exhibition.exhibitionId}
-                className="cursor-pointer"
-                onClick={() =>
-                  navigate(`/exhibitionDetail/${exhibition.exhibitionId}`)
-                }
+                // UserProfile의 레이아웃과 스타일을 적용
+                className="w-full flex flex-row gap-[15px] py-4 border-b border-grey06 cursor-pointer"
+                onClick={() => navigate(`/exhibitionDetail/${exhibition.exhibitionId}`)}
               >
-                <div className="px-5">
-                  <div className="w-full flex flex-row gap-[15px] h-[136px] mt-[8px]">
-                    <img
-                      src={exhibition.posterImageUrl}
-                      alt={exhibition.title}
-                      className="w-full h-[220px] object-cover rounded-lg mb-2"
-                    />
-                    <h3 className="font-semibold truncate">
-                      {exhibition.title}
-                    </h3>
-                    <p className="text-sm text-gray-600">
-                      {exhibition.startDate} ~ {exhibition.endDate}
-                    </p>
-                    <div className="w-full h-[1px] bg-grey06 mt-[34px]" />
-                  </div>
+                <img
+                  src={exhibition.posterImageUrl}
+                  alt={exhibition.title}
+                  // UserProfile의 이미지 스타일 적용
+                  className="w-[92px] h-[120px] object-cover rounded"
+                />
+                <div className="flex flex-col flex-1 justify-center">
+                  <p className="text-[16px] font-[600] leading-1.5">
+                    {exhibition.title}
+                  </p>
+                  <p className="text-[14px] text-darkgrey03 font-[500] leading-[21px] mt-2">
+                    {exhibition.startDate} <br />- {exhibition.endDate}
+                  </p>
                 </div>
               </div>
             ))}
