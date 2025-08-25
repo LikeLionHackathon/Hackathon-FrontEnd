@@ -72,6 +72,7 @@ const handleAddExhibition = () => {
         const res = await getRating();
         //console.log("전시 성공: ", res);
         setVisitedList(res);
+        console.log(visitedList);
       } catch (err) {
         console.log(err);
       }
@@ -265,7 +266,7 @@ const handleAddExhibition = () => {
                 </p>
                 <div className='mt-2.5 flex flex-row justify-center items-center gap-[2px]'>
                   <img src={starImg} alt="star" className='w-[20px]' />
-                  <p className='text-purple_main text-[12px]'>{exh.rating || 0}</p>
+                  <p className='text-purple_main text-[12px]'>{exh.rate}</p>
                 </div>
               </div>
               <div className="flex flex-row gap-2 mt-0.5 ml-3 text-[14px] font-medium leading-[150%] text-darkgrey03">

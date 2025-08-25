@@ -90,18 +90,6 @@ export const Login = () => {
       <div className="flex flex-between gap-3 text-darkgrey01 text-[14px]">
         <div
           className="border-b-[1px] border-darkgrey01 cursor-pointer"
-          onClick={handleFindId}
-        >
-          아이디 찾기
-        </div>
-        <div
-          className="border-b-[1px] border-darkgrey01 cursor-pointer"
-          onClick={handleResetPassword}
-        >
-          비밀번호 재설정
-        </div>
-        <div
-          className="border-b-[1px] border-darkgrey01 cursor-pointer"
           onClick={handleSignUp}
         >
           회원가입

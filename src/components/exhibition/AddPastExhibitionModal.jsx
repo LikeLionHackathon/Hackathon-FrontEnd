@@ -435,7 +435,7 @@ function StepPending() {
   return (
     <div className="flex flex-col items-center justify-center bg-white gap-1">
       <div className="w-full h-full rounded-[10px] bg-white place-items-center">
-        <p className="font-semibold text-purple01 text-[15px]">
+        <p className="font-semibold text-purple01 text-[15px] mt-[100px]">
           상세 페이지 제작 중...
         </p>
         <img src={writing} alt="제작 중..." />

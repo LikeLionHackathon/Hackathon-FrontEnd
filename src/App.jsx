@@ -15,14 +15,10 @@ import { SearchExhibitions } from './pages/SearchExhibitions';
 import MyExhibitionList from './pages/MyExhibitionList';
 import { UserProfile } from './pages/UserProfile';
 import { FirstStep } from './pages/FirstStep';
-import { useState } from 'react';
 
 function App() {
-
   const IsUserInfo = localStorage.getItem("userId");
   console.log(IsUserInfo);
-
-
 
   return (
     <BrowserRouter>

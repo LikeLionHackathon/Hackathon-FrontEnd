@@ -66,7 +66,7 @@ export const MainPage = () => {
   useEffect(() => {
     const fetchRecommendations = async () => {
       try {
-        const res = await getTagRecommendations(userInfo.userId, userInfo.tags[0]);
+        const res = await getTagRecommendations(userInfo.userId, userInfo.tag);
         console.log('태그별 추천 응답: ', res);
         setRecommendations(res);
       } catch (err) {
