@@ -47,13 +47,13 @@ function StepBasic({ data, update, errors, invited, onInviteSlot }) {
         )}
       </div>
 
-      <div className="mt-10">
+      {/* <div className="mt-10">
         <p className="text-[16px] font-semibold mt-3">
           함께 참여하는 작가가 있나요?
         </p>
 
         {/* 🔹초대 슬롯 4개 (오버레이로 검색) */}
-        <div className="mt-3 flex gap-3">
+        {/* <div className="mt-3 flex gap-3">
           {invited.map((user, i) => (
             <button
               key={i}
@@ -78,7 +78,7 @@ function StepBasic({ data, update, errors, invited, onInviteSlot }) {
             </button>
           ))}
         </div>
-      </div>
+      </div> */}
 
       {/* 날짜 입력 */}
       <div>
@@ -445,7 +445,7 @@ function StepPending() {
 }
 
 /* ── 컨트롤러 ───────────────────────────────────────────────── */
-export default function AddExhibitionModal({ open, onClose, onSubmit }) {
+export default function AddPastExhibitionModal({ open, onClose, onSubmit }) {
   const navigate = useNavigate();
 
   const [step, setStep] = useState(0);

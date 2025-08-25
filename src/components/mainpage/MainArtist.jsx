@@ -3,14 +3,22 @@ import PlaceCard from "./PlaceCard";
 import artImg from "../../assets/art.png";
 import { useState } from "react";
 import AddExhibitionModal from "../exhibition/AddExhibitionModal";
+import AddPastExhibitionModal from "../exhibition/AddPastExhibitionModal"
 import ArtistModal from "./ArtistModal";
 import profile_minwu from "../../assets/profile_minwu.png";
+import { useNavigate } from "react-router-dom";
 
 const MainArtist = () => {
+    const [openPastAdd, setOpenPastAdd] = useState(false);
     const [openAdd, setOpenAdd] = useState(false);
     const [openMessage, setOpenMessage] = useState(false);
     const [ArtistName, setArtistName] = useState("");
+    const nav = useNavigate();
     
+    const handleAddPastExhibition = () => {
+        setOpenPastAdd(true);
+    }
+
     const handleAddExhibition = () => {
         setOpenAdd(true);
     };
@@ -20,12 +28,17 @@ const MainArtist = () => {
         setOpenMessage(true);
     }
 
+    const handleModal = ({name}) => {
+        nav("/message", {state: {name}});
+    }
+
     return (
         <div className="mx-auto w-full max-w-[450px] pl-[22px] mt-[23px]">
             <div className="w-full h-[145px] pr-[20px] mb-[32px]">
                 <div className="w-full h-full bg-lightpurple01 rounded-[15px] flex flex-row justify-center items-center gap-[21px]">
                     <div 
-                        className="w-[146px] h-[115px] bg-grey01 rounded-[5px] flex flex-col justify-center items-center cursor-pointer">
+                        className="w-[146px] h-[115px] bg-grey01 rounded-[5px] flex flex-col justify-center items-center cursor-pointer"
+                        onClick={handleAddPastExhibition}>
                         <img src={artImg} alt="전시 등록" className="w-[38px] h-[38px]"/>
                         <p className="text-[13px] font-semibold">지난 전시</p>
                         <p className="text-[13px] font-semibold">기록하기</p>
@@ -71,9 +84,18 @@ const MainArtist = () => {
                 </div>
             </div>
 
+            <AddPastExhibitionModal
+            open={openPastAdd}
+            onClose={() => setOpenPastAdd(false)}
+            onSubmit={(data) => {
+                console.log('전시 등록 데이터:', data);
+                // TODO: API 연결해서 저장
+            }}
+            />
+
             <AddExhibitionModal
             open={openAdd}
-            onClose={() => setOpenAdd(false)}
+            onClose={() => setOpenPastAdd(false)}
             onSubmit={(data) => {
                 console.log('전시 등록 데이터:', data);
                 // TODO: API 연결해서 저장
@@ -86,6 +108,7 @@ const MainArtist = () => {
                 name={ArtistName}
                 text={"전시 협업 문의 메세지를 "}
                 type={"메세지를"}
+                onClick={() => handleModal(ArtistName)}
             />
         </div>
     )

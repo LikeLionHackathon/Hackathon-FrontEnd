@@ -17,16 +17,41 @@ export const sendRating = async ({exhibitionId, rate, userId}) => {
     }
 }
 
-// // 전시 등록정보 전체 조회 (최신순)
-// export const getExhibitions = async () => {
-//   try {
-//     const res = await axiosInstance.get('/api/v1/exhibitions?sort=registeredDate&direction=ASC');
-//     return res.data;
-//   } catch (error) {
-//     console.error('전시 목록을 불러오는 데 실패했습니다:', error);
-//     throw error; // 에러를 호출한 곳에서 처리하도록 다시 던짐
-//   }
-// };
+export const getRating = async () => {
+  const res = await axiosInstance.get('api/v1/exhibitions/visited', {
+    withCredentials: true,
+  })
+  console.log("갔던 전시: ", res.data);
+  const visitedList = res.data;
+
+  if (Array.isArray(visitedList)) return visitedList;
+  return [];
+} 
+
+export const sendExhibitionLike = async ({exhibitionId}) => {
+  try {
+    const res = await axiosInstance.post(`/api/v1/exhibitions/${exhibitionId}/likes `, {
+      exhibitionId
+    }, {
+      withCredentials: true,
+    });
+    console.log("전시 좋아요 성공: ", res.data);
+  } catch (err) {
+    console.log("전시 좋아요 실패: ", err);
+    throw err;
+  }
+}
+
+export const getExhibitionLike = async () => {
+  const res = await axiosInstance.get('/api/v1/exhibitions/likes', {
+    withCredentials: true,
+  });
+  console.log("가보고 싶은 전시: ", res.data);
+  const likeList = res.data;
+
+  if (Array.isArray(likeList)) return likeList;
+  return [];
+}
 
 export const getExhibitions = async () => {
   const res = await axiosInstance.get('/api/v1/exhibitions?sort=registeredDate&direction=DESC', {
@@ -97,3 +122,15 @@ export const updateExhibitionImages = async (exhibitionId, imageData) => {
   }
 };
 
+export const searchExhibitionsByTitle = async (title) => {
+  try {
+    // encodeURIComponent는 검색어에 특수문자(공백 등)가 있을 경우를 대비해 사용합니다.
+    const response = await axiosInstance.get(
+      `/api/v1/exhibitions/search?title=${encodeURIComponent(title)}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Search API Error:", error);
+    throw error;
+  }
+};

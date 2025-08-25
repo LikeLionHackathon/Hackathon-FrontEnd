@@ -50,9 +50,9 @@ export const createMyExhibition = async (exhibitionData) => {
   }
 };
 
-export const getMyExhibitions = async () => {
+export const getMyExhibitions = async ( exhibitionId ) => {
   try {
-    const res = await axiosInstance.get(`/api/v1/exhibitions`);
+    const res = await axiosInstance.get(`/api/v1/exhibitions/${exhibitionId}`);
     return res.data;
   } catch (err) {
     console.log(

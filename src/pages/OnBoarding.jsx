@@ -149,10 +149,12 @@ export default function Onboarding() {
     });
     console.log(preferenceAnswers);
     console.log('Final onboarding data:', payload);
+    const userType = payload.role === "artist" ? 1 : 0
+    console.log(userType);
     // 실제 API 호출 로직
 
     try {
-      await postUserPreferences({preferenceAnswers});
+      await postUserPreferences({preferenceAnswers, userType});
       console.log("성공");
     } catch(err) {
       console.log("실패: ", err);
