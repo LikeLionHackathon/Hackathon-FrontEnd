@@ -77,7 +77,6 @@ export const UserProfile = ({ exhibitionCount = 1 }) => {
         <GoBackButton />
         <div className="flex mt-[12px] justify-center text-[16px] font-semibold text-center leading-[150%]"></div>
       </div>
-      {(onGoingExhibition.length > 0) ? (<div> 받아오고있음</div>) : (<div> 안받아오고있음</div>  )}
       {/* 상단 마이페이지, 프로필카드, 나의 전시 */}
       <div className="flex flex-row items-center gap-2.5 justify-center mt-[26px]">
         {/* <img src={profileCard} alt="프로필카드" /> */}
