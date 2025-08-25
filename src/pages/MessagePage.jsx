@@ -9,6 +9,7 @@ const MessagePage = () => {
     //console.log(location.state);
 
     const [message, setMessage] = useState("");
+    const [que, setQue] = useState("");
 
     const handleBack = () => {
       nav(-1);
@@ -18,9 +19,13 @@ const MessagePage = () => {
         setMessage(e.target.value);
     }
 
+    const handleMessage = () => {
+
+    }
+
     return (
         <div className="mx-auto w-full max-w-[450px] bg-grey02 min-h-screen">
-            <div className="w-full bg-white pl-[23px]">
+            <div className="w-full bg-white pl-[20px]">
                 <Header onClick={handleBack} />
             </div>
             <div className="bg-grey02 max-h-fit">
@@ -38,7 +43,8 @@ const MessagePage = () => {
                     <img 
                         src={sendImg} 
                         alt="send message" 
-                        className="absolute top-[8px] right-[25px]"    
+                        className="absolute top-[8px] right-[25px]"  
+                        onClick={handleMessage}  
                     />
                     
                 </div>

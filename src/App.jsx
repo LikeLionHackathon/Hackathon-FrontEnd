@@ -12,6 +12,7 @@ import { Login } from './pages/Login';
 import RentPage from './pages/RentPage';
 import MessagePage from './pages/MessagePage';
 import { SearchExhibitions } from './pages/SearchExhibitions';
+import MyExhibitionList from './pages/MyExhibitionList';
 import { UserProfile } from './pages/UserProfile';
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
           <Route path='/userprofile' element={<UserProfile />}></Route>
           <Route path='/message' element={<MessagePage />} />
           <Route path='/searchExhibitions' element={<SearchExhibitions/>}></Route>
+          <Route path='/myexhibition' element={<MyExhibitionList />} />
         </Route>
       </Routes>
     </BrowserRouter>
