@@ -114,7 +114,7 @@ const handleAddExhibition = () => {
 
   const levels = [null, glow_glow, glow_shine, glow_spark];
   const badgeSrc =
-    exhibitionCount >= 4 ? glow_bloom : (levels[exhibitionCount] ?? glow_glow);
+    userInfo.exhibitionCount >= 4 ? glow_bloom : (levels[userInfo.exhibitionCount] ?? glow_glow);
   return (
     <div>
       <div className="flex flex-row w-full justify-center">
@@ -161,7 +161,7 @@ const handleAddExhibition = () => {
             <div className="w-[94px] h-[94px] rounded-full bg-[#7c7c7c] mt-[14px] border-[#FFF] border-[5px]">
               {/* <img src="" alt="" /> 프로필 사진 들어갈 자리 */}
             </div>
-            <p className="text-[14px] font-[800] mt-[14px] z-10">이름</p>
+            <p className="text-[14px] font-[800] mt-[14px] z-10">{userInfo.username}</p>
             <div className="w-[52px] h-[12px] shrink-0 rounded-[7.5px] bg-[#E1E1FE] -my-3 z-0" />
             <div className="w-[32px] h-[16px] mt-[26px] z-5">
               <img src={artist_tag} alt="" />
@@ -177,13 +177,13 @@ const handleAddExhibition = () => {
                 <p className="text-[12px] text-[#7C7C7C] font-[400] leading-normal">
                   내 전시
                 </p>
-                <p>{exhibitionCount}</p>
+                <p>{userInfo.exhibitionCount}</p>
               </div>
               <div className="flex flex-col items-center">
                 <p className="text-[12px] text-[#7C7C7C] font-[400] leading-normal">
                   좋아요
                 </p>
-                <p>{likeCount}</p>
+                <p>{userInfo.likeCount}</p>
               </div>
             </div>
           </div>
