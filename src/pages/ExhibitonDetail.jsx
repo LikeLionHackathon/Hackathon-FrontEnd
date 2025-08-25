@@ -8,7 +8,7 @@ import Tag from "../components/ai/Tag";
 import Artist from "../components/exhibition/Artist";
 import ExhibitionModal from "../components/exhibition/ExhibitionModal"
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Header from "../components/layout/Header.jsx";
 import { getDailyRecommend } from "../apis/dailyRecommend.js";
 import { getExhibitionById, sendExhibitionLike } from "../apis/exhibition.js";
@@ -18,9 +18,12 @@ import { FaHandHoldingMedical } from "react-icons/fa";
 const ExhibitionDetail = () => {
     const location = useLocation();
     const nav = useNavigate();
+    const {id} = useParams();
 
-    console.log(location.state.exhibition);
-    const { id, recommendationReason } = location.state.exhibition || {};
+    const recommendationReason = location.state?.exhibition?.recommendationReason || "";
+
+    // console.log(location.state.exhibition);
+    // const { id, recommendationReason } = location.state.exhibition || {};
 
     const [exhibitionInfo, setExhibitionInfo] = useState(null);
     const [isLike, setIsLike] = useState(false);

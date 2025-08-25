@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
 import { getArtistExhibition } from "../apis/user";
+import { useNavigate } from "react-router-dom";
+import { GoBackButton } from '../components/GoBackButton';
 
 const MyExhibitionList = () => {
     const [exhibitionList, setExhibitionList] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchArtistExhibition = async () => {
@@ -17,8 +20,24 @@ const MyExhibitionList = () => {
         }
         fetchArtistExhibition();
       }, []);
+
+       const handleBack = () => {
+        navigate(-1);
+      }
+
+      const handleDetail = ({id}) => {
+        navigate(`/exhibitionDetail/${id}`);
+      }
+      
     return (
         <div>
+          <div className="flex flex-row w-full justify-center">
+            <GoBackButton  onClick={handleBack}/>
+            <div className="flex mt-[12px] justify-center text-[16px] font-semibold text-center leading-[150%]">
+              마이페이지
+            </div>
+          </div>
+
         <div className="px-5">
                 <div className="w-full h-[1px] bg-grey06 mt-[13px]" />
               </div>
