@@ -24,7 +24,7 @@ const CARD_W = 284; // 카드 가로
 const GAP = 16; // gap-4
 
 export const MainPage = () => {
-  const usertype = 'VIEWER'; // 임시 유저 타입 (VIEWER 또는 ARTIST)
+  const userType = 'VIEWER'; // 임시 유저 타입 (VIEWER 또는 ARTIST)
   const location = useLocation();
 
   const [recommendations, setRecommendations] = useState([]);
@@ -66,7 +66,7 @@ export const MainPage = () => {
   useEffect(() => {
     const fetchRecommendations = async () => {
       try {
-        const res = await getTagRecommendations(userInfo.userId, userInfo.tag);
+        const res = await getTagRecommendations(userInfo.userId, userInfo.tags.tagId);
         console.log('태그별 추천 응답: ', res);
         setRecommendations(res);
       } catch (err) {
@@ -83,14 +83,14 @@ export const MainPage = () => {
   const scrollerRef = useRef(null);
   const [idx, setIdx] = useState(0); // 0,1,2
   const initialTab =
-    location.state?.tab === 'artist' && usertype === 'VIEWER'
+    location.state?.tab === 'artist' && userType === 'VIEWER'
       ? 'artist'
       : 'home';
   const [version, setVersion] = useState(initialTab);
 
   useEffect(() => {
     if (location.state?.tab || location.state?.autoOpenAdd) {
-      if (location.state?.tab === 'artist' && usertype === 'VIEWER') {
+      if (location.state?.tab === 'artist' && userType === 'VIEWER') {
         setVersion('artist');
       }
       navigate('.', { replace: true, state: {} });
@@ -154,7 +154,7 @@ export const MainPage = () => {
               홈
             </button>
           </div>
-          {usertype === 'VIEWER' && (
+          {userType === 'VIEWER' && (
             <div className="w-[50px] h-[14px] border-l-2 border-l-grey08 flex items-center justify-end">
               <div>
                 <button
