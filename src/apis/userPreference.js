@@ -5,7 +5,9 @@ export const getUserPreferences = async () => {
         const res = await axiosInstance.get('/api/v1/preferences', {
             withCredentials: true,
         });
-        return res.data;
+        const userTag = res.data;
+        if (Array.isArray(userTag)) return userTag;
+        return [];
     }
     catch (err) {
         console.log('유저 선호 데이터 GET 실패: ', err);
