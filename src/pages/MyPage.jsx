@@ -14,7 +14,8 @@ import { GoBackButton } from '../components/GoBackButton';
 import { getExhibitionLike, getRating } from '../apis/exhibition';
 import starImg from "../assets/star.svg";
 import { getUserPreferences } from '../apis/userPreference';
-import { getUserInfo } from '../apis/user'
+import { getUserCard, sendIsArtist } from '../apis/user'
+import profile from "../assets/profile.svg";
 
 export const MyPage = ({ exhibitionCount = 4, likeCount = 13 }) => {
   const navigate = useNavigate();
@@ -23,16 +24,21 @@ export const MyPage = ({ exhibitionCount = 4, likeCount = 13 }) => {
   const [visitedList, setVisitedList] = useState([]);
   const [userTags, setUserTags] = useState([]);
   const [userInfo, setUserInfo] = useState(null);
+  //const [Type, setUserType] = useState("VIEWER");
 
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
-        const res = await getUserInfo();
+        const res = await getUserCard();
+        setUserInfo(res);
+        console.log(res);
       } catch (err) {
-        
+        console.log(err);
       }
-    }
-  },[])
+    };
+    fetchUserInfo();
+  },[]);
+  console.log(userInfo);
 
 
 const handleAddExhibition = () => {
@@ -77,7 +83,7 @@ const handleAddExhibition = () => {
     const fetchTags = async () => {
       try {
         const res = await getUserPreferences();
-        console.log(res);
+        //console.log(res);
         setUserTags(res);
       } catch (err) {
         console.log(err);
@@ -85,7 +91,26 @@ const handleAddExhibition = () => {
     }
     fetchTags();
   }, []);
-  console.log(userTags);
+  //console.log(userTags);
+
+  const handleBack = () => {
+      navigate(-1);
+    }
+
+  if (!userInfo) {
+      return <div className="mx-auto w-full max-w-[450px] text-center mt-20">Loading...</div>;
+  }
+
+  const handleChange = async () => {
+    try {
+      const res = await sendIsArtist();
+      console.log(res);
+      setUserInfo(res);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
 
   const levels = [null, glow_glow, glow_shine, glow_spark];
   const badgeSrc =
@@ -93,16 +118,43 @@ const handleAddExhibition = () => {
   return (
     <div>
       <div className="flex flex-row w-full justify-center">
-        <GoBackButton  onClick={navigate('/')}/>
+        <GoBackButton  onClick={handleBack}/>
         <div className="flex mt-[12px] justify-center text-[16px] font-semibold text-center leading-[150%]">
           마이페이지
         </div>
       </div>
 
+      {userInfo.userType === "VIEWER" ? (
+          <div className='flex flex-col px-[20px]'>
+            <div className='border-b-1 border-grey05 flex flex-col gap-[16px] py-[10px]'>
+              <div>
+                <img src={profile} alt="profile" className='w-[96px]'/>
+              </div>
+              <div className='flex flex-row items-center pl-[12px] justify-between'>
+                <div>
+                  <p className='font-extrabold text-[14px]'>{userInfo.username}</p>
+                  <p className='text-[14px] text-darkgrey03'>{userInfo.email}</p>
+                </div>
+                <div>
+                  <button 
+                    className='w-[156px] h-[42px] rounded-[5px] bg-lightpurple02 text-purple01 text-[12px] font-extrabold'
+                    onClick={handleChange}
+                  >
+                      작가로 활동 시작하기
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        ): (
+          <>
+          
+        
       {/* 상단 마이페이지, 프로필카드, 나의 전시 */}
       <div className="flex flex-row items-center gap-2.5 justify-center">
         {/* <img src={profileCard} alt="프로필카드" /> */}
 
+        
         {/* 프로필 카드부분 */}
         <div className="w-[168px] h-[320px] rounded-[15px] border-lightpurple01 border-solid border-[2px] bg-lightpurple02">
           <div className="flex flex-col items-center justify-center">
@@ -154,7 +206,9 @@ const handleAddExhibition = () => {
             </button>
           </div>
         </div>
-      </div>
+        
+      </div></>)}
+    
 
       {/* 구분선 */}
       <div className="w-screen h-[8px] bg-grey04 mt-[24px] mb-[12px]" />
