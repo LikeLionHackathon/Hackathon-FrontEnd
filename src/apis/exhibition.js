@@ -122,3 +122,15 @@ export const updateExhibitionImages = async (exhibitionId, imageData) => {
   }
 };
 
+export const searchExhibitionsByTitle = async (title) => {
+  try {
+    // encodeURIComponent는 검색어에 특수문자(공백 등)가 있을 경우를 대비해 사용합니다.
+    const response = await axiosInstance.get(
+      `/api/v1/exhibitions/search?title=${encodeURIComponent(title)}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Search API Error:", error);
+    throw error;
+  }
+};

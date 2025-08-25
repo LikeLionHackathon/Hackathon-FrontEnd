@@ -15,7 +15,7 @@ import like_outline from '../assets/like_outline.svg';
 import like_purple from '../assets/like_purple.svg';
 import Poster16 from '../assets/posters/Poster16.png';
 
-export const ArtistProfile = ({ exhibitionCount = 1 }) => {
+export const UserProfile = ({ exhibitionCount = 1 }) => {
   const navigate = useNavigate();
   const [likeCount, setLikeCount] = useState(0);
   const [openAdd, setOpenAdd] = useState(false);

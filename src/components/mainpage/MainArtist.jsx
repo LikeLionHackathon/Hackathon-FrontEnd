@@ -95,7 +95,7 @@ const MainArtist = () => {
 
             <AddExhibitionModal
             open={openAdd}
-            onClose={() => setOpenPastAdd(false)}
+            onClose={() => setOpenAdd(false)}
             onSubmit={(data) => {
                 console.log('전시 등록 데이터:', data);
                 // TODO: API 연결해서 저장
