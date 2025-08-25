@@ -14,9 +14,16 @@ import GLOW from '../assets/GLOW.svg';
 import glow_icon1 from '../assets/glow_icon 1.png';
 import { useNavigate, useLocation } from 'react-router-dom';
 import MainArtist from '../components/mainpage/MainArtist';
-import { getDailyRecommend } from '../apis/dailyRecommend';
+import {
+  getDailyRecommend,
+  getRandomExhibitions,
+} from '../apis/dailyRecommend';
 import { useEffect } from 'react';
-import { getExhibitions } from '../apis/exhibition';
+import {
+  getExhibitions,
+  getTagExhibitions,
+  getThemeExhibitions,
+} from '../apis/exhibition';
 import { getTagRecommendations } from '../apis/tagRecommendation';
 import { getUserCard } from '../apis/user';
 
@@ -24,7 +31,7 @@ const CARD_W = 284; // 카드 가로
 const GAP = 16; // gap-4
 
 export const MainPage = () => {
-  const usertype = 'VIEWER'; // 임시 유저 타입 (VIEWER 또는 ARTIST)
+  const userType = 'VIEWER'; // 임시 유저 타입 (VIEWER 또는 ARTIST)
   const location = useLocation();
 
   const [recommendations, setRecommendations] = useState([]);
@@ -49,12 +56,15 @@ export const MainPage = () => {
     fetchUserInfo();
   }, []);
   console.log(userInfo);
+  const [tagExhibitions, setTagExhibitions] = useState([]);
+  const [themeExhibitions, setThemeExhibitions] = useState([]);
+  const [randomExhibitions, setRandomExhibitions] = useState([]);
 
   useEffect(() => {
     const fetchAllExhibitions = async () => {
       try {
         const result = await getExhibitions();
-        console.log('백엔드 응답: ', result);
+        //console.log('백엔드 응답: ', result);
         setNewExhibitions(result);
       } catch (err) {
         console.log('실패: ', err);
@@ -63,34 +73,77 @@ export const MainPage = () => {
     fetchAllExhibitions();
   }, []);
 
+  //useEffect(() => {
+  //   const fetchRecommendations = async () => {
+  //     try {
+  //       const res = await getTagRecommendations();
+  //       console.log('태그별 추천 응답: ', res);
+  //       setRecommendations(res);
+  //     } catch (err) {
+  //       console.log('실패: ', err);
+  //     }
+  //   };
+  //   fetchRecommendations();
+  // }, []);
+
+  const [tag, setTag] = useState('');
+  const [theme, setTheme] = useState('');
+
   useEffect(() => {
-    const fetchRecommendations = async () => {
+    const fetchTagExhibitions = async () => {
       try {
-        const res = await getTagRecommendations(userInfo.userId, userInfo.tag);
-        console.log('태그별 추천 응답: ', res);
-        setRecommendations(res);
+        const res = await getTagExhibitions();
+        //console.log(res.tag);
+        setTag(res.tag);
+        setTagExhibitions(res.exhibitions);
       } catch (err) {
-        console.log('태그별 추천 실패: ', err);
+        console.log(err);
       }
     };
+    fetchTagExhibitions();
+  }, []);
+  //console.log(tagExhibitions);
 
-    if (userInfo && userInfo.userId) {
-      fetchRecommendations();
-    }
-  }, [userInfo]);
+  useEffect(() => {
+    const fetchThemeExhibitions = async () => {
+      try {
+        const res = await getThemeExhibitions();
+        setTheme(res.tag);
+        setThemeExhibitions(res.exhibitions);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchThemeExhibitions();
+  }, []);
+  //console.log(themeExhibitions);
+
+  useEffect(() => {
+    const fetchRandomExhibitions = async () => {
+      try {
+        const res = await getRandomExhibitions();
+        //console.log(res);
+        setRandomExhibitions(res);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchRandomExhibitions();
+  }, []);
+  console.log(randomExhibitions);
 
   const navigate = useNavigate();
   const scrollerRef = useRef(null);
   const [idx, setIdx] = useState(0); // 0,1,2
   const initialTab =
-    location.state?.tab === 'artist' && usertype === 'VIEWER'
+    location.state?.tab === 'artist' && userType === 'VIEWER'
       ? 'artist'
       : 'home';
   const [version, setVersion] = useState(initialTab);
 
   useEffect(() => {
     if (location.state?.tab || location.state?.autoOpenAdd) {
-      if (location.state?.tab === 'artist' && usertype === 'VIEWER') {
+      if (location.state?.tab === 'artist' && userType === 'VIEWER') {
         setVersion('artist');
       }
       navigate('.', { replace: true, state: {} });
@@ -116,6 +169,9 @@ export const MainPage = () => {
       behavior: 'smooth',
     });
   };
+
+  const arr = Array.from({ length: randomExhibitions.length }, (_, i) => i);
+  console.log(arr);
 
   return (
     <div>
@@ -154,7 +210,7 @@ export const MainPage = () => {
               홈
             </button>
           </div>
-          {usertype === 'VIEWER' && (
+          {userType === 'VIEWER' && (
             <div className="w-[50px] h-[14px] border-l-2 border-l-grey08 flex items-center justify-end">
               <div>
                 <button
@@ -197,26 +253,36 @@ export const MainPage = () => {
         [scrollbar-width:none] [&::-webkit-scrollbar]:hidden
       "
             >
-              <img
-                src={Poster1}
-                alt="poster1"
-                className="w-[284px] h-[376px] shrink-0 snap-center rounded object-contain"
-              />
-              <img
-                src={Poster1}
-                alt="poster1"
-                className="w-[284px] h-[376px] shrink-0 snap-center rounded object-contain"
-              />
-              <img
-                src={Poster3}
-                alt="poster3"
-                className="w-[284px] h-[376px] shrink-0 snap-center rounded object-contain"
-              />
+              {randomExhibitions.length === 0 ? (
+                <p>일일 추천이 없습니다.</p>
+              ) : (
+                randomExhibitions.map((exh, idx) => (
+                  <div
+                    key={idx}
+                    className="relative w-[284px] h-[376px] shrink-0 snap-center rounded overflow-hidden"
+                    onClick={() =>
+                      navigate(`/exhibitionDetail/${exh.exhibitionId}`)
+                    }
+                  >
+                    <img
+                      src={exh.posterImageUrl}
+                      alt=""
+                      className="w-full h-full rounded object-cover"
+                    />
+                    <div className="absolute bottom-[13px] left-[18px] text-white">
+                      <p className="text-[20px] font-extrabold">{exh.title}</p>
+                      <p className="text-[11px] font-semibold">
+                        {exh.startDate} ~ {exh.endDate}
+                      </p>
+                    </div>
+                  </div>
+                ))
+              )}
             </div>
 
             {/* 2) 인디케이터 점 */}
             <div className="flex justify-center items-center gap-2 mt-2">
-              {[0, 1, 2].map((i) => (
+              {arr.map((i) => (
                 <button
                   key={i}
                   onClick={() => goTo(i)}
@@ -241,15 +307,18 @@ export const MainPage = () => {
                 newExhibitions
                   .filter((_, i) => i < 4)
                   .map((exhibition) => (
-                    <div key={exhibition.id} className="w-[168px] h-[308px]">
+                    <div
+                      key={exhibition.id}
+                      className="w-[168px] h-[308px]"
+                      onClick={() =>
+                        navigate(`/exhibitionDetail/${exhibition.id}`)
+                      }
+                    >
                       <div className="w-[168px] h-[242px] overflow-hidden">
                         <img
                           src={exhibition.posterImage}
                           alt={exhibition.title}
                           className="w-full h-full object-cover [clip-path:polygon(0_0,100%_0,100%_calc(100%-14px),calc(100%-14px)_100%,14px_100%,0_calc(100%-12px))]"
-                          onClick={() =>
-                            navigate(`/exhibitionDetail/${exhibition.id}`)
-                          }
                         />
                       </div>
                       <div className="relative bg-[#C8C8C8] p-[1px] [clip-path:polygon(20px_0,calc(100%-20px)_0,100%_12px,100%_100%,0_100%,0_12px)]">
@@ -293,62 +362,41 @@ export const MainPage = () => {
             <div className="mx-auto w-full max-w-[420px] px-5 py-4">
               <h2 className="font-semibold text-[20px] leading-[125%]">
                 <p>선호하시는 </p>
-                <span className="text-purple01">#따뜻함</span> 태그의 전시들
+                <span className="text-purple01">{tag}</span> 태그의 전시들
               </h2>
             </div>
 
             <div className="px-5 grid grid-cols-2 gap-x-3 justify-items-start">
-              <div className="w-[168px] space-y-1.5">
-                {' '}
-                <img
-                  src={Poster1}
-                  alt="poster1"
-                  className="w-full rounded mb-2.5"
-                />
-                <p className="self-stretch text-[16px] font-semibold leading-6 not-italic">
-                  복
-                </p>
-                <p className="self-stretch font-semibold leading-6 text-[11px]">
-                  연희동
-                </p>
-                <div className="mt-1 flex flex-wrap gap-2 justify-start text-[11px]">
-                  <span className="bg-lightpurple01 rounded-[5px] px-1.5 py-0.5 whitespace-nowrap">
-                    # 초현실
-                  </span>
-                  <span className="bg-pink01 rounded-[5px] px-1.5 py-0.5 whitespace-nowrap">
-                    # 역사 아카이브
-                  </span>
-                  <span className="bg-pink01 rounded-[5px] px-1.5 py-0.5 whitespace-nowrap">
-                    # 사회적
-                  </span>
+              {tagExhibitions.map((exh, idx) => (
+                <div
+                  className="w-[168px] space-y-1.5"
+                  key={idx}
+                  onClick={() =>
+                    navigate(`/exhibitionDetail/${exh.exhibitionId}`)
+                  }
+                >
+                  {' '}
+                  <img
+                    src={exh.posterImageUrl}
+                    alt="poster1"
+                    className="w-full rounded mb-2.5"
+                  />
+                  <p className="self-stretch text-[16px] font-semibold leading-6 not-italic">
+                    {exh.title}
+                  </p>
+                  <p className="self-stretch font-semibold leading-6 text-[11px]">
+                    {exh.location}
+                  </p>
+                  {exh.tags.map((tag, idx) => (
+                    <span
+                      className="bg-lightpurple01 rounded-[5px] px-1.5 py-0.5 whitespace-nowrap"
+                      key={idx}
+                    >
+                      # {tag}
+                    </span>
+                  ))}
                 </div>
-              </div>
-
-              <div className="w-[168px] space-y-1.5">
-                {' '}
-                <img
-                  src={Poster1}
-                  alt="poster1"
-                  className="w-full rounded mb-2.5"
-                />
-                <p className="self-stretch text-[16px] font-semibold leading-6 not-italic">
-                  복
-                </p>
-                <p className="self-stretch font-semibold leading-6 text-[11px]">
-                  연희동
-                </p>
-                <div className="mt-1 flex flex-wrap gap-2 justify-start text-[11px]">
-                  <span className="bg-lightpurple01 rounded-[5px] px-1.5 py-0.5 whitespace-nowrap">
-                    # 초현실
-                  </span>
-                  <span className="bg-pink01 rounded-[5px] px-1.5 py-0.5 whitespace-nowrap">
-                    # 역사 아카이브
-                  </span>
-                  <span className="bg-pink01 rounded-[5px] px-1.5 py-0.5 whitespace-nowrap">
-                    # 사회적
-                  </span>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
 
@@ -357,63 +405,42 @@ export const MainPage = () => {
 
           <div className="mx-auto w-full max-w-[420px] px-5 py-4">
             <h2 className="font-semibold text-[20px] leading-[125%]">
-              선호하시는 <span className="text-purple01">#따뜻함</span> 태그의
+              선호하시는 <span className="text-purple01">#{theme}</span> 태그의
               전시들
             </h2>
           </div>
 
           <div className="px-5 grid grid-cols-2 gap-x-3 justify-items-start">
-            <div className="w-[168px] space-y-1.5">
-              {' '}
-              <img
-                src={Poster1}
-                alt="poster1"
-                className="w-full rounded mb-2.5"
-              />
-              <p className="self-stretch text-[16px] font-semibold leading-6 not-italic">
-                복
-              </p>
-              <p className="self-stretch font-semibold leading-6 text-[11px]">
-                연희동
-              </p>
-              <div className="mt-1 flex flex-wrap gap-2 justify-start text-[11px]">
-                <span className="bg-lightpurple01 rounded-[5px] px-1.5 py-0.5 whitespace-nowrap">
-                  # 초현실
-                </span>
-                <span className="bg-pink01 rounded-[5px] px-1.5 py-0.5 whitespace-nowrap">
-                  # 역사 아카이브
-                </span>
-                <span className="bg-pink01 rounded-[5px] px-1.5 py-0.5 whitespace-nowrap">
-                  # 사회적
-                </span>
+            {themeExhibitions.map((exh, idx) => (
+              <div
+                className="w-[168px] space-y-1.5"
+                key={idx}
+                onClick={() =>
+                  navigate(`/exhibitionDetail/${exh.exhibitionId}`)
+                }
+              >
+                {' '}
+                <img
+                  src={exh.posterImageUrl}
+                  alt="poster1"
+                  className="w-full rounded mb-2.5"
+                />
+                <p className="self-stretch text-[16px] font-semibold leading-6 not-italic">
+                  {exh.title}
+                </p>
+                <p className="self-stretch font-semibold leading-6 text-[11px]">
+                  {exh.location}
+                </p>
+                {exh.tags.map((tag, idx) => (
+                  <span
+                    className="bg-lightpurple01 rounded-[5px] px-1.5 py-0.5 whitespace-nowrap"
+                    key={idx}
+                  >
+                    # {tag}
+                  </span>
+                ))}
               </div>
-            </div>
-
-            <div className="w-[168px] space-y-1.5 mb-10">
-              {' '}
-              <img
-                src={Poster1}
-                alt="poster1"
-                className="w-full rounded mb-2.5"
-              />
-              <p className="self-stretch text-[16px] font-semibold leading-6 not-italic">
-                복
-              </p>
-              <p className="self-stretch font-semibold leading-6 text-[11px]">
-                연희동
-              </p>
-              <div className="mt-1 flex flex-wrap gap-2 justify-start text-[11px]">
-                <span className="bg-lightpurple01 rounded-[5px] px-1.5 py-0.5 whitespace-nowrap">
-                  # 초현실
-                </span>
-                <span className="bg-pink01 rounded-[5px] px-1.5 py-0.5 whitespace-nowrap">
-                  # 역사 아카이브
-                </span>
-                <span className="bg-pink01 rounded-[5px] px-1.5 py-0.5 whitespace-nowrap">
-                  # 사회적
-                </span>
-              </div>
-            </div>
+            ))}
           </div>
         </>
       )}

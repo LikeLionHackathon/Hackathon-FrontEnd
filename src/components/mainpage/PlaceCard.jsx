@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import placeImg from "../../assets/cafe01.svg";
-import { GoBackButton } from "../GoBackButton";
 
 const PlaceCard = () => {
     const nav = useNavigate();
