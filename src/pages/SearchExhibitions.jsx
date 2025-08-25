@@ -41,7 +41,7 @@ export const SearchExhibitions = () => {
         <input
           type="text"
           placeholder="전시 제목을 검색하세요."
-          className="w-full h-[44px] rounded-[22px] border border-grey08 p-3 pr-10"
+          className="w-full h-[44px] rounded-[22px] border border-grey08 p-5 pr-10"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={handleKeyDown}
