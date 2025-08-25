@@ -14,7 +14,7 @@ export const createUser = async () => {
 export const getUserInfo = async ({user_id}) => {
   try {
     const res = await axiosInstance.get(`/api/v1/users/${user_id}`);
-    console.log(res);
+    //console.log(res);
     return res.data;
   } catch (err) {
     console.log('유저 데이터 GET 실패: ', err?.response?.status, err?.response?.data);
@@ -25,7 +25,7 @@ export const getUserInfo = async ({user_id}) => {
 export const getUserCard = async () => {
   try {
     const res = await axiosInstance.get('/api/v1/users/usercard');
-    console.log(res);
+    //console.log(res);
     return res.data;
   } catch (err) {
     console.log(err);
@@ -43,3 +43,14 @@ export const sendIsArtist = async () => {
     throw err;
   }
 }
+
+export const getArtistExhibition = async () => {
+  const res = await axiosInstance.get('/api/v1/exhibitionslist', {
+    withCredentials: true,
+  });
+  console.log(res.data);
+  const ArtistExhibition = res.data;
+  if (Array.isArray(ArtistExhibition)) return ArtistExhibition;
+  return [];
+}
+

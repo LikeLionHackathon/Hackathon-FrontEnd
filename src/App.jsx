@@ -13,6 +13,7 @@ import RentPage from './pages/RentPage';
 import { ArtistProfile } from './pages/ArtistProfile';
 import MessagePage from './pages/MessagePage';
 import { SearchExhibitions } from './pages/SearchExhibitions';
+import MyExhibitionList from './pages/MyExhibitionList';
 
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
           <Route path='/userprofile' element={<ArtistProfile />}></Route>
           <Route path='/message' element={<MessagePage />} />
           <Route path='/searchExhibitions' element={<SearchExhibitions/>}></Route>
+          <Route path='/myexhibition' element={<MyExhibitionList />} />
         </Route>
       </Routes>
     </BrowserRouter>
