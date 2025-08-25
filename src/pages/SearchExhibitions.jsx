@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import search_icon from '../assets/search_icon.svg';
 import { searchExhibitionsByTitle } from '../apis/exhibition';
+import { GoBackButton } from '../components/GoBackButton';
 
 export const SearchExhibitions = () => {
   const navigate = useNavigate();
@@ -9,6 +10,7 @@ export const SearchExhibitions = () => {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [searched, setSearched] = useState(false);
+  const [searchedQuery, setSearchedQuery] = useState(''); // 1. 검색된 검색어를 저장할 상태 추가
 
   const handleSearch = async () => {
     if (!query.trim()) {
@@ -17,6 +19,7 @@ export const SearchExhibitions = () => {
     }
     setLoading(true);
     setSearched(true);
+    setSearchedQuery(query); // 2. 검색 버튼 클릭 시, 현재 검색어를 searchedQuery에 저장
     try {
       const data = await searchExhibitionsByTitle(query);
       setResults(data);
@@ -35,9 +38,11 @@ export const SearchExhibitions = () => {
   };
 
   return (
-    <div className="w-full mt-[14px] px-5 flex flex-col items-center">
+    <div className="w-full mt-[20px] px-5 flex flex-col items-center">
+        <GoBackButton/>
+
       {/* --- 검색창 --- */}
-      <div className="relative w-full max-w-[350px]">
+      <div className="mt-8 relative w-full max-w-[350px]">
         <input
           type="text"
           placeholder="전시 제목을 검색하세요."
@@ -58,24 +63,30 @@ export const SearchExhibitions = () => {
       </div>
 
       {/* --- 검색 결과 --- */}
-      <div className="w-full max-w-[350px] mt-8">
+      <div className="w-full max-w-[350px] mt-4">
         {loading ? (
           <p className="text-center">검색 중...</p>
         ) : searched && results.length === 0 ? (
           <p className="text-center text-gray-500">검색 결과가 없습니다.</p>
         ) : (
           <div className="flex flex-col">
+            {/* 3. query 대신 searchedQuery를 사용하고 쌍따옴표로 변경 */}
+            {searched && (
+              <p className="text-grey07 font-[600] leading-1.5 pl-4">
+                {`"${searchedQuery}" 검색 결과입니다`}
+              </p>
+            )}
             {results.map((exhibition) => (
               <div
                 key={exhibition.exhibitionId}
-                // UserProfile의 레이아웃과 스타일을 적용
                 className="w-full flex flex-row gap-[15px] py-4 border-b border-grey06 cursor-pointer"
-                onClick={() => navigate(`/exhibitionDetail/${exhibition.exhibitionId}`)}
+                onClick={() =>
+                  navigate(`/exhibitionDetail/${exhibition.exhibitionId}`)
+                }
               >
                 <img
                   src={exhibition.posterImageUrl}
                   alt={exhibition.title}
-                  // UserProfile의 이미지 스타일 적용
                   className="w-[92px] h-[120px] object-cover rounded"
                 />
                 <div className="flex flex-col flex-1 justify-center">

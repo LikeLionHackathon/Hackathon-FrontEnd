@@ -210,7 +210,7 @@ export default function Onboarding() {
             <h1 className="text-2xl font-bold">가입이 완료되었습니다!</h1>
         </div>
         <div className="w-full pb-6">
-            <BtnPrimary onClick={() => navigate('/')} className="w-full">완료</BtnPrimary>
+            <BtnPrimary onClick={() => navigate('/mainpage')} className="w-full">완료</BtnPrimary>
         </div>
       </div>
     );

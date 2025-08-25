@@ -32,7 +32,7 @@ export const Login = () => {
       if (responseData.first) {
         navigate('/onboarding'); // true일 경우 온보딩 페이지로
       } else {
-        navigate('/'); // false일 경우 메인 페이지로
+        navigate('/mainpage'); // false일 경우 메인 페이지로
       }
     } catch (err) {
       console.error('로그인 실패:', err);

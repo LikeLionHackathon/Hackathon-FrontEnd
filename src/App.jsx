@@ -13,13 +13,15 @@ import RentPage from './pages/RentPage';
 import MessagePage from './pages/MessagePage';
 import { SearchExhibitions } from './pages/SearchExhibitions';
 import { UserProfile } from './pages/UserProfile';
+import { FirstStep } from './pages/FirstStep';
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<Layout />}>
-          <Route index element={<MainPage />}/>
+          <Route index element={<FirstStep/>}></Route>
+          <Route path='/mainpage' element={<MainPage />}/>
           <Route path='aiChat' element={<AiChat/> }/>
           <Route path='myPage' element={<MyPage/>}></Route>
           <Route path='/exhibitionList' element={<ExhibitionList />} />

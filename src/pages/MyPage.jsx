@@ -1,5 +1,4 @@
 // import profileCard from '../assets/Profile_card.svg';
-import Poster_01 from '../assets/poster_01.svg';
 import AddExhibitionModal from '../components/exhibition/AddExhibitionModal';
 import { useEffect, useState } from 'react';
 import ellipsis from '../assets/Ellipse.svg';
@@ -17,7 +16,7 @@ import { getUserPreferences } from '../apis/userPreference';
 import { getUserCard, sendIsArtist } from '../apis/user'
 import profile from "../assets/profile.svg";
 
-export const MyPage = ({ exhibitionCount = 4, likeCount = 13 }) => {
+export const MyPage = () => {
   const navigate = useNavigate();
   const [openAdd, setOpenAdd] = useState(false);
   const [likeList, setLikeList] = useState([]);
@@ -43,7 +42,7 @@ export const MyPage = ({ exhibitionCount = 4, likeCount = 13 }) => {
 
 const handleAddExhibition = () => {
   // 작가 탭으로 이동 + (선택) 도착 시 전시등록 모달 자동 오픈 신호 전달
-   navigate('/', { state: { tab: 'artist', autoOpenAdd: true } });
+   navigate('/mainpage', { state: { tab: 'artist', autoOpenAdd: true } });
 };
 
   const handleGoToProfile = () => {
