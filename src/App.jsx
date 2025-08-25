@@ -14,19 +14,18 @@ import MessagePage from './pages/MessagePage';
 import { SearchExhibitions } from './pages/SearchExhibitions';
 import MyExhibitionList from './pages/MyExhibitionList';
 import { UserProfile } from './pages/UserProfile';
-import { useState } from 'react';
+import { FirstStep } from './pages/FirstStep';
 
 function App() {
-
   const IsUserInfo = localStorage.getItem("userId");
   console.log(IsUserInfo);
-
-
 
   return (
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<Layout />}>
+          <Route index element={<FirstStep/>}></Route>
+          <Route path='/mainpage' element={<MainPage />}/>
           <Route index element={<MainPage />}/>
           {IsUserInfo ? (<>
           <Route path='aiChat' element={<AiChat/> }/>

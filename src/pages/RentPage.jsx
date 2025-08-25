@@ -4,6 +4,7 @@ import floorImg from "../assets/floorPlan.png";
 import { useState } from "react";
 import ArtistModal from "../components/mainpage/ArtistModal";
 import FormModal from "../components/mainpage/FormModal";
+import { GoBackButton } from "../components/GoBackButton";
 
 const RentPage = () => {
     const [openModal, setOpenModal] = useState(false);
@@ -22,8 +23,9 @@ const RentPage = () => {
     
     return (
         <div className="mx-auto w-full max-w-[450px]">
-            <div className="w-full h-[260px] overflow-hidden">
-                <img src={placeImg} alt="place_image" className="w-full h-full object-cover"/>
+            <GoBackButton />
+            <div className="w-full h-[260px] mt-10 overflow-hidden">
+                <img src={placeImg} alt="place_image" className="w-full h-full"/>
             </div>
 
             <div className="w-full px-[20px] py-[24px] flex flex-col">

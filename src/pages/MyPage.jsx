@@ -1,5 +1,4 @@
 // import profileCard from '../assets/Profile_card.svg';
-import Poster_01 from '../assets/poster_01.svg';
 import AddExhibitionModal from '../components/exhibition/AddExhibitionModal';
 import { useEffect, useState } from 'react';
 import ellipsis from '../assets/Ellipse.svg';
@@ -17,7 +16,7 @@ import { getUserPreferences } from '../apis/userPreference';
 import { getArtistExhibition, getUserCard, sendIsArtist } from '../apis/user'
 import profile from "../assets/profile.svg";
 
-export const MyPage = ({ exhibitionCount = 4, likeCount = 13 }) => {
+export const MyPage = () => {
   const navigate = useNavigate();
   const [openAdd, setOpenAdd] = useState(false);
   const [likeList, setLikeList] = useState([]);
@@ -44,7 +43,7 @@ export const MyPage = ({ exhibitionCount = 4, likeCount = 13 }) => {
 
 const handleAddExhibition = () => {
   // 작가 탭으로 이동 + (선택) 도착 시 전시등록 모달 자동 오픈 신호 전달
-   navigate('/', { state: { tab: 'artist', autoOpenAdd: true } });
+   navigate('/mainpage', { state: { tab: 'artist', autoOpenAdd: true } });
 };
 
   const handleGoToProfile = () => {
@@ -73,6 +72,7 @@ const handleAddExhibition = () => {
         const res = await getRating();
         //console.log("전시 성공: ", res);
         setVisitedList(res);
+        console.log(visitedList);
       } catch (err) {
         console.log(err);
       }
@@ -266,7 +266,7 @@ const handleAddExhibition = () => {
                 </p>
                 <div className='mt-2.5 flex flex-row justify-center items-center gap-[2px]'>
                   <img src={starImg} alt="star" className='w-[20px]' />
-                  <p className='text-purple_main text-[12px]'>{exh.rating || 0}</p>
+                  <p className='text-purple_main text-[12px]'>{exh.rate}</p>
                 </div>
               </div>
               <div className="flex flex-row gap-2 mt-0.5 ml-3 text-[14px] font-medium leading-[150%] text-darkgrey03">

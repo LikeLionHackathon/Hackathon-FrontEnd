@@ -53,4 +53,3 @@ export const getArtistExhibition = async () => {
   if (Array.isArray(ArtistExhibition)) return ArtistExhibition;
   return [];
 }
-

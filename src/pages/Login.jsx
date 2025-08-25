@@ -32,7 +32,7 @@ export const Login = () => {
       if (responseData.first) {
         navigate('/onboarding'); // true일 경우 온보딩 페이지로
       } else {
-        navigate('/'); // false일 경우 메인 페이지로
+        navigate('/mainpage'); // false일 경우 메인 페이지로
       }
     } catch (err) {
       console.error('로그인 실패:', err);
@@ -88,18 +88,6 @@ export const Login = () => {
       </button>
 
       <div className="flex flex-between gap-3 text-darkgrey01 text-[14px]">
-        <div
-          className="border-b-[1px] border-darkgrey01 cursor-pointer"
-          onClick={handleFindId}
-        >
-          아이디 찾기
-        </div>
-        <div
-          className="border-b-[1px] border-darkgrey01 cursor-pointer"
-          onClick={handleResetPassword}
-        >
-          비밀번호 재설정
-        </div>
         <div
           className="border-b-[1px] border-darkgrey01 cursor-pointer"
           onClick={handleSignUp}
